@@ -1,5 +1,3 @@
---<ScriptOptions statementTerminator=";"/>
-
 CREATE TABLE category (
 	id INT NOT NULL,
 	name VARCHAR(255) NOT NULL,
@@ -37,4 +35,3 @@ CREATE UNIQUE INDEX UK_mufchskagt7e1w4ksmt9lum5l ON customer (username ASC);
 CREATE INDEX FK74aoh99stptslhotgf41fitt0 ON customer (role ASC);
 
 CREATE INDEX FK1mtsbur82frn64de7balymq9s ON product (category_id ASC);
-

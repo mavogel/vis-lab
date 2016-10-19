@@ -17,6 +17,7 @@ LegacyWebShop/diagrams
 LegacyWebShop/.idea
 LegacyWebShop/*.iml
 LegacyWebShop/target
+.data
 
 
 # General
