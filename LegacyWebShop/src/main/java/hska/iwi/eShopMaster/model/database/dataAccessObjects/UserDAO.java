@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
 import hska.iwi.eShopMaster.model.database.GenericHibernateDAO;
@@ -12,9 +13,10 @@ import hska.iwi.eShopMaster.model.database.dataobjects.User;
 import hska.iwi.eShopMaster.model.sessionFactory.util.HibernateUtil;
 
 public class UserDAO extends GenericHibernateDAO<User, Integer> {
-	
+
 	public User getUserByUsername(String name) {
-	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session session = sessionFactory.getCurrentSession();
 		try
 		{
 			User user = null;
