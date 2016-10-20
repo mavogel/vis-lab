@@ -4,9 +4,9 @@
 ###################
 SP='********'
 function info () {
-  echo "\n${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}";
+  echo "\n${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}";
   echo "$SP [SCRIPT INFO] $1";
-  echo "${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}\n";
+  echo "${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}${SP}\n";
 }
 
 ###################
