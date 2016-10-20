@@ -18,7 +18,7 @@ services:
      - db
    image: tomcat:8.0
    links:
-     - db
+     - db:web-shop-db-image
    volumes:
      - ./LegacyWebShop/target/EShop-0.0.1-SNAPSHOT.war:/usr/local/tomcat/webapps/EShop-0.0.1-SNAPSHOT.war
      - ./LegacyWebShop/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
