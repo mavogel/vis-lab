@@ -8,7 +8,8 @@ Splitting a monilithic web shop application, running on a Tomcat into small doma
 
 ## Starting
 ### Legacy System
-Check ou the project and simply run the script:
+- Start Docker deamon
+- Check out the project and simply run the script:
 ```bash
 $ chmod +x run_legacy.sh
 $ ./run_legacy.sh
