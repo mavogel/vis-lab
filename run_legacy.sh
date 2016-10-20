@@ -19,7 +19,7 @@ info "Needed binaries found in path";
 
 # 2: Build legacy webshop??
 info "Bulding legacy web shop"
-cd LegacyWebShop && mvn clean package
+cd LegacyWebShop && mvn clean package && cd ..
 
 # 3: Build initialized MySQL Database image
 info "Building initialized MySQL Database image"
