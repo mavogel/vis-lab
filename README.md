@@ -1,5 +1,5 @@
 # Distributed Information Systems Laboratory aka vis-lab
-Splitting a monilithic web shop application, running on a Tomcat into small domain-driven microservices with Spring Boot and Docker. This project is part of the masters course 'Distributed Information Systems' at the University of Applied Sciences (Karlsruhe).
+Splitting a monolithic web shop application, running on a Tomcat into small domain-driven microservices with Spring Boot and Docker. This project is part of the masters course 'Distributed Information Systems' at the University of Applied Sciences (Karlsruhe).
 
 ## Prerequisites
 - [maven](https://maven.apache.org/)
