@@ -1,6 +1,8 @@
 \documentclass[11pt]{article}
 \usepackage{graphicx} % graphic import stuff
 \usepackage[parfill]{parskip} % to start each parapraph will an empty line before
+\usepackage{listings}
+\usepackage{hyperref}
 
 %
 % settings
@@ -17,9 +19,9 @@
 % centers, scales and wraps a given graphic into a figure env
 % % [1]: the scale factor 
 % % [2]: the name of the image which will also be used with 'fig:' prefix as label
-%% [3] the caption of the figure
+%%  [3] the caption of the figure
 %
-\newcommand{\cgraphic}[4]
+\newcommand{\cgraphic}[3]
 {
 	\begin{figure}[htb]
 		\begin{center}
@@ -32,7 +34,7 @@
 
 %opening
 \title{Distributed Information Systems - Deliverable 1}
-\author{Manuel Vogel, Felix Mohr,  Jinghua Lin}
+\author{Manuel Vogel, Felix Mohr, Jinghua Lin}
 
 \begin{document}
 	\begin{titlepage}
@@ -52,17 +54,37 @@
 		{\large \today\par}
 	\end{titlepage}
 	
-	\section{Start of the Webshop and functionality testing}
-	Manu: Docker compose stuff
+	\section{Start and test of the Webshop functionality}
+	The initial version of the legacy Webshop was exported as an \texttt{Eclipse}-Project and hence not compatible with other IDEs like \texttt{IntelliJ}. Other IDEs did not properly recognize the folder structure, especially the property and resource files were located in the wrong folder, so the legacy app did only partially work. On the other hand the team decide that it did not want to host a native \texttt{MySQL} database.
+	
+	So the decision taken to wrap the database and the Webshop into two separate \texttt{Docker} containers which communicate between each other on the same host. The team also wanted to gain experience with \texttt{Docker} containers and simplify the build process.
+
+	The build and configuration (\texttt{MySQL} and \texttt{Tomcat}) of the whole system was wrapped in shell script shown in Figure~\ref{fig:legacy-sh}.
+	\cgraphic{.35}{legacy-sh}{run\_legacy.sh}
+	
+	As described in the script, it initializes the database with a schema and user as well as the user for the \texttt{Tomcat} webserver. So the management console can be easily accessed. The project can be found \href{https://github.com/mavogel/vis-lab}{here} on \texttt{github}.
 	
 	\section{Analysis of the source code}
-    Architecture and behavior: UML and class/sequence diagrams go here
+    In this section the architecture and behavior of the legacy Webshop is described by the use of \texttt{UML} and class/sequence diagrams.
     
     \subsection{Product management} % Felix
     
     \subsection{Search} % Manu
-     
-    \subsection{User management} %Lin
+    \cgraphic{.5}{searchAction-seq}{Search sequence diagram}
+    The process of searching for a product with a given criteria is displayed in Figure~\ref{fig:searchAction-seq}. It can only be performed if the user is logged in. If all search fields are left empty, all products of all categories are displayed. If the search text field has a value, the products with the given text search values are looked up. \textbf{Note:} the search is performed as a \textit{like}-search only on the descriptions of the products and not the title. If no search text but and one or more criteria, only the criteria are considered in the search. Furthermore if a criteria is left empty, its minimum or maximum value is considered.
+    
+   Searching for a product is performed as follows: 
+   \begin{enumerate}
+   	\item The \texttt{SearchAction} uses the \texttt{ProductManagerImpl} to retrieve products for the given search values.
+   	\item The \texttt{ProductManagerImpl} uses the \texttt{ProductDAO} to access the products in database layer.
+   	\item The \texttt{ProductDAO} creates and performs the search query using the given search text and criteria for finding the desired products.
+   	\item As a last step all categories are loaded for displaying next to the product.
+   \end{enumerate}
+   
+   The class diagram of the SearchAction is displayed below in Figure~\ref{fig:searchAction-class}.
+   \cgraphic{.5}{searchAction-class}{SearchAction class diagram}  
+   
+   \subsection{User management} %Lin
       
-	
+      
 \end{document}
