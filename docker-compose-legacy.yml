@@ -6,10 +6,10 @@ services:
      - "./.data/db:/var/lib/mysql"
    restart: always
    environment:
-     MYSQL_ROOT_PASSWORD: adminpassword123
-     MYSQL_DATABASE: test
-     MYSQL_USER: username
-     MYSQL_PASSWORD: password
+     MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
+     MYSQL_DATABASE: webshop
+     MYSQL_USER: webshopuser
+     MYSQL_PASSWORD: 240b2c6d58ff2ce2f508b49f
    ports:
      - "3306:3306"
 
@@ -20,7 +20,7 @@ services:
    links:
      - db:web-shop-db-image
    volumes:
-     - ./LegacyWebShop/target/EShop-0.0.1-SNAPSHOT.war:/usr/local/tomcat/webapps/EShop-0.0.1-SNAPSHOT.war
+     - ./LegacyWebShop/target/EShop-1.0.0.war:/usr/local/tomcat/webapps/EShop-1.0.0.war
      - ./LegacyWebShop/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
    ports:
      - "8888:8080"

@@ -17,7 +17,15 @@ $ ./run_legacy.sh
 - Builds the web app `war`, packs it into a docker tomcat8 container,
 and sets the user `tomcat` with password `admin` for the Management Console at [http://localhost:8888/](http://localhost:8888/)
 - Inits the MySQL Database docker container with the db user defined in `hibernate.cfg.xml`
-- Sets up both containers and make the web app available under [http://localhost:8888/EShop-0.0.1-SNAPSHOT/](http://localhost:8888/EShop-0.0.1-SNAPSHOT/)
+- Sets up both containers and make the web app available under [http://localhost:8888/EShop-1.0.0/](http://localhost:8888/EShop-1.0.0/)
 
 ### Microservice Architecture
 will be realized soon...
+
+### Notes
+If you change the user and password of the MySQL database, you should run
+```bash
+$ docker-compose -f docker-compose-legacy.yml rm -v
+$ rm -rf .data
+```
+Details can be found [here](https://github.com/docker-library/mysql/issues/51)

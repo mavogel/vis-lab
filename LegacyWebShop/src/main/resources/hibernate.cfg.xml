@@ -6,10 +6,10 @@
 
         <!-- mysql Konfiguration -->
         <!--Note: 'web-shop-db-image' ist the url you give in the '../docker-compose-legacy.yml' as link alias -->
-        <property name="connection.url">jdbc:mysql://web-shop-db-image:3306/test</property>
+        <property name="connection.url">jdbc:mysql://web-shop-db-image:3306/webshop</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.username">username</property>
-        <property name="connection.password">password</property>
+        <property name="connection.username">webshopuser</property>
+        <property name="connection.password">240b2c6d58ff2ce2f508b49f</property>
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>

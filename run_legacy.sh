@@ -28,11 +28,10 @@ for BIN in ${BINS_TO_CHECK[@]}; do
   command -v $BIN >/dev/null 2>&1 || { echo >&2 "I require '$BIN' but it's not installed.  Aborting."; exit 1; };
 done
 echo "-> Fine √"
-exit 0;
 
 # 1.1 check if docker deamon runs
 info "Checking if docker is running";
-docker info
+docker --version
 echo "-> Fine √"
 
 # 2: Build legacy webshop??
@@ -50,4 +49,4 @@ info "Composing MySQL Server container, tomcat8 and deploying webshop war"
 docker-compose -f docker-compose-legacy.yml up -d
 
 # 5: done
-info "Legacy WebShop started -> 'http://localhost:8888/EShop-0.0.1-SNAPSHOT/'"
+info "Legacy WebShop started -> 'http://localhost:8888/EShop-1.0.0/'"
