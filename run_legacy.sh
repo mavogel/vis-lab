@@ -24,12 +24,15 @@ function info () {
 # 1: Check for required deps in the $PATH
 info "Check for needed binaries in PATH";
 BINS_TO_CHECK=( mvn docker docker-compose )
-for BIN in ${BINS_TO_CHECK[@]}; do command -v $BIN >/dev/null 2>&1 || { echo >&2 "I require '$BIN' but it's not installed.  Aborting."; exit 1; }; done
+for BIN in ${BINS_TO_CHECK[@]}; do
+  command -v $BIN >/dev/null 2>&1 || { echo >&2 "I require '$BIN' but it's not installed.  Aborting."; exit 1; };
+done
 echo "-> Fine √"
+exit 0;
 
 # 1.1 check if docker deamon runs
 info "Checking if docker is running";
-docker ps
+docker info
 echo "-> Fine √"
 
 # 2: Build legacy webshop??
