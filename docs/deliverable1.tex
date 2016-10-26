@@ -114,6 +114,12 @@
    \cgraphic{.5}{searchAction-class}{SearchAction class diagram}  
    
    \subsection{User management} %Lin
-      
+   \cgraphic{.5}{user-management}{User management sequence diagram} 
+    The activity diagram for user management is displayed in Figure~\ref{fig:user-management}. The new user can self register with own information. Of cause be able to edit their profile. Only the administrator can create the role (admin, user ..). The administrator can search the user via username or role.
+    
+    \begin{enumerate}
+    	\item The \texttt{registerUser} Action(create user) will check whether the username already exist, if not then create a new user with username, name, lastname, password, role using the UserDAO and RoleDAO.
+    	\item The Actor can get a user by username in UserDAO. Equally can get a user or users by RoleLevel(admin, user..) 
+    \end{enumerate}
       
 \end{document}
