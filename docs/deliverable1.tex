@@ -68,6 +68,35 @@
     In this section the architecture and behavior of the legacy Webshop is described by the use of \texttt{UML} and class/sequence diagrams.
     
     \subsection{Product management} % Felix
+	The central module in product management are the classes \texttt{ProductManager} and \texttt{ProductManagerImpl}. Whenever a user action requires information concerning products, a method of this model will be invoked by the controller. The model does not directly use the database. It uses a Hibernate \textit{Data Access Object} for dealing with persistence tasks.
+
+    When the user logs in, they have several options. One of them is listing all products using the \texttt{ListAll\-ProductsAction}.
+    
+    
+		\begin{center}
+		\includegraphics[width=\textwidth]{img/products/list}
+		\end{center}
+		
+		
+	For every product in the list, there is the possibility of showing its details. This action is being handled in the class \texttt{ProductDetailsAction}.
+	\begin{center}
+	\includegraphics[width=\textwidth]{img/products/details}
+	\end{center}
+	
+	Admins have additional possibilities. They are allowed to add/delete products and create/delete categories that products belong to.
+	\begin{center}
+	\includegraphics[width=\textwidth]{img/products/createproduct}
+	\end{center}
+	
+	\begin{center}
+	\includegraphics[width=0.7\textwidth]{img/products/deleteproduct}
+	\end{center}
+	
+	\begin{center}
+	\includegraphics[width=0.7\textwidth]{img/products/addcategory}
+	\end{center}
+	
+	The \texttt{DeleteCategoryAction} works just like the action used to delete a product, but it invokes the \texttt{CategoryDAO} instead of the product access object.
     
     \subsection{Search} % Manu
     \cgraphic{.5}{searchAction-seq}{Search sequence diagram}
