@@ -31,7 +31,7 @@ echo "-> Fine √"
 
 # 1.1 check if docker deamon runs
 info "Checking if docker is running";
-docker --version
+docker ps
 echo "-> Fine √"
 
 # 2: Build legacy webshop??
