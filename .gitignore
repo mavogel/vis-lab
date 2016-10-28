@@ -19,6 +19,19 @@ LegacyWebShop/*.iml
 LegacyWebShop/target
 .data
 
+core-services/**/target
+core-services/**/.idea
+core-services/**/*.iml
+core-services/**/.settings/
+core-services/**/.project
+
+composite-services/**/target
+composite-services/**/.idea
+composite-services/**/*.iml
+composite-services/**/.settings/
+composite-services/**/.project
+
+
 
 # General
 *.DS_Store
