@@ -1,7 +1,7 @@
 Spring Boot application, start it with:
 
 ```sh
-mvn spring-boot:start
+mvn spring-boot:run
 ```
 
 
