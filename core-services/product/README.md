@@ -1,0 +1,12 @@
+Spring Boot application, start it with:
+
+```sh
+mvn spring-boot:start
+```
+
+
+
+MySQL Database needs to be configured (src/main/resources/application.properties).
+
+
+Find the API documentation in api-documentation.html.
