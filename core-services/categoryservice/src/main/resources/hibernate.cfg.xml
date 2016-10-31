@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory name="">
+
+        <!-- mysql Konfiguration -->
+        <!--Note: 'web-shop-db-image' ist the url you give in the '../docker-compose-microservices.yml' as link alias -->
+        <property name="connection.url">jdbc:mysql://categoryservice-db-image:3307/categorydb</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.username">categoryuser</property>
+        <property name="connection.password">7d3c1cb0640b79189abe3dc55</property>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.connection.autoReconnect">true</property>
+
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <mapping class="com.github.mavogel.vislab.Category"/>
+
+    </session-factory>
+</hibernate-configuration>
