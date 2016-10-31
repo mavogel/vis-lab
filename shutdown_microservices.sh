@@ -34,21 +34,19 @@ info "Checking if docker is running";
 docker ps
 echo "-> Fine √"
 
-# 1.2 setting ENVS TODO do it first
-info "Check if ENV variables were set"
-if [ -z $MYSQL_CATEGORY_DB_ADDR ]; then
-  echo "ENV var are not set";
-  echo "Run '$ source export_vars.sh' first!"
-  exit 1;
-fi
+# 1.2 unsetting ENVS
+info "Setting ENV variables"
+unset MYSQL_CATEGORY_DB_ADDR
+unset MYSQL_CATEGORY_DB_PORT
+unset MYSQL_CATEGORY_DB_DATABASE
+unset MYSQL_CATEGORY_DB_USER
+unset MYSQL_CATEGORY_DB_PASSWORD
+echo "-> Done √"
 
-# 2: Build core services TODO with one pom
-info "Bulding microservices"
-cd core-services/categoryservice && mvn clean package docker:build && cd ../..
-
-#info "Building initialized MySQL Database for CategoryService"
-#docker build -t categoryservice-db-image -f ./core-services/categoryservice/DockerfileMySQLCategory ./core-services/categoryservice
-
-# x: Compose all together
-info "Composing microservice containers"
-docker-compose -f docker-compose-microservices.yml up -d
+# 2: stopping microservices
+info "Stopping microservices"
+IMAGES_TO_STOP=( mysql:5.7.9 mavogel/categoryservice )
+for IMG in ${IMAGES_TO_STOP[@]}; do
+  docker stop $(docker ps -a -q --filter ancestor=${IMG} --format="{{.ID}}");
+done
+echo "-> Done √"

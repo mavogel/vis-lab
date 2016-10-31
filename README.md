@@ -20,7 +20,15 @@ and sets the user `tomcat` with password `admin` for the Management Console at [
 - Sets up both containers and make the web app available under [http://localhost:8888/EShop-1.0.0/](http://localhost:8888/EShop-1.0.0/)
 
 ### Microservice Architecture
-will be realized soon...
+DRAFT:
+- Start Docker daemon
+- Check out the project and simply run the script:
+```bash
+$ source export_vars.sh
+$ ./run_microservices.sh
+# for shutting down
+$ ./shutdown_microservices.sh
+```
 
 ### Notes
 If you change the user and password of the MySQL database, you should run

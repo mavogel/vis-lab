@@ -1,24 +1,22 @@
 version: '2'
 services:
- db:
-   image: categoryservice-db-image:latest
+ category-db:
+   image: mysql:5.7.9
    volumes:
      - "./.data/db:/var/lib/categorydb"
-   restart: always
    environment:
      MYSQL_ROOT_PASSWORD: bfd6f569f20bed7eaf811cbc1e
-     MYSQL_DATABASE: categorydb
-     MYSQL_USER: categoryuser
-     MYSQL_PASSWORD: 7d3c1cb0640b79189abe3dc55
+     MYSQL_DATABASE: ${MYSQL_CATEGORY_DB_DATABASE}
+     MYSQL_USER: ${MYSQL_CATEGORY_DB_USER}
+     MYSQL_PASSWORD: ${MYSQL_CATEGORY_DB_PASSWORD}
    ports:
-     - "3306:3307"
+     - "${MYSQL_CATEGORY_DB_PORT}:3306"
 
  categoryservice:
    depends_on:
-     - db
+     - category-db
    image: mavogel/categoryservice
    links:
-     - db:categoryservice-db-image
+     - category-db:${MYSQL_CATEGORY_DB_ADDR}
    ports:
-     - "8989:8989"
-   restart: always
+     - "8080:8080"
