@@ -31,6 +31,10 @@ $ ./run_microservices.sh
 # for shutting down
 $ ./shutdown_microservices.sh
 ```
+
+Documentation
+- CategoryService: `http://localhost:8080/static/docs`
+
 **TODO**
 - push images to docker hub `mvn package docker:build -DpushImage` and create `mavogel` organisation
 
