@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by mavogel on 11/1/16.
  */
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired
