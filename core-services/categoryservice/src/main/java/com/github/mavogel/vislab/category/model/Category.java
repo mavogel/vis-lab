@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab;/*
+package com.github.mavogel.vislab.category.model;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -25,8 +25,6 @@ package com.github.mavogel.vislab;/*
  */
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -36,14 +34,24 @@ import javax.persistence.Id;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String name;
 
+    public Category(final long id, final String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
+
 
     public void setName(final String name) {
         this.name = name;

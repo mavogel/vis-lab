@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab;/*
+package com.github.mavogel.vislab.category.repository;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,12 +24,12 @@ package com.github.mavogel.vislab;/*
  *  https://opensource.org/licenses/MIT
  */
 
+import com.github.mavogel.vislab.category.model.Category;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  * Created by mavogel on 10/30/16.
  */
-@RepositoryRestResource
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 }
