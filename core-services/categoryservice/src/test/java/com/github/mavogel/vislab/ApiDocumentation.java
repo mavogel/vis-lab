@@ -114,8 +114,7 @@ public class ApiDocumentation {
 
         ConstrainedFields fields = new ConstrainedFields(Category.class);
 
-        System.out.println("-----> " + this.objectMapper.writeValueAsString(newCategory));
-        this.mockMvc.perform(post("/categories").accept(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/categories").contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(newCategory)))
                 .andExpect(status().isCreated())
                 .andDo(this.documentationHandler.document(
