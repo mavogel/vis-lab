@@ -41,7 +41,7 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<Category> allCategories() {
+    public Iterable<Category> listCategories() {
         return categoryRepository.findAll();
     }
 
