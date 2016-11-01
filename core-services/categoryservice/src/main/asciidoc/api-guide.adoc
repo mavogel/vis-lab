@@ -1,5 +1,5 @@
 = Category-service Getting Started Guide
-Jane Doe;
+Manuel Vogel;
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -74,8 +74,8 @@ The Category resource is used to create, list and delete categories.
 
 
 [[resource-categories-list]]
-=== Listing people
-A `GET` request lists all of the service's people.
+=== Listing categories
+A `GET` request lists all of the service's categories.
 
 include::{snippets}/list-categories/response-fields.adoc[]
 
@@ -86,3 +86,25 @@ include::{snippets}/list-categories/curl-request.adoc[]
 ==== Example response
 
 include::{snippets}/list-categories/http-response.adoc[]
+
+=== Adding categories
+A `POST` request to add a category
+
+==== Example request
+
+include::{snippets}/add-category/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/add-category/http-response.adoc[]
+
+=== Deleting categories
+A `PUT` request to delete a category
+
+==== Example request
+
+include::{snippets}/delete-category/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/delete-category/http-response.adoc[]
