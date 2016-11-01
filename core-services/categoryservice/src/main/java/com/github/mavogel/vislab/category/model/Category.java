@@ -39,6 +39,9 @@ public class Category {
 
     private String name;
 
+    public Category() {
+    }
+
     public Category(final long id, final String name) {
         this.id = id;
         this.name = name;
@@ -48,10 +51,13 @@ public class Category {
         return id;
     }
 
+    public void setId(final long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
-
 
     public void setName(final String name) {
         this.name = name;
