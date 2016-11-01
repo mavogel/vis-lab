@@ -44,10 +44,13 @@ fi
 
 # 2: Build core services TODO with one pom
 info "Bulding microservices"
-cd core-services/categoryservice && mvn clean package docker:build && cd ../..
+MICROSERVICES=( core-services/categoryservice )
+for MICROSERVICE in ${MICROSERVICES[@]}; do
+  cd $MICROSERVICE && mvn clean package docker:build && cd ../..
+done
 
-#info "Building initialized MySQL Database for CategoryService"
-#docker build -t categoryservice-db-image -f ./core-services/categoryservice/DockerfileMySQLCategory ./core-services/categoryservice
+info "Building initialized MySQL Database for CategoryService"
+docker build -t ${MYSQL_CATEGORY_DB_ADDR} -f ./core-services/categoryservice/DockerfileMySQLCategory ./core-services/categoryservice
 
 # x: Compose all together
 info "Composing microservice containers"

@@ -1,7 +1,7 @@
 version: '2'
 services:
- category-db:
-   image: mysql:5.7.9
+ categoryservice-db:
+   image: ${MYSQL_CATEGORY_DB_ADDR}
    volumes:
      - "./.data/db:/var/lib/categorydb"
    environment:
@@ -14,9 +14,15 @@ services:
 
  categoryservice:
    depends_on:
-     - category-db
+     - categoryservice-db
    image: mavogel/categoryservice
    links:
-     - category-db:${MYSQL_CATEGORY_DB_ADDR}
+     - categoryservice-db:${MYSQL_CATEGORY_DB_ADDR}
+   environment:
+     MYSQL_CATEGORY_DB_ADDR: ${MYSQL_CATEGORY_DB_ADDR}
+     MYSQL_CATEGORY_DB_PORT: ${MYSQL_CATEGORY_DB_PORT}
+     MYSQL_CATEGORY_DB_DATABASE: ${MYSQL_CATEGORY_DB_DATABASE}
+     MYSQL_CATEGORY_DB_USER: ${MYSQL_CATEGORY_DB_USER}
+     MYSQL_CATEGORY_DB_PASSWORD: ${MYSQL_CATEGORY_DB_PASSWORD}  
    ports:
      - "8080:8080"
