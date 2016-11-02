@@ -22,20 +22,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <!--<spring-restdocs.version>1.2.0.BUILD-SNAPSHOT</spring-restdocs.version>-->
+        <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
         <docker.image.prefix>mavogel</docker.image.prefix>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring snapshots</name>
-            <url>https://repo.spring.io/libs-snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -92,7 +81,7 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.5.3</version>
+                <version>1.5.2</version>
                 <executions>
                     <execution>
                         <id>generate-docs</id>
@@ -103,16 +92,14 @@
                         <configuration>
                             <backend>html</backend>
                             <doctype>book</doctype>
+                            <attributes>
+                                <snippets>${snippetsDirectory}</snippets>
+                            </attributes>
+                            <!--<sourceDirectory>src/main/asciidoc</sourceDirectory>-->
+                            <!--<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>-->
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework.restdocs</groupId>
-                        <artifactId>spring-restdocs-asciidoctor</artifactId>
-                        <version>1.2.0.BUILD-SNAPSHOT</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
