@@ -97,7 +97,8 @@ public class ApiDocumentation {
     public void listCategories() throws Exception {
         createSampleCategory(1L, "TestCategory");
 
-        this.mockMvc.perform(get("/categories").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/categories").accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(
@@ -115,7 +116,9 @@ public class ApiDocumentation {
 
         ConstrainedFields fields = new ConstrainedFields(Category.class);
 
-        this.mockMvc.perform(post("/categories").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/categories")
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(newCategory)))
                 .andExpect(status().isCreated())
                 .andDo(this.documentationHandler.document(
@@ -130,7 +133,8 @@ public class ApiDocumentation {
     public void deleteCategory() throws Exception {
         Category originalCategory = createSampleCategory(1L, "TestCategory");
 
-        this.mockMvc.perform(put("/categories/" + originalCategory.getId())
+        this.mockMvc.perform(delete("/categories/" + originalCategory.getId())
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }

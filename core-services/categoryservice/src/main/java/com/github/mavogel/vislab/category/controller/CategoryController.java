@@ -40,18 +40,18 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET, headers = {"Authorization: Basic"})
     public Iterable<Category> listCategories() {
         return categoryRepository.findAll();
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.CREATED)
     public void addCategory(@RequestBody Category category) {
         categoryRepository.save(new Category(category.getId(), category.getName()));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable Long id) {
         categoryRepository.delete(id);

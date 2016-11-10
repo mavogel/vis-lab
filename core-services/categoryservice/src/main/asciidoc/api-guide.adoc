@@ -82,6 +82,7 @@ include::{snippets}/list-categories/response-fields.adoc[]
 ==== Example request
 
 include::{snippets}/list-categories/curl-request.adoc[]
+include::{snippets}/list-categories/http-request.adoc[]
 
 ==== Example response
 
@@ -93,17 +94,19 @@ A `POST` request to add a category
 ==== Example request
 
 include::{snippets}/add-category/curl-request.adoc[]
+include::{snippets}/add-category/http-request.adoc[]
 
 ==== Example response
 
 include::{snippets}/add-category/http-response.adoc[]
 
 === Deleting categories
-A `PUT` request to delete a category
+A `DELETE` request to delete a category
 
 ==== Example request
 
 include::{snippets}/delete-category/curl-request.adoc[]
+include::{snippets}/delete-category/http-request.adoc[]
 
 ==== Example response
 

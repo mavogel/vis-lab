@@ -95,8 +95,6 @@
                             <attributes>
                                 <snippets>${snippetsDirectory}</snippets>
                             </attributes>
-                            <!--<sourceDirectory>src/main/asciidoc</sourceDirectory>-->
-                            <!--<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>-->
                         </configuration>
                     </execution>
                 </executions>
