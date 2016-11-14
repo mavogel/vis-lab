@@ -3,9 +3,9 @@ spring:
   jpa:
     show-sql: true
   datasource:
-    url: jdbc:mysql://${MYSQL_CATEGORY_DB_ADDR}:${MYSQL_CATEGORY_DB_PORT}/${MYSQL_CATEGORY_DB_DATABASE}?useSSL=false
-    username: ${MYSQL_CATEGORY_DB_USER}
-    password: ${MYSQL_CATEGORY_DB_PASSWORD}
+    url: jdbc:mysql://${MYSQL_WEBSHOP_DB_ADDR}:${MYSQL_WEBSHOP_DB_PORT}/${MYSQL_WEBSHOP_DB_DATABASE}?useSSL=false
+    username: ${MYSQL_WEBSHOP_DB_USER}
+    password: ${MYSQL_WEBSHOP_DB_PASSWORD}
   jackson:
     serialization:
       indent_output: true

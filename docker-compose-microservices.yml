@@ -1,28 +1,30 @@
 version: '2'
 services:
- categoryservice-db:
-   image: ${MYSQL_CATEGORY_DB_ADDR}
+ webshop-db:
+   image: web-shop-db-image
    volumes:
-     - "./.data/db:/var/lib/categorydb"
+     - "./.data/db:/var/lib/mysql"
+   restart: always
    environment:
-     MYSQL_ROOT_PASSWORD: bfd6f569f20bed7eaf811cbc1e
-     MYSQL_DATABASE: ${MYSQL_CATEGORY_DB_DATABASE}
-     MYSQL_USER: ${MYSQL_CATEGORY_DB_USER}
-     MYSQL_PASSWORD: ${MYSQL_CATEGORY_DB_PASSWORD}
+     MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
+     MYSQL_DATABASE: ${MYSQL_WEBSHOP_DB_DATABASE}
+     MYSQL_USER: ${MYSQL_WEBSHOP_DB_USER}
+     MYSQL_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
    ports:
-     - "${MYSQL_CATEGORY_DB_PORT}:3306"
+     - "${MYSQL_WEBSHOP_DB_PORT}:3306"
 
  categoryservice:
    depends_on:
-     - categoryservice-db
+     - webshop-db
    image: mavogel/categoryservice
    links:
-     - categoryservice-db:${MYSQL_CATEGORY_DB_ADDR}
+     - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
+   restart: always   
    environment:
-     MYSQL_CATEGORY_DB_ADDR: ${MYSQL_CATEGORY_DB_ADDR}
-     MYSQL_CATEGORY_DB_PORT: ${MYSQL_CATEGORY_DB_PORT}
-     MYSQL_CATEGORY_DB_DATABASE: ${MYSQL_CATEGORY_DB_DATABASE}
-     MYSQL_CATEGORY_DB_USER: ${MYSQL_CATEGORY_DB_USER}
-     MYSQL_CATEGORY_DB_PASSWORD: ${MYSQL_CATEGORY_DB_PASSWORD}  
+     MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
+     MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
+     MYSQL_WEBSHOP_DB_DATABASE: ${MYSQL_WEBSHOP_DB_DATABASE}
+     MYSQL_WEBSHOP_DB_USER: ${MYSQL_WEBSHOP_DB_USER}
+     MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
    ports:
      - "8080:8080"

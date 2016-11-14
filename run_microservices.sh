@@ -34,23 +34,20 @@ info "Checking if docker is running";
 docker ps
 echo "-> Fine √"
 
-# 1.2 setting ENVS TODO do it first
+# 1.2 setting ENVS do it first
 info "Check if ENV variables were set"
-if [ -z $MYSQL_CATEGORY_DB_ADDR ]; then
-  echo "ENV var are not set";
-  echo "Run '$ source export_vars.sh' first!"
-  exit 1;
-fi
+[ -z "$MYSQL_WEBSHOP_DB_ADDR" ] && echo "Need to set MYSQL_WEBSHOP_DB_ADDR ENV-var. Run '$ source export_vars.sh' first!" && exit 1;
 
 # 2: Build core services TODO with one pom
 info "Bulding microservices"
-MICROSERVICES=( core-services/categoryservice composite-services/modifyservice composite-services/listservice )
+MICROSERVICES=( core-services/categoryservice )
+# composite-services/modifyservice composite-services/listservice )
 for MICROSERVICE in ${MICROSERVICES[@]}; do
   cd $MICROSERVICE && mvn clean package docker:build && cd ../..
 done
 
-info "Building initialized MySQL Database for CategoryService"
-docker build -t ${MYSQL_CATEGORY_DB_ADDR} -f ./core-services/categoryservice/DockerfileMySQLCategory ./core-services/categoryservice
+info "Building initialized MySQL Database image"
+docker build -t ${MYSQL_WEBSHOP_DB_ADDR} -f ./LegacyWebShop/DockerfileMySQL ./LegacyWebShop
 
 # x: Compose all together
 info "Composing microservice containers"
