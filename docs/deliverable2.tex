@@ -7,23 +7,21 @@
 	\section{Microservice Architecture}
 	\cgraphic{\textwidth}{ms_arch}{Microservice Architecture Proposal} After a code revision of the legacy Web-Shop, we identified three Micro- and two Core-Services as shown in Figure \ref{fig:ms_arch}. 
 	The actions of each service are attached to the corresponding arrows.
-	\begin{itemize}
-		\item Core Services
+	\subsection{Core Services}
 		\begin{description}
 			\item[User Service] Handles the registration, logging in/out of each user. Generates the API tokens. Provides a method to obtain the role of the user from its token.
 			\item[Product Service] Handles the creation, deletion and retrieval of products.
 			\item[Category Service] Handles the creation, deletion and retrieval of categories.
 		\end{description}
-		\item Composite Services
+	\subsection{Composite Services}
 		\begin{description}
 			\item[List Product Service] Offer the listing of products with their associated categories.
 			\item[Modify Product Service] Handles the addition of products (they need to belong to a category) and the deletion of categories with all its associated products. Checks if the user has the rights/role to perform this action.
 		\end{description}
-		\item API Services:
+	\subsection{API Services}
 		\begin{description}
 			\item[ZUUL Edge Server] Represents the facade routing the REST-Calls to the correct microservice. Does not expose all the internal API Endpoints, only a meaningfully subset.
 		\end{description}
-	\end{itemize}
 	
 	 Additionally we decided \textit{not} to split the database in three separate databases (one for each mircoservice). So it won't scale in the first shot. 
 	
@@ -32,6 +30,6 @@
 	Due the to availability of different API documentation possibilities like Swagger\footnote{\url{https://swagger.io}}, Spring API Docs and RAML, we choose the first two frameworks to document our APIs. So we gained knowledge about the advantages and disadvantages of each framework and could share it later in the group.
 	
 	\section{API Documentation}
-	The API documentations are attached to this document in a compressed file.
+	The API documentations are attached to this document in a \texttt{zip}-file.
 	
 \end{document}
