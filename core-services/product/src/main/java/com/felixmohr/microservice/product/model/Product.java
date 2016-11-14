@@ -5,71 +5,53 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
- 
+
 @Entity
 @Table(name = "product")
 public class Product {
-	
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    private String title;
-    
-	private Long price;
-	
-	private long category;
-	
-	private String description;
 
- 	public Product() {}
- 
-    public Product(String title, Long price, long category, String description) {
-        this.title = title;
+    private String name;
+    private double price;
+    private String details;
+    private long categoryId;
+
+    public Product() {
+    }
+
+    public Product(String name, double price, long categoryId, String details) {
+        this.name = name;
         this.price = price;
-        this.category = category;
-        this.description = description;
+        this.categoryId = categoryId;
+        this.details = details;
     }
-    
-    public String getTitle() {
-		return title;
-	}
-    
+
     public Long getId() {
-    	return this.id;
+        return id;
     }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Long getPrice() {
-		return price;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public void setPrice(Long price) {
-		this.price = price;
-	}
-	
-    public long getCategory() {
-		return category;
-	}
+    public String getDetails() {
+        return details;
+    }
 
-	public void setCategory(long category) {
-		this.category = category;
-	}
+    public long getCategoryId() {
+        return categoryId;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    @Override
+    public String toString() {
+        return name + ": " + price + ": " + categoryId + ": ";
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	@Override
-	public String toString() {
-		return title + ": " + price + ": " + category + ": ";
-	}
- 
 }

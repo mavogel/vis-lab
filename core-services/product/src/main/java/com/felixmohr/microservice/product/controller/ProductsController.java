@@ -55,7 +55,7 @@ public class ProductsController {
     @ResponseBody
     public Product create(@RequestBody NewProduct newProduct, HttpServletResponse response) {
         try {
-            Product product = new Product(newProduct.getTitle(), newProduct.getPrice(), newProduct.getCategory(), newProduct.getDescription());
+            Product product = new Product(newProduct.getName(), newProduct.getPrice(), newProduct.getCategory(), newProduct.getDetails());
             repo.save(product);
             return product;
         } catch (Exception e) {

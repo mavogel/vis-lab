@@ -14,7 +14,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		List<Product> products = (List<Product>) repo.findAll();
 		List<Product> ret = new ArrayList<Product>();
 		for (Product p : products) {
-			String[] splitDescription = p.getDescription().split(" ");
+			String[] splitDescription = p.getDetails().split(" ");
 			String[] splitSearch = search.split(" ");
 			boolean add = true;
 			for (String i : splitSearch) {
