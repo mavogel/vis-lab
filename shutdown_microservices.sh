@@ -45,7 +45,7 @@ echo "-> Done √"
 
 # 2: stopping microservices
 info "Stopping microservices"
-IMAGES_TO_STOP=( categoryservice-db-image mavogel/categoryservice )
+IMAGES_TO_STOP=( categoryservice-db-image mavogel/categoryservice mavogel/modifyservice mavogel/listservice )
 for IMG in ${IMAGES_TO_STOP[@]}; do
   docker stop $(docker ps -a -q --filter ancestor=${IMG} --format="{{.ID}}");
 done

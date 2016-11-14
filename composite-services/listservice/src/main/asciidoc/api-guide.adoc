@@ -1,4 +1,4 @@
-= ModifyProducts-service Getting Started Guide
+= List-service Getting Started Guide
 Manuel Vogel;
 :doctype: book
 :icons: font
@@ -10,7 +10,7 @@ Manuel Vogel;
 [introduction]
 = Introduction
 
-The ModifyProducts-service is a RESTful microservice for creating and deleting the categories and products of the WebShop.
+The List-service is a RESTful microservice for retrieving the categories and products of the WebShop.
 It considers the rights of the current user.
 
 [[overview]]
@@ -18,7 +18,7 @@ It considers the rights of the current user.
 
 [[overview-http-verbs]]
 == HTTP verbs
-Modify-service tries to adhere as closely as possible to standard HTTP and REST conventions in its
+The List-service tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP verbs.
 |===
 | Verb | Usage
@@ -41,7 +41,7 @@ use of HTTP verbs.
 
 [[overview-http-status-codes]]
 == HTTP status codes
-Modify-service tries to adhere as closely as possible to standard HTTP and REST conventions in its
+The List-service tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP status codes.
 
 |===
@@ -70,53 +70,54 @@ use of HTTP status codes.
 = Resources
 
 [[resources-categories]]
-== Modify
-The modify resource is used to create and delete categories and products.
+== List
+The list resource is used to get categories and products.
 
-=== Adding categories
-A `POST` request to add a category
-
-==== Example request
-
-include::{snippets}/add-category/curl-request.adoc[]
-include::{snippets}/add-category/http-request.adoc[]
-
-==== Example response
-
-include::{snippets}/add-category/http-response.adoc[]
-
-=== Deleting categories
-A `DELETE` request to delete a category
+=== Getting categories
+A `GET` request to get all categories.
 
 ==== Example request
 
-include::{snippets}/delete-category/curl-request.adoc[]
-include::{snippets}/delete-category/http-request.adoc[]
+include::{snippets}/list-categories/curl-request.adoc[]
+include::{snippets}/list-categories/http-request.adoc[]
 
 ==== Example response
 
-include::{snippets}/delete-category/http-response.adoc[]
+include::{snippets}/list-categories/http-response.adoc[]
 
-=== Adding products
-A `POST` request to add a product
+=== Getting a single category
+A `GET` request to get a single category.
 
 ==== Example request
 
-include::{snippets}/add-product/curl-request.adoc[]
-include::{snippets}/add-product/http-request.adoc[]
+include::{snippets}/list-category/curl-request.adoc[]
+include::{snippets}/list-category/http-request.adoc[]
 
 ==== Example response
 
-include::{snippets}/add-product/http-response.adoc[]
+include::{snippets}/list-category/http-response.adoc[]
 
-=== Deleting categories
-A `DELETE` request to delete a product
+=== Getting products
+A `GET` request to get all products.
 
 ==== Example request
 
-include::{snippets}/delete-product/curl-request.adoc[]
-include::{snippets}/delete-product/http-request.adoc[]
+include::{snippets}/list-products/curl-request.adoc[]
+include::{snippets}/list-products/http-request.adoc[]
 
 ==== Example response
 
-include::{snippets}/delete-product/http-response.adoc[]
+include::{snippets}/list-products/http-response.adoc[]
+
+=== Getting a single product
+A `GET` request to get a single product.
+
+==== Example request
+
+include::{snippets}/list-product/curl-request.adoc[]
+include::{snippets}/list-product/http-request.adoc[]
+
+==== Example response
+
+include::{snippets}/list-product/http-response.adoc[]
+
