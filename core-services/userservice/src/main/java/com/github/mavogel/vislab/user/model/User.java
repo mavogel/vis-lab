@@ -36,14 +36,18 @@ public class User {
     @Id
     private Long id;
     private String name;
+<<<<<<< HEAD
     private String username;
     private String lastname;
     private String password;
+=======
+>>>>>>> 9d6f806e8a84474f76dc3e3925718b02a5940bba
 
     public User(final Long id, final String name) {
         this.id = id;
         this.name = name;
     }
+<<<<<<< HEAD
 
     public Long getId() {
         return id;
@@ -81,4 +85,6 @@ public class User {
     public void setPassword(String password){
         this.password = password;
     }
+=======
+>>>>>>> 9d6f806e8a84474f76dc3e3925718b02a5940bba
 }

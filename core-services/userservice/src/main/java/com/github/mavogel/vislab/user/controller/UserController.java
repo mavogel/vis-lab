@@ -27,8 +27,14 @@ package com.github.mavogel.vislab.user.controller;/*
 import com.github.mavogel.vislab.user.model.User;
 import com.github.mavogel.vislab.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+=======
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+>>>>>>> 9d6f806e8a84474f76dc3e3925718b02a5940bba
 
 /**
  * Created by mavogel on 11/1/16.
@@ -45,6 +51,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
+<<<<<<< HEAD
     @RequestMapping(value = "", method = RequestMethod.POST, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.CREATED)
     public void addUser(@RequestBody User user){
@@ -56,4 +63,17 @@ public class UserController {
     public void deleteUser(@PathVariable Long id){
         userRepository.delete(id);
     }
+=======
+//    @RequestMapping(value = "", method = RequestMethod.POST, headers = {"Authorization: Basic"})
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public void addCategory(@RequestBody Category category) {
+//        categoryRepository.save(new Category(category.getId(), category.getName()));
+//    }
+//
+//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = {"Authorization: Basic"})
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void deleteCategory(@PathVariable Long id) {
+//        categoryRepository.delete(id);
+//    }
+>>>>>>> 9d6f806e8a84474f76dc3e3925718b02a5940bba
 }
