@@ -24,56 +24,42 @@ package com.github.mavogel.vislab.user.model;/*
  *  https://opensource.org/licenses/MIT
  */
 
+/**
+ * Created by mavogel on 11/16/16.
+ */
+
 import javax.persistence.*;
 
 /**
- * Created by mavogel on 11/15/16.
+ * This class contains details about roles.
  */
 @Entity
-@Table(name = "Customer")
-public class User {
+@Table(name = "role")
+public class Role implements java.io.Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private int id;
 
-
-    @Column(name = "username", unique = true, nullable = false)
-    private String username;
-
-
-    @Column(name = "name", nullable = false)
-    private String firstname;
+    @Column(name = "type")
+    private String typ;
 
 
-    @Column(name = "lastname", nullable = false)
-    private String lastname;
+    @Column(name = "level1")
+    private int level;
 
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @ManyToOne()
-    @JoinColumn(name = "role", nullable = false)
-    private Role role;
-
-    public User() {
+    public Role() {
     }
 
-    public User(String username, String firstname, String lastname,
-                String password, Role role) {
-        this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.password = password;
-        this.role = role;
+    public Role(String typ, int level) {
+        this.typ = typ;
+        this.level = level;
     }
 
     public int getId() {
@@ -84,43 +70,20 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return this.username;
+    public String getTyp() {
+        return this.typ;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setTyp(String typ) {
+        this.typ = typ;
     }
 
-    public String getFirstname() {
-        return this.firstname;
+    public int getLevel() {
+        return this.level;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
-    public String getLastname() {
-        return this.lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return this.role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

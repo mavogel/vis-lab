@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab.user.controller;/*
+package com.github.mavogel.vislab.user.repository;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,36 +24,11 @@ package com.github.mavogel.vislab.user.controller;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import com.github.mavogel.vislab.user.model.User;
-import com.github.mavogel.vislab.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import com.github.mavogel.vislab.user.model.Role;
+import org.springframework.data.repository.CrudRepository;
 
 /**
- * Created by mavogel on 11/1/16.
+ * Created by mavogel on 11/16/16.
  */
-@RestController
-@RequestMapping("/user")
-public class UserController {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @RequestMapping(value = "", method = RequestMethod.GET, headers = {"Authorization: Basic"})
-    public Iterable<User> listUsers() {
-        return userRepository.findAll();
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.POST, headers = {"Authorization: Basic"})
-    @ResponseStatus(HttpStatus.CREATED)
-    public void addUser(@RequestBody User user) {
-        userRepository.save(user);
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = {"Authorization: Basic"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id) {
-        userRepository.delete(id);
-    }
+public interface RoleRepository extends CrudRepository<Role, Long> {
 }
