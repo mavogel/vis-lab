@@ -19,7 +19,7 @@ services:
    image: mavogel/categoryservice
    links:
      - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
-   restart: always   
+   restart: always
    environment:
      MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
      MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
@@ -28,3 +28,19 @@ services:
      MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
    ports:
      - "8080:8080"
+
+ productservice:
+   depends_on:
+     - webshop-db
+   image: mavogel/productservice
+   links:
+     - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
+   restart: always
+   environment:
+     MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
+     MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
+     MYSQL_WEBSHOP_DB_DATABASE: ${MYSQL_WEBSHOP_DB_DATABASE}
+     MYSQL_WEBSHOP_DB_USER: ${MYSQL_WEBSHOP_DB_USER}
+     MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
+   ports:
+     - "8081:8080"

@@ -40,8 +40,8 @@ info "Check if ENV variables were set"
 
 # 2: Build core services TODO with one pom
 info "Bulding microservices"
-MICROSERVICES=( core-services/categoryservice )
-# composite-services/modifyservice composite-services/listservice )
+MICROSERVICES=( core-services/product core-services/categoryservice )
+#  composite-services/modifyservice composite-services/listservice )
 for MICROSERVICE in ${MICROSERVICES[@]}; do
   cd $MICROSERVICE && mvn clean package docker:build && cd ../..
 done

@@ -16,15 +16,15 @@ import com.google.common.base.Predicates;
 @EnableSwagger2
 public class ProductApplication {
 
-	@Bean
-	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.useDefaultResponseMessages(false).select()
-				.apis(RequestHandlerSelectors.any())
-				.paths(Predicates.not(PathSelectors.regex("/error"))).build();
-	}
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .useDefaultResponseMessages(false).select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(Predicates.not(PathSelectors.regex("/error"))).build();
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProductApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ProductApplication.class, args);
+    }
 }
