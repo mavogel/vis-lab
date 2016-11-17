@@ -24,8 +24,10 @@ package com.github.mavogel.vislab.user.controller;/*
  *  https://opensource.org/licenses/MIT
  */
 
+import com.github.mavogel.vislab.user.model.Role;
 import com.github.mavogel.vislab.user.model.User;
 import com.github.mavogel.vislab.user.repository.UserRepository;
+import com.github.mavogel.vislab.user.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -40,14 +42,30 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "", method = RequestMethod.GET, headers = {"Authorization: Basic"})
-    public Iterable<User> listUsers() {
-        return userRepository.findAll();
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserByName(@PathVariable String name) {
+        return null;
+    }
+
+    @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @ResponseStatus(HttpStatus.OK)
+    public boolean doesUserAlreadyExist(@PathVariable String name) {
+        return this.getUserByName(name) != null;
+    }
+
+    @RequestMapping(value = "/level/{levelId}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @ResponseStatus(HttpStatus.OK)
+    public Role getRoleByLevel(@PathVariable int levelId) {
+        return new Role("myType", 1);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void addUser(@RequestBody User user) {
+    public void registerUser(@RequestBody User user) {
         userRepository.save(user);
     }
 
