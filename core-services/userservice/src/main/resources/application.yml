@@ -1,0 +1,11 @@
+spring:
+  profiles: container
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://${MYSQL_WEBSHOP_DB_ADDR}:${MYSQL_WEBSHOP_DB_PORT}/${MYSQL_WEBSHOP_DB_DATABASE}?useSSL=false
+    username: ${MYSQL_WEBSHOP_DB_USER}
+    password: ${MYSQL_WEBSHOP_DB_PASSWORD}
+  jackson:
+    serialization:
+      indent_output: true
