@@ -42,7 +42,7 @@ public class User {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
-    private int id;
+    private Long id;
 
 
     @Column(name = "username", unique = true, nullable = false)
@@ -76,12 +76,8 @@ public class User {
         this.role = role;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsername() {

@@ -38,13 +38,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashMap;
@@ -57,7 +54,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -168,20 +165,25 @@ public class ApiDocumentation {
                                 fieldWithPath("role").description("The role of the user")
                         )
                 ));
+
+        userRepository.delete(1L);
+        roleRepository.delete(1L);
     }
 
-//    @Test
-//    public void deleteCategory() throws Exception {
-//        Category originalCategory = createSampleCategory(1L, "TestCategory");
-//
-//        this.mockMvc.perform(delete("/categories/" + originalCategory.getId())
-//                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isNoContent());
-//    }
-//
-//
-//    private Category createSampleCategory(final Long id, final String name) {
-//        return categoryRepository.save(new Category(id, name));
-//    }
+    @Test
+    public void deleteUser() throws Exception {
+        User originalUser = createSampleUser("jdoe", "John", "Doe");
+
+        this.mockMvc.perform(delete("/user/" + originalUser.getId())
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
+
+
+    private User createSampleUser(final String username, final String firstname, final String lastname) {
+        final Role initRole = new Role("roletype", 1);
+        roleRepository.save(initRole);
+        return userRepository.save(new User(username, firstname, lastname, "password123", initRole));
+    }
 }

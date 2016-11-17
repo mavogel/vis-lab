@@ -130,3 +130,16 @@ include::{snippets}/register-user/http-response.adoc[]
 
 include::{snippets}/register-user/http-response.adoc[]
 
+[[resource-register-user]]
+=== Delete user
+A `POST` request delete a user.
+
+==== Example request
+
+include::{snippets}/delete-user/curl-request.adoc[]
+include::{snippets}/delete-user/http-response.adoc[]
+
+==== Example response
+
+include::{snippets}/delete-user/http-response.adoc[]
+

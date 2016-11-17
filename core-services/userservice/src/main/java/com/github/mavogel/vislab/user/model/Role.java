@@ -45,7 +45,7 @@ public class Role implements java.io.Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
-    private int id;
+    private Long id;
 
     @Column(name = "type")
     private String type;
@@ -62,12 +62,8 @@ public class Role implements java.io.Serializable {
         this.level = level;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getType() {
