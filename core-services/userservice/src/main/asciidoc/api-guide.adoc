@@ -102,7 +102,7 @@ include::{snippets}/does-user-already-exist/http-response.adoc[]
 
 include::{snippets}/does-user-already-exist/http-response.adoc[]
 
-[[resource-get-user-by-name]]
+[[resource-get-role-by-level]]
 === Get Role by Level
 A `GET` request to get thr `role`by a given `level
 
@@ -116,4 +116,17 @@ include::{snippets}/get-role-by-level/http-response.adoc[]
 ==== Example response
 
 include::{snippets}/get-role-by-level/http-response.adoc[]
+
+[[resource-register-user]]
+=== Register user
+A `POST` request create/register a new user.
+
+==== Example request
+
+include::{snippets}/register-user/curl-request.adoc[]
+include::{snippets}/register-user/http-response.adoc[]
+
+==== Example response
+
+include::{snippets}/register-user/http-response.adoc[]
 
