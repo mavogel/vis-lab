@@ -48,7 +48,7 @@ public class UserController {
     @RequestMapping(value = "/{name}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.OK)
     public User getUserByName(@PathVariable String name) {
-        return null;
+        return new User("jdoe", "John", "Doe", "ier$@Gdd", new Role("type1", 1));
     }
 
     @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET, headers = {"Authorization: Basic"})

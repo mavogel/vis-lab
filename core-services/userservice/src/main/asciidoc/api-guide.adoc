@@ -68,46 +68,21 @@ use of HTTP status codes.
 [[resources]]
 = Resources
 
-//[[resources-categories]]
-//== Category
-//The User resource is used to TODO users.
-//
-//
-//[[resource-categories-list]]
-//=== Listing categories
-//A `GET` request lists all of the service's categories.
-//
-//include::{snippets}/list-categories/response-fields.adoc[]
-//
-//==== Example request
-//
-//include::{snippets}/list-categories/curl-request.adoc[]
-//include::{snippets}/list-categories/http-request.adoc[]
-//
-//==== Example response
-//
-//include::{snippets}/list-categories/http-response.adoc[]
-//
-//=== Adding categories
-//A `POST` request to add a category
-//
-//==== Example request
-//
-//include::{snippets}/add-category/curl-request.adoc[]
-//include::{snippets}/add-category/http-request.adoc[]
-//
-//==== Example response
-//
-//include::{snippets}/add-category/http-response.adoc[]
-//
-//=== Deleting categories
-//A `DELETE` request to delete a category
-//
-//==== Example request
-//
-//include::{snippets}/delete-category/curl-request.adoc[]
-//include::{snippets}/delete-category/http-request.adoc[]
-//
-//==== Example response
-//
-//include::{snippets}/delete-category/http-response.adoc[]
+[[resources-user]]
+== user
+The `user` resource is used to register, delete and retrieve users by name or role.
+
+[[resource-get-user-by-name]]
+=== Getting users by id
+A `GET` request lists all of the service's categories.
+
+include::{snippets}/get-user-by-name/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/get-user-by-name/curl-request.adoc[]
+include::{snippets}/get-user-by-name/http-response.adoc[]
+
+==== Example response
+
+include::{snippets}/get-user-by-name/http-response.adoc[]

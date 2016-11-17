@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -44,6 +45,10 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by mavogel on 11/1/16.
@@ -79,8 +84,20 @@ public class ApiDocumentation {
     }
 
     @Test
-    public void listUsers() throws Exception {
-
+    public void getUserByName() throws Exception {
+        this.mockMvc.perform(get("/user/jdoe").accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+                .andExpect(status().isOk())
+                .andDo(this.documentationHandler.document(
+                        responseFields(
+                                fieldWithPath("id").description("The user ID"),
+                                fieldWithPath("username").description("The name of the user"),
+                                fieldWithPath("firstname").description("The firstname of the user"),
+                                fieldWithPath("lastname").description("The lastname of the user"),
+                                fieldWithPath("password").description("The password of the user"),
+                                fieldWithPath("role").description("The role of the user")
+                        )
+                ));
     }
 
 //    @Test
