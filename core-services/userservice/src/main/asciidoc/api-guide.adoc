@@ -102,3 +102,18 @@ include::{snippets}/does-user-already-exist/http-response.adoc[]
 
 include::{snippets}/does-user-already-exist/http-response.adoc[]
 
+[[resource-get-user-by-name]]
+=== Get Role by Level
+A `GET` request to get thr `role`by a given `level
+
+include::{snippets}/get-role-by-level/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/get-role-by-level/curl-request.adoc[]
+include::{snippets}/get-role-by-level/http-response.adoc[]
+
+==== Example response
+
+include::{snippets}/get-role-by-level/http-response.adoc[]
+
