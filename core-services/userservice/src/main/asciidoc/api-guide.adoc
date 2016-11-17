@@ -74,7 +74,7 @@ The `user` resource is used to register, delete and retrieve users by name or ro
 
 [[resource-get-user-by-name]]
 === Getting users by id
-A `GET` request lists all of the service's categories.
+A `GET` request to list the user by its name.
 
 include::{snippets}/get-user-by-name/response-fields.adoc[]
 
@@ -86,3 +86,19 @@ include::{snippets}/get-user-by-name/http-response.adoc[]
 ==== Example response
 
 include::{snippets}/get-user-by-name/http-response.adoc[]
+
+[[resource-get-user-by-name]]
+=== Does User Already Exist
+A `GET` request to determine if the user does already exist.
+
+include::{snippets}/does-user-already-exist/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/does-user-already-exist/curl-request.adoc[]
+include::{snippets}/does-user-already-exist/http-response.adoc[]
+
+==== Example response
+
+include::{snippets}/does-user-already-exist/http-response.adoc[]
+

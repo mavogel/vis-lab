@@ -100,6 +100,23 @@ public class ApiDocumentation {
                 ));
     }
 
+    @Test
+    public void doesUserAlreadyExist() throws Exception {
+        this.mockMvc.perform(get("/user/exists/jdoe").accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+                .andExpect(status().isOk());
+//                .andDo(this.documentationHandler.document(
+//                        responseFields(
+//                                fieldWithPath("id").description("The user ID"),
+//                                fieldWithPath("username").description("The name of the user"),
+//                                fieldWithPath("firstname").description("The firstname of the user"),
+//                                fieldWithPath("lastname").description("The lastname of the user"),
+//                                fieldWithPath("password").description("The password of the user"),
+//                                fieldWithPath("role").description("The role of the user")
+//                        )
+//                ));
+    }
+
 //    @Test
 //    public void listCategories() throws Exception {
 //        createSampleCategory(1L, "TestCategory");
