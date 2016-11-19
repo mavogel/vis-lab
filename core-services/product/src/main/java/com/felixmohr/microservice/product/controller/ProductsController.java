@@ -31,7 +31,7 @@ public class ProductsController {
 
     static final Logger logger = LogManager.getLogger(ProductsController.class.getName());
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ApiOperation(value = "Returns a list of all products.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = Product.class, responseContainer = "List")})
     public List<Product> getProducts() {
@@ -39,7 +39,7 @@ public class ProductsController {
         return products;
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/search", method = RequestMethod.POST, headers = {"Authorization=Basic dGVzdDp0ZXN0"})
     @ApiOperation(value = "Accepts a search string, returns all matching products.", notes = "Search string will be split at white spaces. All words in the search string must be found in a product description for the product to be included.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = Product.class, responseContainer = "List")})
     @ResponseBody
@@ -47,7 +47,7 @@ public class ProductsController {
         return repo.search(search.getText());
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/", method = RequestMethod.POST, headers = {"Authorization=Basic dGVzdDp0ZXN0"})
     @ApiOperation(value = "Creates a product", notes = "Returns the created product.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
@@ -65,7 +65,7 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.PUT, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/", method = RequestMethod.PUT, headers = {"Authorization=Basic dGVzdDp0ZXN0"})
     @ApiOperation(value = "Edits the product details", notes = "Returns the product that has been edited.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = Product.class),
@@ -87,7 +87,7 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = {"Authorization=Basic dGVzdDp0ZXN0"})
     @ApiOperation(value = "Returns the details of the product with the given id.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = Product.class),
@@ -102,7 +102,7 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = {"Authorization=Basic dGVzdDp0ZXN0"})
     @ApiOperation(value = "Deletes the product with the given id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
