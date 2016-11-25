@@ -1,3 +1,6 @@
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+[![Travis Build Status](https://travis-ci.org/mavogel/vis-lab.svg?branch=master)](https://travis-ci.org/mavogel/vis-lab)
+
 # Distributed Information Systems Laboratory aka vis-lab
 Splitting a monolithic web shop application, running on a Tomcat into small domain-driven microservices with Spring Boot and Docker. This project is part of the masters course 'Distributed Information Systems' at the University of Applied Sciences (Karlsruhe).
 
