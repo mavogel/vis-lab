@@ -1,0 +1,29 @@
+server:
+  port: 8081
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+zuul:
+  ignoredServices: '*'
+  host:
+      connect-timeout-millis: 20000
+      socket-timeout-millis: 20000
+
+  routes:
+    listservice:
+      path: /list/**
+      serviceId: listservice
+      stripPrefix: false
+      sensitiveHeaders:
+    modifyservice:
+      path: /modifyservice/**
+      serviceId: modifyservice
+      stripPrefix: false
+      sensitiveHeaders:
+    userservice:
+      path: /userservice/**
+      serviceId: userservice
+      stripPrefix: false
+      sensitiveHeaders:
