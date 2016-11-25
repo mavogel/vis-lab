@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: productservice
   profiles: container
   jpa:
     show-sql: true
