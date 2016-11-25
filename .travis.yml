@@ -1,0 +1,18 @@
+#sudo: required
+
+#services:
+#  - docker
+
+# travis runs implicitly 'mvn test' and 'mvn install' if it finds a 'pom.xml' in the root.
+# see https://docs.travis-ci.com/user/languages/java/
+language: java
+jdk: oraclejdk8
+
+#after_success:
+#  # Keep the TAG different, because adding new services should be tested first
+#  # on a separate branch before going to master. If not all teams will pull
+#  # the images immediately by watchtower
+#  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+#  - mvn docker:build
+#  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USER" -p="$DOCKER_PASS"
+#  - mvn docker:push
