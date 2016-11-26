@@ -1,6 +1,9 @@
 # for explanation see
 # https://stackoverflow.com/questions/16618071/can-i-export-a-variable-to-the-environment-from-a-bash-script-without-sourcing-i
 
+export DOCKER_USER="mavogel"
+export DOCKER_PROJECT_IMAGE_PREFIX="vis"
+
 export MYSQL_WEBSHOP_DB_ADDR="web-shop-db-image";
 export MYSQL_WEBSHOP_DB_PORT="3306";
 export MYSQL_WEBSHOP_DB_DATABASE="webshop";

@@ -16,6 +16,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <properties>
+        <docker.image.prefix>${env.DOCKER_USER}</docker.image.prefix>
+        <docker.project.image.prefix>${env.DOCKER_PROJECT_IMAGE_PREFIX}</docker.project.image.prefix>
+    </properties>
+
     <modules>
         <module>core-services/categoryservice</module>
         <module>core-services/product</module>
@@ -47,11 +52,30 @@
     </dependencyManagement>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.4.11</version>
+                    <configuration>
+                        <imageName>${docker.image.prefix}/${docker.project.image.prefix}-${project.artifactId}</imageName>
+                        <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                        <resources>
+                            <resource>
+                                <targetPath>/</targetPath>
+                                <directory>${project.build.directory}</directory>
+                                <include>${project.build.finalName}.jar</include>
+                            </resource>
+                        </resources>
+                        <skipDockerBuild>true</skipDockerBuild>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

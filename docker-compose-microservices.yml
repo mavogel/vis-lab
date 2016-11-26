@@ -16,7 +16,7 @@ services:
  categoryservice:
    depends_on:
      - webshop-db
-   image: mavogel/categoryservice
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-categoryservice
    links:
      - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
    restart: always
@@ -32,7 +32,7 @@ services:
  productservice:
    depends_on:
      - webshop-db
-   image: mavogel/productservice
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-productservice
    links:
      - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
    restart: always
@@ -44,3 +44,71 @@ services:
      MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
    ports:
      - "8081:8080"
+
+ userservice:
+   depends_on:
+     - webshop-db
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-userservice
+   links:
+     - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
+   restart: always
+   environment:
+     MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
+     MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
+     MYSQL_WEBSHOP_DB_DATABASE: ${MYSQL_WEBSHOP_DB_DATABASE}
+     MYSQL_WEBSHOP_DB_USER: ${MYSQL_WEBSHOP_DB_USER}
+     MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
+   ports:
+     - "8082:8080"
+
+ modifyservice:
+   depends_on:
+     - userservice
+     - categoryservice
+     - productservice
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-modifyservice
+   links:
+     - userservice
+     - categoryservice
+     - productservice
+   restart: always
+   ports:
+     - "8083:8080"
+
+ listservice:
+   depends_on:
+     - userservice
+     - categoryservice
+     - productservice
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-listservice
+   links:
+     - userservice
+     - categoryservice
+     - productservice
+   restart: always
+   ports:
+     - "8084:8080"
+
+eureka:
+   depends_on:
+     - listservice
+     - modifyservice
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-eureka
+   links:
+     - listservice
+     - modifyservice
+   restart: always
+   ports:
+     - "8761:8761"
+
+zuul:
+   depends_on:
+     - listservice
+     - modifyservice
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-zuul
+   links:
+     - listservice
+     - modifyservice
+   restart: always
+   ports:
+     - "8088:8081"

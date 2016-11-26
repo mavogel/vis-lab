@@ -36,6 +36,8 @@ echo "-> Fine √"
 
 # 1.2 unsetting ENVS
 info "Unsetting ENV variables"
+unset DOCKER_USER
+unset DOCKER_PROJECT_IMAGE_PREFIX
 unset MYSQL_CATEGORY_DB_ADDR
 unset MYSQL_CATEGORY_DB_PORT
 unset MYSQL_CATEGORY_DB_DATABASE
@@ -43,10 +45,11 @@ unset MYSQL_CATEGORY_DB_USER
 unset MYSQL_CATEGORY_DB_PASSWORD
 echo "-> Done √"
 
-# 2: stopping microservices
-info "Stopping microservices"
-IMAGES_TO_STOP=( categoryservice-db-image mavogel/categoryservice mavogel/modifyservice mavogel/listservice )
-for IMG in ${IMAGES_TO_STOP[@]}; do
-  docker stop $(docker ps -a -q --filter ancestor=${IMG} --format="{{.ID}}");
-done
-echo "-> Done √"
+# TODO
+## 2: stopping microservices
+#info "Stopping microservices"
+#IMAGES_TO_STOP=( categoryservice-db-image mavogel/categoryservice mavogel/modifyservice mavogel/listservice )
+#for IMG in ${IMAGES_TO_STOP[@]}; do
+#  docker stop $(docker ps -a -q --filter ancestor=${IMG} --format="{{.ID}}");
+#done
+#echo "-> Done √"

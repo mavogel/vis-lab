@@ -21,7 +21,6 @@ function info () {
 ###################
 ## Go woop woop
 ###################
-# 1: Check for required deps in the $PATH
 info "Check for needed binaries in PATH";
 BINS_TO_CHECK=( mvn docker docker-compose )
 for BIN in ${BINS_TO_CHECK[@]}; do
@@ -29,26 +28,26 @@ for BIN in ${BINS_TO_CHECK[@]}; do
 done
 echo "-> Fine √"
 
-# 1.1 check if docker deamon runs
+#######
 info "Checking if docker is running";
 docker ps
 echo "-> Fine √"
 
-# 1.2 setting ENVS do it first
+#######
 info "Check if ENV variables were set"
+[ -z "$DOCKER_USER" ] && echo "Need to set DOCKER_USER ENV-var. Run '$ source export_vars.sh' first!" && exit 1;
+[ -z "$DOCKER_PROJECT_IMAGE_PREFIX" ] && echo "Need to set DOCKER_PROJECT_IMAGE_PREFIX ENV-var. Run '$ source export_vars.sh' first!" && exit 1;
 [ -z "$MYSQL_WEBSHOP_DB_ADDR" ] && echo "Need to set MYSQL_WEBSHOP_DB_ADDR ENV-var. Run '$ source export_vars.sh' first!" && exit 1;
 
-# 2: Build core services TODO with one pom
-info "Bulding microservices"
-MICROSERVICES=( core-services/product core-services/categoryservice )
-#  composite-services/modifyservice composite-services/listservice )
-for MICROSERVICE in ${MICROSERVICES[@]}; do
-  cd $MICROSERVICE && mvn clean package docker:build && cd ../..
-done
+#######
+info "Building microservices and docker images"
+mvn clean package docker:build
 
+#######
 info "Building initialized MySQL Database image"
 docker build -t ${MYSQL_WEBSHOP_DB_ADDR} -f ./LegacyWebShop/DockerfileMySQL ./LegacyWebShop
 
+#######
 # x: Compose all together
 info "Composing microservice containers"
 docker-compose -f docker-compose-microservices.yml up -d
