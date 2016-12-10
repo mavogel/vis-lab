@@ -19,6 +19,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <!-- overwritten port number for the docker machine. Change to your needed
+            port. -->
+        <docker.port>8080</docker.port>
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
     </properties>
 
@@ -98,13 +101,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <skipDockerBuild>false</skipDockerBuild>
-                </configuration>
             </plugin>
         </plugins>
     </build>

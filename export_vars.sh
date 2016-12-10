@@ -3,6 +3,7 @@
 
 export DOCKER_USER="mavogel"
 export DOCKER_PROJECT_IMAGE_PREFIX="vis"
+export TAG="latest"
 
 export MYSQL_WEBSHOP_DB_ADDR="web-shop-db-image";
 export MYSQL_WEBSHOP_DB_PORT="3306";

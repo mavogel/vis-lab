@@ -20,6 +20,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <!-- overwritten port number for the docker machine. Change to your needed
+            port. -->
+        <docker.port>8080</docker.port>
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
     </properties>
 
@@ -111,10 +114,24 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.spotify</groupId>
+                <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
-                    <skipDockerBuild>false</skipDockerBuild>
+                    <images>
+                        <image>
+                            <build>
+                                <entryPoint>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-Djava.security.egd=file:/dev/./urandom</arg>
+                                        <arg>-Dspring.profiles.active=container</arg>
+                                        <arg>-jar</arg>
+                                        <arg>/app.jar</arg>
+                                    </exec>
+                                </entryPoint>
+                            </build>
+                        </image>
+                    </images>
                 </configuration>
             </plugin>
         </plugins>

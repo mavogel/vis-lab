@@ -20,6 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <docker.port>8761</docker.port>
     </properties>
 
     <dependencies>
@@ -29,15 +30,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <skipDockerBuild>false</skipDockerBuild>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

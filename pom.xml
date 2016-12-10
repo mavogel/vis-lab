@@ -19,6 +19,9 @@
     <properties>
         <docker.image.prefix>${env.DOCKER_USER}</docker.image.prefix>
         <docker.project.image.prefix>${env.DOCKER_PROJECT_IMAGE_PREFIX}</docker.project.image.prefix>
+        <docker-maven-plugin.version>0.17.1</docker-maven-plugin.version>
+        <!-- a default port for the docker vm. pls overwritte in your project pom -->
+        <docker.port>80</docker.port>
     </properties>
 
     <modules>
@@ -32,6 +35,10 @@
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -51,31 +58,96 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <activation>
+                <file>
+                    <exists>src</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>buildImage</id>
+                                <goals>
+                                    <goal>build-nofork</goal>
+                                </goals>
+                                <phase>install</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <authConfig>
+                                <username>${env.DOCKER_USER}</username>
+                                <password>${env.DOCKER_PASS}</password>
+                            </authConfig>
+                            <images>
+                                <image>
+                                    <alias>${project.name}</alias>
+                                    <name>${env.DOCKER_USER}/${env.DOCKER_PROJECT_IMAGE_PREFIX}-${project.artifactId}</name>
+                                    <build>
+                                        <from>frolvlad/alpine-oraclejdk8:slim</from>
+                                        <tags>
+                                            <tag>${env.TAG}</tag>
+                                        </tags>
+                                        <ports>
+                                            <port>${docker.port}</port>
+                                        </ports>
+                                        <volumes>
+                                            <volume>/tmp</volume>
+                                        </volumes>
+                                        <entryPoint>
+                                            <exec>
+                                                <arg>java</arg>
+                                                <arg>-Djava.security.egd=file:/dev/./urandom</arg>
+                                                <arg>-jar</arg>
+                                                <arg>/app.jar</arg>
+                                            </exec>
+                                        </entryPoint>
+                                        <assembly>
+                                            <basedir>/</basedir>
+                                            <inline>
+                                                <dependencySets>
+                                                    <dependencySet>
+                                                        <useProjectArtifact>true</useProjectArtifact>
+                                                        <includes>
+                                                            <include>${project.groupId}:${project.artifactId}</include>
+                                                        </includes>
+                                                        <outputDirectory>.</outputDirectory>
+                                                        <outputFileNameMapping>app.jar</outputFileNameMapping>
+                                                    </dependencySet>
+                                                </dependencySets>
+                                            </inline>
+                                        </assembly>
+                                        <runCmds>
+                                            <runCmd>sh -c 'touch /app.jar'</runCmd>
+                                        </runCmds>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-                <plugin>
-                    <groupId>com.spotify</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.4.11</version>
-                    <configuration>
-                        <imageName>${docker.image.prefix}/${docker.project.image.prefix}-${project.artifactId}</imageName>
-                        <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-                        <resources>
-                            <resource>
-                                <targetPath>/</targetPath>
-                                <directory>${project.build.directory}</directory>
-                                <include>${project.build.finalName}.jar</include>
-                            </resource>
-                        </resources>
-                        <skipDockerBuild>true</skipDockerBuild>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+            </plugin>
+        </plugins>
     </build>
 </project>
