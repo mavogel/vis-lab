@@ -89,7 +89,7 @@ services:
    ports:
      - "8084:8080"
 
-eureka:
+ eureka:
    depends_on:
      - listservice
      - modifyservice
@@ -101,7 +101,7 @@ eureka:
    ports:
      - "8761:8761"
 
-zuul:
+ zuul:
    depends_on:
      - listservice
      - modifyservice

@@ -8,3 +8,12 @@ spring:
     url: jdbc:mysql://${MYSQL_WEBSHOP_DB_ADDR}:${MYSQL_WEBSHOP_DB_PORT}/${MYSQL_WEBSHOP_DB_DATABASE}?useSSL=false
     username: ${MYSQL_WEBSHOP_DB_USER}
     password: ${MYSQL_WEBSHOP_DB_PASSWORD}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 5
+    metadataMap:
+      instanceId: "${spring.application.name}:${random.value}"

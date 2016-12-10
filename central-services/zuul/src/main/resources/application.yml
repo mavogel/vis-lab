@@ -1,10 +1,16 @@
 server:
   port: 8081
 eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
   instance:
-    leaseRenewalIntervalInSeconds: 10
+    preferIpAddress: true
     statusPageUrlPath: /info
     healthCheckUrlPath: /health
+    leaseRenewalIntervalInSeconds: 5
+    metadataMap:
+      instanceId: "${spring.application.name}:${random.value}"
 zuul:
   ignoredServices: '*'
   host:
@@ -13,7 +19,7 @@ zuul:
 
   routes:
     listservice:
-      path: /list/**
+      path: /listservice/**
       serviceId: listservice
       stripPrefix: false
       sensitiveHeaders:
