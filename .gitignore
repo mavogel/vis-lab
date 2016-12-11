@@ -26,12 +26,14 @@ core-services/**/.idea
 core-services/**/*.iml
 core-services/**/.settings/
 core-services/**/.project
+core-services/**/.classpath
 
 composite-services/**/target
 composite-services/**/.idea
 composite-services/**/*.iml
 composite-services/**/.settings/
 composite-services/**/.project
+composite-services/**/.classpath
 
 
 

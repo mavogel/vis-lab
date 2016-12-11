@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: categorycomposite
+    jackson:
+        serialization:
+          indent_output: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 5
+    metadataMap:
+      instanceId: "${spring.application.name}:${random.value}"

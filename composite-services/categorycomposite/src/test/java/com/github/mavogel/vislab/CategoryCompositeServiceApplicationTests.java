@@ -1,5 +1,4 @@
 package com.github.mavogel.vislab;
-
 /*
  *  The MIT License (MIT)
  *
@@ -26,18 +25,17 @@ package com.github.mavogel.vislab;
  *  https://opensource.org/licenses/MIT
  */
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.hystrix.EnableHystrix;
-import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class UserserviceApplication {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class CategoryCompositeServiceApplicationTests {
 
-    public static void main(String[] args) {
-        SpringApplication.run(UserserviceApplication.class, args);
+    @Test
+    public void contextLoads() {
     }
+
 }
