@@ -13,6 +13,7 @@
 hs_err_pid*
 
 .idea
+*.iml
 
 # Project specific
 LegacyWebShop/diagrams

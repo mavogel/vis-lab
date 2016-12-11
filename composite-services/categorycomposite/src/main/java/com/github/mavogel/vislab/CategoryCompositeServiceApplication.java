@@ -36,8 +36,8 @@ import org.springframework.cloud.netflix.ribbon.RibbonClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableCircuitBreaker
-@EnableHystrix //TODO
-@RibbonClient("catcompservice")
+@EnableHystrix
+//@RibbonClient("catcompservice")
 public class CategoryCompositeServiceApplication {
 
     public static void main(String[] args) {
