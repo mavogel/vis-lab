@@ -29,8 +29,8 @@
         <module>core-services/product</module>
         <module>core-services/userservice</module>
         <module>composite-services/categorycomposite</module>
-        <module>central-services/eureka</module>
-        <module>central-services/zuul</module>
+        <module>central-services/discovery</module>
+        <module>central-services/gateway</module>
     </modules>
 
     <dependencies>

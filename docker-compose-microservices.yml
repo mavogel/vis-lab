@@ -61,12 +61,12 @@ services:
    ports:
      - "8082:8080"
 
- modifyservice:
+ categorycompositeservice:
    depends_on:
      - userservice
      - categoryservice
      - productservice
-   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-modifyservice
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-categorycompositeservice
    links:
      - userservice
      - categoryservice
@@ -75,40 +75,14 @@ services:
    ports:
      - "8083:8080"
 
- listservice:
-   depends_on:
-     - userservice
-     - categoryservice
-     - productservice
-   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-listservice
-   links:
-     - userservice
-     - categoryservice
-     - productservice
-   restart: always
-   ports:
-     - "8084:8080"
-
- eureka:
-   depends_on:
-     - listservice
-     - modifyservice
-   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-eureka
-   links:
-     - listservice
-     - modifyservice
+ discovery:
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-discovery
    restart: always
    ports:
      - "8761:8761"
 
- zuul:
-   depends_on:
-     - listservice
-     - modifyservice
-   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-zuul
-   links:
-     - listservice
-     - modifyservice
+ gateway:
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-gateway
    restart: always
    ports:
      - "8088:8081"

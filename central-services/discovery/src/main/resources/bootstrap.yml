@@ -1,6 +1,6 @@
 spring:
   application:
-    name: zuul
+    name: discovery
   cloud:
     config:
       enabled: false
