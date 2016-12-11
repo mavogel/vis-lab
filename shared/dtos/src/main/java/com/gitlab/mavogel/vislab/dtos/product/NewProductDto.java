@@ -1,23 +1,20 @@
-package com.felixmohr.microservice.product.model;
+package com.gitlab.mavogel.vislab.dtos.product;
 
 
 /**
  * Used for the creation of a new product.
  */
-public class NewProduct {
+public class NewProductDto {
 
     private String name;
-
-    private Long price;
-
+    private double price;
     private long category;
-
     private String details;
 
-    public NewProduct() {
+    public NewProductDto() {
     }
 
-    public NewProduct(String name, Long price, long category, String details) {
+    public NewProductDto(String name, Long price, long category, String details) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -32,11 +29,11 @@ public class NewProduct {
         this.name = name;
     }
 
-    public Long getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

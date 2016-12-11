@@ -25,6 +25,7 @@
     </properties>
 
     <modules>
+        <module>shared/dtos</module>
         <module>core-services/categoryservice</module>
         <module>core-services/product</module>
         <module>core-services/userservice</module>
@@ -35,6 +36,11 @@
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>0.7.7</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

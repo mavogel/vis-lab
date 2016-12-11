@@ -1,10 +1,10 @@
-package com.felixmohr.microservice.product.model;
+package com.gitlab.mavogel.vislab.dtos.product;
 
-public class Search {
-	
-	public Search() {}
-	
-	public Search(String text) {
+public class SearchDto {
+
+	public SearchDto() {}
+
+	public SearchDto(String text) {
 		this.text = text;
 	}
 	

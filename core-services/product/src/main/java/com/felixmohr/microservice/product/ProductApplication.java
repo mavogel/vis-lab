@@ -1,5 +1,6 @@
 package com.felixmohr.microservice.product;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -17,6 +18,11 @@ import com.google.common.base.Predicates;
 @EnableSwagger2
 @EnableDiscoveryClient
 public class ProductApplication {
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
     @Bean
     public Docket api() {

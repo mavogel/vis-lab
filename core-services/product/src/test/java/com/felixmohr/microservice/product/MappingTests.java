@@ -1,6 +1,4 @@
-package com.github.mavogel.vislab;
-
-/*
+package com.felixmohr.microservice.product;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -26,23 +24,32 @@ package com.github.mavogel.vislab;
  *  https://opensource.org/licenses/MIT
  */
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.cloud.netflix.hystrix.EnableHystrix;
-import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import com.felixmohr.microservice.product.model.Product;
+import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import org.modelmapper.ModelMapper;
+import org.junit.Test;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-@EnableCircuitBreaker
-@EnableHystrix
-@RibbonClient
-@EnableFeignClients
-public class CategoryCompositeServiceApplication {
+import static org.junit.Assert.assertEquals;
 
-    public static void main(String[] args) {
-        SpringApplication.run(CategoryCompositeServiceApplication.class, args);
+/**
+ * Created by mavogel on 12/11/16.
+ */
+public class MappingTests {
+
+    private ModelMapper mapper = new ModelMapper();
+
+    @Test
+    public void shouldMapEntitiyToDTO() throws Exception {
+        Product entity = new Product("P1", 2.55, 0, "D1");
+
+        // == go
+        ProductDto productDto = mapper.map(entity, ProductDto.class);
+
+        // == verify
+//        assertEquals(entity.getId(), productDto.getId());
+        assertEquals(entity.getName(), productDto.getName());
+        assertEquals(entity.getPrice(), productDto.getPrice(), 0.0001);
+        assertEquals(entity.getCategoryId(), productDto.getCategoryId());
+        assertEquals(entity.getDetails(), productDto.getDetails());
     }
 }

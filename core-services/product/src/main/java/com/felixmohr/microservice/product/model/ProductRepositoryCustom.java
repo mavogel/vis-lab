@@ -4,6 +4,5 @@ import java.util.List;
 
 public interface ProductRepositoryCustom {
 
-	public List<Product> search(String search);
-	
+	List<Product> search(String search);
 }

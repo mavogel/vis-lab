@@ -51,7 +51,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return name + ": " + price + ": " + categoryId + ": ";
+        return "[" + id + "] - " + name + ": " + price + ": " + categoryId + ": ";
     }
 
 }
