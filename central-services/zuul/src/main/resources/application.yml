@@ -11,25 +11,30 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     metadataMap:
       instanceId: "${spring.application.name}:${random.value}"
-zuul:
-  ignoredServices: '*'
-  host:
-      connect-timeout-millis: 20000
-      socket-timeout-millis: 20000
-
-  routes:
-    listservice:
-      path: /listservice/**
-      serviceId: listservice
-      stripPrefix: false
-      sensitiveHeaders:
-    modifyservice:
-      path: /modifyservice/**
-      serviceId: modifyservice
-      stripPrefix: false
-      sensitiveHeaders:
-    userservice:
-      path: /userservice/**
-      serviceId: userservice
-      stripPrefix: false
-      sensitiveHeaders:
+sidecar:
+  port: 8000
+ribbon:
+  eureka:
+    enabled: true
+#zuul:
+#  ignoredServices: '*'
+#  host:
+#      connect-timeout-millis: 20000
+#      socket-timeout-millis: 20000
+#
+#  routes:
+#    listservice:
+#      path: /listservice/**
+#      serviceId: listservice
+#      stripPrefix: false
+#      sensitiveHeaders:
+#    modifyservice:
+#      path: /modifyservice/**
+#      serviceId: modifyservice
+#      stripPrefix: false
+#      sensitiveHeaders:
+#    userservice:
+#      path: /userservice/**
+#      serviceId: userservice
+#      stripPrefix: false
+#      sensitiveHeaders:
