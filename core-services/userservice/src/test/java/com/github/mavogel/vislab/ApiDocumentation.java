@@ -26,6 +26,7 @@ package com.github.mavogel.vislab;
  */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.mavogel.vislab.user.controller.UserLevel;
 import com.github.mavogel.vislab.user.model.Role;
 import com.github.mavogel.vislab.user.model.User;
 import com.github.mavogel.vislab.user.repository.RoleRepository;
@@ -97,7 +98,10 @@ public class ApiDocumentation {
 
     @Test
     public void getUserByName() throws Exception {
-        this.mockMvc.perform(get("/user/jdoe").accept(MediaType.APPLICATION_JSON)
+        Role role = roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()));
+        User user = userRepository.save(new User("jdoe", "john", "doe", "acbd", role));
+
+        this.mockMvc.perform(get("/user/" + user.getUsername()).accept(MediaType.APPLICATION_JSON)
                 .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
@@ -121,7 +125,9 @@ public class ApiDocumentation {
 
     @Test
     public void getRoleByLevel() throws Exception {
-        this.mockMvc.perform(get("/user/level/1").accept(MediaType.APPLICATION_JSON)
+        Role role = roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()));
+
+        this.mockMvc.perform(get("/user/level/" + role.getLevel()).accept(MediaType.APPLICATION_JSON)
                 .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
