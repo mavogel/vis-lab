@@ -36,9 +36,7 @@ echo "-> Fine √"
 
 # 2: Build legacy webshop??
 info "Bulding legacy web shop"
-cd LegacyWebShop
-mvn clean package
-cd ..
+cd LegacyWebShop && mvn clean package && cd ..
 
 # 3: Build initialized MySQL Database image
 info "Building initialized MySQL Database image"

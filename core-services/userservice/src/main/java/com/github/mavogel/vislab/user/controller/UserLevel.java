@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab.user.model;/*
+package com.github.mavogel.vislab.user.controller;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,60 +24,21 @@ package com.github.mavogel.vislab.user.model;/*
  *  https://opensource.org/licenses/MIT
  */
 
-
-import javax.persistence.*;
-
 /**
- * Created by mavogel on 11/16/16.
- * This class contains details about roles.
+ * Created by mavogel on 12/12/16.
  */
-@Entity
-@Table(name = "role")
-public class Role implements java.io.Serializable {
+public enum UserLevel {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+    REGULAR(1),
+    ADMIN(2);
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
-    private Long id;
+    private final int levelId;
 
-    @Column(name = "type")
-    private String type;
-
-
-    @Column(name = "level1")
-    private int level;
-
-    public Role() {
+    private UserLevel(int levelId) {
+        this.levelId = levelId;
     }
 
-    public Role(String type, int level) {
-        this.type = type;
-        this.level = level;
+    public int getLevelId() {
+        return levelId;
     }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getLevel() {
-        return this.level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
 }

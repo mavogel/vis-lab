@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab.user.model;/*
+package com.gitlab.mavogel.vislab.dtos.user;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,60 +24,55 @@ package com.github.mavogel.vislab.user.model;/*
  *  https://opensource.org/licenses/MIT
  */
 
-
-import javax.persistence.*;
-
 /**
- * Created by mavogel on 11/16/16.
- * This class contains details about roles.
+ * Created by mavogel on 12/12/16.
  */
-@Entity
-@Table(name = "role")
-public class Role implements java.io.Serializable {
+public class RoleDto {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    @Column(name = "type")
+    private long id;
     private String type;
-
-
-    @Column(name = "level1")
     private int level;
 
-    public Role() {
+    private RoleDto() {
     }
 
-    public Role(String type, int level) {
+    public RoleDto(final long id, final String type, final int level) {
+        this.id = id;
         this.type = type;
         this.level = level;
     }
 
-    public Long getId() {
-        return this.id;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(final long id) {
+        this.id = id;
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
     public int getLevel() {
-        return this.level;
+        return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(final int level) {
         this.level = level;
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("RoleDto{");
+        sb.append("id=").append(id);
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", level=").append(level);
+        sb.append('}');
+        return sb.toString();
+    }
 }

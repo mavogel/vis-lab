@@ -31,4 +31,12 @@ import org.springframework.data.repository.CrudRepository;
  * Created by mavogel on 11/16/16.
  */
 public interface RoleRepository extends CrudRepository<Role, Long> {
+
+    /**
+     * Finds a {@link Role} by its level.
+     *
+     * @param level the level
+     * @return  the role or <code>null</code>
+     */
+    Role level(final int level);
 }

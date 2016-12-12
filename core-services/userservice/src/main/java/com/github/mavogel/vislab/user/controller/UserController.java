@@ -24,13 +24,16 @@ package com.github.mavogel.vislab.user.controller;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import com.github.mavogel.vislab.user.model.Role;
 import com.github.mavogel.vislab.user.model.User;
-import com.github.mavogel.vislab.user.repository.UserRepository;
 import com.github.mavogel.vislab.user.repository.RoleRepository;
+import com.github.mavogel.vislab.user.repository.UserRepository;
+import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
+import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -49,33 +52,47 @@ public class UserController {
     @Autowired
     private ModelMapper mapper;
 
-    @RequestMapping(value = "/{name}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.OK)
-    public User getUserByName(@PathVariable String name) {
-        return new User("jdoe", "John", "Doe", "ier$@Gdd", new Role("type1", 1));
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
+        User username1 = userRepository.username(username);
+        if (username1 != null) {
+            return ResponseEntity.ok(mapper.map(username1, UserDto.class));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
-    @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.OK)
     public boolean doesUserAlreadyExist(@PathVariable String name) {
-        return this.getUserByName(name) != null;
+        return this.getUserByUsername(name) != null;
     }
 
-    @RequestMapping(value = "/level/{levelId}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/level/{levelId}", method = RequestMethod.GET)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.OK)
-    public Role getRoleByLevel(@PathVariable int levelId) {
-        return new Role("myType", 1);
+    public RoleDto getRoleByLevel(@PathVariable int levelId) {
+        // TODO
+        return mapper.map(this.roleRepository.level(levelId), RoleDto.class);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "", method = RequestMethod.POST)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerUser(@RequestBody User user) {
-        userRepository.save(user);
+    public UserDto registerUser(@RequestBody NewUserDto userDto) {
+        return mapper.map(userRepository.save(new User(
+                        userDto.getUsername(),
+                        userDto.getFirstname(),
+                        userDto.getLastname(),
+                        userDto.getPassword(),
+                        this.roleRepository.level(UserLevel.REGULAR.getLevelId()))),
+                UserDto.class);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id) {
-        userRepository.delete(id);
+    public void deleteUser(@PathVariable long id) {
+        if (userRepository.findOne(id) != null) {
+            userRepository.delete(id);
+        }
     }
 }
