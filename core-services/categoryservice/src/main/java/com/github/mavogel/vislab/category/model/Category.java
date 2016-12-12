@@ -24,8 +24,7 @@ package com.github.mavogel.vislab.category.model;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by mavogel on 10/30/16.
@@ -34,25 +33,21 @@ import javax.persistence.Id;
 public class Category {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(unique = true)
     private String name;
 
     public Category() {
     }
 
-    public Category(final long id, final String name) {
-        this.id = id;
+    public Category(final String name) {
         this.name = name;
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(final long id) {
-        this.id = id;
     }
 
     public String getName() {

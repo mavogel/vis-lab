@@ -1,6 +1,4 @@
-package com.github.mavogel.vislab;
-
-/*
+package com.github.mavogel.vislab;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -26,25 +24,28 @@ package com.github.mavogel.vislab;
  *  https://opensource.org/licenses/MIT
  */
 
+import com.github.mavogel.vislab.category.model.Category;
+import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import org.junit.Test;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.hystrix.EnableHystrix;
-import org.springframework.cloud.netflix.ribbon.RibbonClient;
-import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class UserserviceApplication {
+import static org.junit.Assert.assertEquals;
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+/**
+ * Created by mavogel on 12/11/16.
+ */
+public class MappingTests {
 
-    public static void main(String[] args) {
-        SpringApplication.run(UserserviceApplication.class, args);
+    private ModelMapper mapper = new ModelMapper();
+
+    @Test
+    public void shouldMapEntitiyToDTO() throws Exception {
+        Category entity = new Category("cat1");
+
+        // == go
+        CategoryDto categoryDto = mapper.map(entity, CategoryDto.class);
+
+        // == verify
+        assertEquals(entity.getName(), categoryDto.getName());
     }
 }

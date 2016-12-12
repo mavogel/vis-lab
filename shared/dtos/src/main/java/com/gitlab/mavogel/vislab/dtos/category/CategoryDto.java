@@ -1,6 +1,4 @@
-package com.github.mavogel.vislab;
-
-/*
+package com.gitlab.mavogel.vislab.dtos.category;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -26,25 +24,44 @@ package com.github.mavogel.vislab;
  *  https://opensource.org/licenses/MIT
  */
 
-import org.modelmapper.ModelMapper;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.hystrix.EnableHystrix;
-import org.springframework.cloud.netflix.ribbon.RibbonClient;
-import org.springframework.context.annotation.Bean;
+/**
+ * Created by mavogel on 12/12/16.
+ */
+public class CategoryDto {
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class UserserviceApplication {
+    private long id;
+    private String name;
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
+    private CategoryDto() {
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(UserserviceApplication.class, args);
+    public CategoryDto(final long id, final String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(final long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("CategoryDto{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

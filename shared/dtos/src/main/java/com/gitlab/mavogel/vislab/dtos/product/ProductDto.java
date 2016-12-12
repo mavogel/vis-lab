@@ -43,7 +43,7 @@ public class ProductDto {
         this.categoryId = categoryId;
     }
 
-    public ProductDto() {}
+    private ProductDto() {}
 
     public long getId() {
         return id;

@@ -26,29 +26,40 @@ package com.github.mavogel.vislab.category.controller;/*
 
 import com.github.mavogel.vislab.category.model.Category;
 import com.github.mavogel.vislab.category.repository.CategoryRepository;
+import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by mavogel on 11/1/16.
  */
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/category")
 public class CategoryController {
 
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ModelMapper mapper;
+
     @RequestMapping(value = "", method = RequestMethod.GET, headers = {"Authorization: Basic"})
-    public Iterable<Category> listCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryDto> listCategories() {
+        return ((List<Category>) categoryRepository.findAll()).stream()
+                .map(categoryEntity -> mapper.map(categoryEntity, CategoryDto.class))
+                .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCategory(@RequestBody Category category) {
-        categoryRepository.save(new Category(category.getId(), category.getName()));
+    public void addCategory(@RequestBody CategoryDto category) {
+        categoryRepository.save(new Category(category.getName()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = {"Authorization: Basic"})

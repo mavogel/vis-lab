@@ -40,6 +40,7 @@ import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -65,6 +66,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // clear the db before each test
 public class ApiDocumentation {
 
     @Rule
@@ -95,9 +97,9 @@ public class ApiDocumentation {
 
     @Test
     public void listCategories() throws Exception {
-        createSampleCategory(1L, "TestCategory");
+        createSampleCategory("TestCategory");
 
-        this.mockMvc.perform(get("/categories").accept(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(get("/category").accept(MediaType.APPLICATION_JSON)
                 .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
@@ -114,26 +116,24 @@ public class ApiDocumentation {
         newCategory.put("id", "1");
         newCategory.put("name", "TestCategory");
 
-        ConstrainedFields fields = new ConstrainedFields(Category.class);
-
-        this.mockMvc.perform(post("/categories")
+        this.mockMvc.perform(post("/category")
                 .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(newCategory)))
                 .andExpect(status().isCreated())
                 .andDo(this.documentationHandler.document(
                         requestFields(
-                                fields.withPath("id").description("The category ID"),
-                                fields.withPath("name").description("The name of the category")
+                                fieldWithPath("id").description("The category ID"),
+                                fieldWithPath("name").description("The name of the category")
                         )
                 ));
     }
 
     @Test
     public void deleteCategory() throws Exception {
-        Category originalCategory = createSampleCategory(1L, "TestCategory");
+        Category originalCategory = createSampleCategory("TestCategory");
 
-        this.mockMvc.perform(delete("/categories/" + originalCategory.getId())
+        this.mockMvc.perform(delete("/category/" + originalCategory.getId())
                 .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -142,22 +142,7 @@ public class ApiDocumentation {
     /**
      * HELPERS
      */
-    private static class ConstrainedFields {
-
-        private final ConstraintDescriptions constraintDescriptions;
-
-        ConstrainedFields(Class<?> input) {
-            this.constraintDescriptions = new ConstraintDescriptions(input);
-        }
-
-        private FieldDescriptor withPath(String path) {
-            return fieldWithPath(path).attributes(key("constraints").value(StringUtils
-                    .collectionToDelimitedString(this.constraintDescriptions
-                            .descriptionsForProperty(path), ". ")));
-        }
-    }
-
-    private Category createSampleCategory(final Long id, final String name) {
-        return categoryRepository.save(new Category(id, name));
+    private Category createSampleCategory(final String name) {
+        return categoryRepository.save(new Category(name));
     }
 }

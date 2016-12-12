@@ -28,6 +28,7 @@ import com.github.mavogel.vislab.user.model.Role;
 import com.github.mavogel.vislab.user.model.User;
 import com.github.mavogel.vislab.user.repository.UserRepository;
 import com.github.mavogel.vislab.user.repository.RoleRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,9 @@ public class UserController {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ModelMapper mapper;
 
     @RequestMapping(value = "/{name}", method = RequestMethod.GET, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.OK)
