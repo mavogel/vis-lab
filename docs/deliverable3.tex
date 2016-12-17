@@ -4,6 +4,39 @@
 \begin{document}
 	\createTitlepage{Deliverable 3 : Implementation of Microservices}
 	
-	\section{TODO}
+	\section{Central Services}
+	\subsection{Service Discovery - \texttt{Eureka}}
+	\subsection{API Gateway - \texttt{Zuul}}
+	\subsection{Shared Objects}
+	
+	\section{Composite Services}
+	\subsection{Category Composite}
+	Ribbon, Hystrix, Fallbacks
+	
+	\section{Core Services}
+	\subsection{Category Service}
+	\subsection{Product Service}
+	\subsection{User Service}
+	\subsection{\texttt{MySQL} - Database}
+		
+	\section{Docker}
+	All the services (central, composite and core) and the database are wrapped into Docker\footnote{\url{https://docker.com}} containers to ensure platform independency.
+	
+	\section{Buildscripts in \texttt{bash}}
+	
+	\section{CI with \texttt{travis}}
+	For a continuous building a verifying the built and internal testing of the microservices, the project will be built on every commit by the Continuous integration platform travis-ci\footnote{\url{https://travis-ci.org}}.
+	
+	\begin{lstlisting}
+sudo: required
+services:
+- docker
+language: java
+jdk: oraclejdk8
+after_success:
+- mvn docker:build
+	\end{lstlisting}
+	
+	As a next step, the built docker images will be pushed to docker-hub\footnote{\url{https://docker-hub.io}} where they are available for pull from any remote server.
 	
 \end{document}

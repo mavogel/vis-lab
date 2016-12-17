@@ -36,7 +36,7 @@ import java.util.Arrays;
  */
 @RestController
 @RequestMapping("/catcomp")
-public class CategoryCompositeController {
+public interface CategoryCompositeController {
 
     @RequestMapping(value = "/category", method = RequestMethod.GET, headers = {"Authorization: Basic"})
     public Iterable<Category> listCategories() {
