@@ -75,7 +75,29 @@ public class ProductsControllerTest {
         Product p1 = repo.save(new Product("P1", 2.55, 0, "D1"));
         Product p2 = repo.save(new Product("P2", 6.55, 0, "D2"));
 
-        this.mockMvc.perform(get("/product/all").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/product").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(p1.getId()))
+                .andExpect(jsonPath("$[0].name").value(p1.getName()))
+                .andExpect(jsonPath("$[0].price").value(p1.getPrice()))
+                .andExpect(jsonPath("$[0].categoryId").value(p1.getCategoryId()))
+                .andExpect(jsonPath("$[0].details").value(p1.getDetails()))
+                .andExpect(jsonPath("$[1].id").value(p2.getId()))
+                .andExpect(jsonPath("$[1].name").value(p2.getName()))
+                .andExpect(jsonPath("$[1].price").value(p2.getPrice()))
+                .andExpect(jsonPath("$[1].categoryId").value(p2.getCategoryId()))
+                .andExpect(jsonPath("$[1].details").value(p2.getDetails()));
+    }
+
+    @Test
+    public void shouldList2ProductsOfCategory0() throws Exception {
+        Product p1 = repo.save(new Product("P1", 2.55, 0, "D1"));
+        Product p2 = repo.save(new Product("P2", 6.55, 0, "D2"));
+        repo.save(new Product("P3", 6.55, 1, "D3"));
+        repo.save(new Product("P4", 7.55, 2, "D4"));
+        repo.save(new Product("P5", 8.55, 1, "D5"));
+
+        this.mockMvc.perform(get("/product/byCategory/0").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(p1.getId()))
                 .andExpect(jsonPath("$[0].name").value(p1.getName()))

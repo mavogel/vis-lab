@@ -48,6 +48,9 @@ public interface ProductClient {
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
     ProductDto listProduct(@PathVariable("id") long id);
 
+    @RequestMapping(value = "/byCategory/{categoryId}", method = RequestMethod.GET)
+    List<ProductDto> allProductsByCategoryId(@PathVariable("categoryId") long categoryId);
+
     @RequestMapping(value = "/product/search", method = RequestMethod.GET)
     List<ProductDto> searchProducts(@RequestBody SearchDto search);
 

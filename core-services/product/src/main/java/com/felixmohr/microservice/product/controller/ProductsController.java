@@ -95,6 +95,15 @@ public class ProductsController {
         }
     }
 
+    @RequestMapping(value = "/byCategory/{categoryId}", method = RequestMethod.GET)
+    @ApiOperation(value = "Returns a list of all products of the given categoryId.")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = ProductDto.class, responseContainer = "List")})
+    public List<ProductDto> allProductsByCategoryId(@PathVariable long categoryId) {
+        return repo.findByCategoryId(categoryId).stream()
+                .map(productEntity -> mapper.map(productEntity, ProductDto.class))
+                .collect(Collectors.toList());
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Deletes the product with the given id")
     @ApiResponses(value = {

@@ -60,9 +60,15 @@ public class CategoryProxy {
     }
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
-    public void deleteCategory(@PathVariable long id) {
-        this.categoryClient.deleteCategory(id);
-        // TODO delete all products as well
+    public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
+        try {
+            this.productClient.allProductsByCategoryId(id)
+                    .forEach(product -> productClient.deleteProduct(product.getId()));
+            this.categoryClient.deleteCategory(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.GET)
@@ -97,7 +103,7 @@ public class CategoryProxy {
     }
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
-    public void deleteProduct(@PathVariable  long id) {
+    public void deleteProduct(@PathVariable long id) {
         this.productClient.deleteProduct(id);
     }
 }
