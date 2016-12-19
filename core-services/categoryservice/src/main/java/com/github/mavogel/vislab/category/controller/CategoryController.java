@@ -27,6 +27,7 @@ package com.github.mavogel.vislab.category.controller;/*
 import com.github.mavogel.vislab.category.model.Category;
 import com.github.mavogel.vislab.category.repository.CategoryRepository;
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,7 +60,7 @@ public class CategoryController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCategory(@RequestBody CategoryDto category) {
+    public void addCategory(@RequestBody NewCategoryDto category) {
         categoryRepository.save(new Category(category.getName()));
     }
 

@@ -17,22 +17,17 @@ sidecar:
 ribbon:
   eureka:
     enabled: true
-#zuul:
-#  ignoredServices: '*'
-#  host:
-#      connect-timeout-millis: 20000
-#      socket-timeout-millis: 20000
-#  routes:
-#    categorycomposite:
-#      path: /category/**
-#      serviceId: categorycomposite
-#      stripPrefix: false
-#      sensitiveHeaders:
-#    modifyservice:
-#      path: /modifyservice/**
-#      serviceId: modifyservice
-#      stripPrefix: false
-#      sensitiveHeaders:
+zuul:
+  ignoredServices: '*'
+  host:
+      connect-timeout-millis: 20000
+      socket-timeout-millis: 20000
+  routes:
+    categorycomposite:
+      path: /category/** #/product/** TODO
+      serviceId: categorycomposite
+      stripPrefix: false
+      sensitiveHeaders:
 #    userservice:
 #      path: /userservice/**
 #      serviceId: userservice

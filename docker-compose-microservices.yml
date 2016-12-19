@@ -29,21 +29,21 @@ services:
    ports:
      - "8080:8080"
 
-# productservice:
-#   depends_on:
-#     - webshop-db
-#   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-productservice
-#   links:
-#     - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
-#   restart: always
-#   environment:
-#     MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
-#     MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
-#     MYSQL_WEBSHOP_DB_DATABASE: ${MYSQL_WEBSHOP_DB_DATABASE}
-#     MYSQL_WEBSHOP_DB_USER: ${MYSQL_WEBSHOP_DB_USER}
-#     MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
-#   ports:
-#     - "8081:8080"
+ productservice:
+   depends_on:
+     - webshop-db
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-productservice
+   links:
+     - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
+   restart: always
+   environment:
+     MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
+     MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
+     MYSQL_WEBSHOP_DB_DATABASE: ${MYSQL_WEBSHOP_DB_DATABASE}
+     MYSQL_WEBSHOP_DB_USER: ${MYSQL_WEBSHOP_DB_USER}
+     MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
+   ports:
+     - "8081:8080"
 #
 # userservice:
 #   depends_on:
@@ -62,15 +62,7 @@ services:
 #     - "8082:8080"
 
  categorycompositeservice:
-#   depends_on:
-#     - userservice
-#     - categoryservice
-#     - productservice
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-categorycompositeservice
-#   links:
-#     - userservice
-#     - categoryservice
-#     - productservice
    restart: always
    ports:
      - "8083:8080"

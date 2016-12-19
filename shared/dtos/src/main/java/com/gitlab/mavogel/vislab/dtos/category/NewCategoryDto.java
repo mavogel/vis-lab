@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab;/*
+package com.gitlab.mavogel.vislab.dtos.category;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,31 +24,33 @@ package com.github.mavogel.vislab;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
-import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
-
 /**
  * Created by mavogel on 12/19/16.
  */
-@FeignClient("productservice")
-public interface ProductClient {
+public class NewCategoryDto {
 
-    @RequestMapping(value = "/product", method = RequestMethod.GET)
-    List<ProductDto> listProducts();
+    private String name;
 
-    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
-    ProductDto listProduct(@PathVariable("id") long id);
+    public NewCategoryDto() {
+    }
 
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
-    void addProduct(@RequestBody NewProductDto product);
+    public NewCategoryDto(final String name) {
+        this.name = name;
+    }
 
-    @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
-    void deleteProduct(@PathVariable("id") long id);
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("NewCategoryDto{");
+        sb.append("name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

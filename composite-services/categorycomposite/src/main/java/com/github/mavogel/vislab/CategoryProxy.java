@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab.category.controller;/*
+package com.github.mavogel.vislab;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,14 +24,15 @@ package com.github.mavogel.vislab.category.controller;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import com.github.mavogel.vislab.CategoryClient;
-import com.github.mavogel.vislab.ProductClient;
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ import java.util.List;
  * Created by mavogel on 11/1/16.
  */
 @RestController
-@RequestMapping("category-proxy")
+@RequestMapping("")//category-proxy")
 public class CategoryProxy {
 
     @Autowired
@@ -51,5 +52,35 @@ public class CategoryProxy {
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public List<CategoryDto> listCategories() {
         return categoryClient.listCategories();
+    }
+
+    @RequestMapping(value = "/category", method = RequestMethod.POST)
+    public void addCategory(@RequestBody NewCategoryDto newCategory) {
+        this.categoryClient.addCategory(newCategory);
+    }
+
+    @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
+    public void deleteCategory(final long id) {
+        this.categoryClient.deleteCategory(id);
+    }
+
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    public List<ProductDto> listProducts() {
+        return this.productClient.listProducts();
+    }
+
+    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
+    public ProductDto listProduct(final long id) {
+        return this.productClient.listProduct(id);
+    }
+
+    @RequestMapping(value = "/product", method = RequestMethod.POST)
+    public void addProduct(@RequestBody NewProductDto newProduct) {
+        this.productClient.addProduct(newProduct);
+    }
+
+    @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
+    public void deleteProduct(long id) {
+        this.productClient.deleteProduct(id);
     }
 }
