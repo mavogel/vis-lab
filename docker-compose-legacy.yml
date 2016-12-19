@@ -7,9 +7,9 @@ services:
    restart: always
    environment:
      MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
-     MYSQL_DATABASE: webshop
-     MYSQL_USER: webshopuser
-     MYSQL_PASSWORD: 240b2c6d58ff2ce2f508b49f
+     MYSQL_DATABASE: ${MYSQL_WEBSHOP_DB_DATABASE}
+     MYSQL_USER: ${MYSQL_WEBSHOP_DB_USER}
+     MYSQL_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
    ports:
      - "3306:3306"
 

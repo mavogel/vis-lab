@@ -27,12 +27,12 @@
     <modules>
         <module>shared/dtos</module>
         <module>core-services/categoryservice</module>
-        <module>core-services/product</module>
-        <module>core-services/userservice</module>
+        <!--<module>core-services/product</module>-->
+        <!--<module>core-services/userservice</module>-->
         <module>composite-services/categorycomposite</module>
         <module>central-services/discovery</module>
         <module>central-services/gateway</module>
-        <module>central-services/dashboard</module>
+        <!--<module>central-services/dashboard</module>-->
     </modules>
 
     <dependencies>

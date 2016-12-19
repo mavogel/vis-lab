@@ -29,6 +29,12 @@ for BIN in ${BINS_TO_CHECK[@]}; do
 done
 echo "-> Fine √"
 
+info "Check if ENV variables were set"
+[ -z "$MYSQL_WEBSHOP_DB_ADDR" ] && echo "Need to set MYSQL_WEBSHOP_DB_ADDR ENV-var. Run '$ source export_vars.sh' first!" && exit 1;
+[ -z "$MYSQL_WEBSHOP_DB_DATABASE" ] && echo "Need to set MYSQL_WEBSHOP_DB_DATABASE ENV-var. Run '$ source export_vars.sh' first!" && exit 1;
+[ -z "$MYSQL_WEBSHOP_DB_USER" ] && echo "Need to set MYSQL_WEBSHOP_DB_USER ENV-var. Run '$ source export_vars.sh' first!" && exit 1;
+[ -z "$MYSQL_WEBSHOP_DB_PASSWORD" ] && echo "Need to set MYSQL_WEBSHOP_DB_PASSWORD ENV-var. Run '$ source export_vars.sh' first!" && exit 1;
+
 # 1.1 check if docker deamon runs
 info "Checking if docker is running";
 docker ps

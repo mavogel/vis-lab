@@ -36,10 +36,19 @@ composite-services/**/.settings/
 composite-services/**/.project
 composite-services/**/.classpath
 
+central-services/**/target
+central-services/**/.idea
+central-services/**/*.iml
+central-services/**/.settings/
+central-services/**/.project
+central-services/**/.classpath
 
-
-# General
-*.DS_Store
+shared/**/target
+shared/**/.idea
+shared/**/*.iml
+shared/**/.settings/
+shared/**/.project# General
+shared/**/.classpath*.DS_Store
 
 # LATEX stuff start
 ## Core latex/pdflatex auxiliary files:

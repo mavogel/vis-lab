@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab.category.repository;/*
+package com.github.mavogel.vislab.category.controller;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,11 +24,32 @@ package com.github.mavogel.vislab.category.repository;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import com.github.mavogel.vislab.category.model.Category;
-import org.springframework.data.repository.CrudRepository;
+import com.github.mavogel.vislab.CategoryClient;
+import com.github.mavogel.vislab.ProductClient;
+import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
- * Created by mavogel on 10/30/16.
+ * Created by mavogel on 11/1/16.
  */
-public interface CategoryRepository extends CrudRepository<Category, Long> {
+@RestController
+@RequestMapping("category-proxy")
+public class CategoryProxy {
+
+    @Autowired
+    private CategoryClient categoryClient;
+
+    @Autowired
+    private ProductClient productClient;
+
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    public List<CategoryDto> listCategories() {
+        return categoryClient.listCategories();
+    }
 }

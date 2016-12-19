@@ -4,6 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.context.annotation.Bean;
 
 import springfox.documentation.builders.PathSelectors;
@@ -17,6 +19,7 @@ import com.google.common.base.Predicates;
 @SpringBootApplication
 @EnableSwagger2
 @EnableDiscoveryClient
+@EnableFeignClients
 public class ProductApplication {
 
     @Bean

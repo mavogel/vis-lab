@@ -21,11 +21,16 @@
         <java.version>1.8</java.version>
         <!-- overwritten port number for the docker machine. Change to your needed
             port. -->
-        <docker.port>8080</docker.port>
+        <docker.port>9003</docker.port>
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.gitlab.mavogel.vislab</groupId>
+            <artifactId>dtos</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>

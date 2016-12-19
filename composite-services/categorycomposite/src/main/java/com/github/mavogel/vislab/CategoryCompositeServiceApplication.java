@@ -38,7 +38,7 @@ import org.springframework.cloud.netflix.ribbon.RibbonClient;
 @EnableDiscoveryClient
 @EnableCircuitBreaker
 @EnableHystrix
-@RibbonClient(name = "category-composite")
+@RibbonClient(name = "category-proxy")
 @EnableFeignClients
 public class CategoryCompositeServiceApplication {
 

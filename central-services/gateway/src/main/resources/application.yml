@@ -3,7 +3,8 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:8761/eureka/
+      defaultZone: http://discovery:8761/eureka/
+    fetch-registry: true
   instance:
     preferIpAddress: true
     statusPageUrlPath: /info
@@ -21,11 +22,10 @@ ribbon:
 #  host:
 #      connect-timeout-millis: 20000
 #      socket-timeout-millis: 20000
-#
 #  routes:
-#    listservice:
-#      path: /listservice/**
-#      serviceId: listservice
+#    categorycomposite:
+#      path: /category/**
+#      serviceId: categorycomposite
 #      stripPrefix: false
 #      sensitiveHeaders:
 #    modifyservice:

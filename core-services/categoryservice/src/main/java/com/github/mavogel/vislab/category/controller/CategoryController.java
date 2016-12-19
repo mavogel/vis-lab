@@ -49,20 +49,21 @@ public class CategoryController {
     @Autowired
     private ModelMapper mapper;
 
-    @RequestMapping(value = "", method = RequestMethod.GET, headers = {"Authorization: Basic"})
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public List<CategoryDto> listCategories() {
         return ((List<Category>) categoryRepository.findAll()).stream()
                 .map(categoryEntity -> mapper.map(categoryEntity, CategoryDto.class))
                 .collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, headers = {"Authorization: Basic"})
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void addCategory(@RequestBody CategoryDto category) {
         categoryRepository.save(new Category(category.getName()));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable Long id) {
         categoryRepository.delete(id);

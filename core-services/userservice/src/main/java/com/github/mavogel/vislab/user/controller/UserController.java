@@ -24,6 +24,7 @@ package com.github.mavogel.vislab.user.controller;/*
  *  https://opensource.org/licenses/MIT
  */
 
+import com.github.mavogel.vislab.user.model.Role;
 import com.github.mavogel.vislab.user.model.User;
 import com.github.mavogel.vislab.user.repository.RoleRepository;
 import com.github.mavogel.vislab.user.repository.UserRepository;
@@ -66,33 +67,46 @@ public class UserController {
     @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.OK)
     public boolean doesUserAlreadyExist(@PathVariable String name) {
-        return this.getUserByUsername(name) != null;
+        return HttpStatus.OK.equals(this.getUserByUsername(name).getStatusCode());
     }
 
     @RequestMapping(value = "/level/{levelId}", method = RequestMethod.GET)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.OK)
-    public RoleDto getRoleByLevel(@PathVariable int levelId) {
-        // TODO
-        return mapper.map(this.roleRepository.level(levelId), RoleDto.class);
+    public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
+        Role role = this.roleRepository.level(levelId);
+        if (role != null) {
+            return ResponseEntity.ok(mapper.map(role, RoleDto.class));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto registerUser(@RequestBody NewUserDto userDto) {
-        return mapper.map(userRepository.save(new User(
-                        userDto.getUsername(),
-                        userDto.getFirstname(),
-                        userDto.getLastname(),
-                        userDto.getPassword(),
-                        this.roleRepository.level(UserLevel.REGULAR.getLevelId()))),
-                UserDto.class);
+    public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
+        try {
+            User createdUser = userRepository.save(new User(
+                    userDto.getUsername(),
+                    userDto.getFirstname(),
+                    userDto.getLastname(),
+                    userDto.getPassword(),
+                    this.roleRepository.level(UserLevel.REGULAR.getLevelId())));
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    mapper.map(createdUser,
+                            UserDto.class));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)//, headers = {"Authorization: Basic"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         if (userRepository.findOne(id) != null) {
             userRepository.delete(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

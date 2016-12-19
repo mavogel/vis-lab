@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab.category.repository;/*
+package com.github.mavogel.vislab;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,11 +24,27 @@ package com.github.mavogel.vislab.category.repository;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import com.github.mavogel.vislab.category.model.Category;
-import org.springframework.data.repository.CrudRepository;
+import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 /**
- * Created by mavogel on 10/30/16.
+ * Created by mavogel on 12/19/16.
  */
-public interface CategoryRepository extends CrudRepository<Category, Long> {
+@FeignClient("categoryservice")
+public interface CategoryClient {
+
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    List<CategoryDto> listCategories();
+
+//    @RequestMapping(value = "/category", method = RequestMethod.POST)//, headers = {"Authorization: Basic"})
+//    void addCategory(@RequestBody CategoryDto category);
+//
+//
+//    @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)//, headers = {"Authorization: Basic"})
+//    void deleteCategory(@PathVariable("id") Long id);
+//
 }
