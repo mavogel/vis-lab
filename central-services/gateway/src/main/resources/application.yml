@@ -15,19 +15,34 @@ eureka:
 sidecar:
   port: 8000
 ribbon:
+  readTimeout: 10000
   eureka:
     enabled: true
+# see: https://stackoverflow.com/questions/28904247/zuul-timing-out-in-long-ish-requests
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 10000
 zuul:
   ignoredServices: '*'
   host:
       connect-timeout-millis: 20000
       socket-timeout-millis: 20000
   routes:
-    categorycomposite:
-      path: /category/** #/product/** TODO
+    categorycomposite_category:
+      path: /category/**
       serviceId: categorycomposite
       stripPrefix: false
       sensitiveHeaders:
+    categorycomposite_product:
+          path: /product/**
+          serviceId: categorycomposite
+          stripPrefix: false
+          sensitiveHeaders:
 #    userservice:
 #      path: /userservice/**
 #      serviceId: userservice

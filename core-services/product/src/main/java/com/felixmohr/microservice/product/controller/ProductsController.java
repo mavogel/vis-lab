@@ -30,7 +30,7 @@ public class ProductsController {
 
     static final Logger logger = LogManager.getLogger(ProductsController.class.getName());
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     @ApiOperation(value = "Returns a list of all products.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = ProductDto.class, responseContainer = "List")})
     public List<ProductDto> getProducts() {
@@ -39,17 +39,7 @@ public class ProductsController {
                 .collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)//, headers = {"Authorization: Basic"})
-    @ApiOperation(value = "Accepts a search string, returns all matching products.", notes = "Search string will be split at white spaces. All words in the search string must be found in a product description for the product to be included.")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = ProductDto.class, responseContainer = "List")})
-    @ResponseBody
-    public List<ProductDto> searchProducts(@RequestBody SearchDto search) {
-        return repo.search(search.getText()).stream()
-                .map(productEntity -> mapper.map(productEntity, ProductDto.class))
-                .collect(Collectors.toList());
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.POST)//, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @ApiOperation(value = "Creates a product", notes = "Returns the created product.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
@@ -67,7 +57,7 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping(value = "", method = RequestMethod.PUT)//, headers = {"Authorization=Basic dGVzdDp0ZXN0"})
+    @RequestMapping(value = "", method = RequestMethod.PATCH)
     @ApiOperation(value = "Edits the product details", notes = "Returns the product that has been edited.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = ProductDto.class),
@@ -90,7 +80,7 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)//, headers = {"Authorization=Basic dGVzdDp0ZXN0"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Returns the details of the product with the given id.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = ProductDto.class),
@@ -105,7 +95,7 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)//, headers = {"Authorization=Basic dGVzdDp0ZXN0"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Deletes the product with the given id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
@@ -126,6 +116,16 @@ public class ProductsController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return e.getMessage();
         }
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @ApiOperation(value = "Accepts a search string, returns all matching products.", notes = "Search string will be split at white spaces. All words in the search string must be found in a product description for the product to be included.")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = ProductDto.class, responseContainer = "List")})
+    @ResponseBody
+    public List<ProductDto> searchProducts(@RequestBody SearchDto search) {
+        return repo.search(search.getText()).stream()
+                .map(productEntity -> mapper.map(productEntity, ProductDto.class))
+                .collect(Collectors.toList());
     }
 
 }

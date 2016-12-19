@@ -31,6 +31,7 @@ import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,6 +59,17 @@ public class CategoryController {
                 .collect(Collectors.toList());
     }
 
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<CategoryDto> listCategory(@PathVariable long id) {
+        Category category = categoryRepository.findOne(id);
+        if(category != null) {
+            return ResponseEntity.ok().body(mapper.map(category, CategoryDto.class));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void addCategory(@RequestBody NewCategoryDto category) {
@@ -66,7 +78,7 @@ public class CategoryController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategory(@PathVariable Long id) {
+    public void deleteCategory(@PathVariable long id) {
         categoryRepository.delete(id);
     }
 }

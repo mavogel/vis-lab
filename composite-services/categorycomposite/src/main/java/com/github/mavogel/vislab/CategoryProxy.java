@@ -28,11 +28,11 @@ import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -60,8 +60,9 @@ public class CategoryProxy {
     }
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
-    public void deleteCategory(final long id) {
+    public void deleteCategory(@PathVariable long id) {
         this.categoryClient.deleteCategory(id);
+        // TODO delete all products as well
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.GET)
@@ -70,17 +71,33 @@ public class CategoryProxy {
     }
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
-    public ProductDto listProduct(final long id) {
+    public ProductDto listProduct(@PathVariable long id) {
         return this.productClient.listProduct(id);
     }
 
+    @RequestMapping(value = "/product/search", method = RequestMethod.GET)
+    public List<ProductDto> searchProducts(@RequestBody SearchDto search) {
+        return this.productClient.searchProducts(search);
+    }
+
     @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public void addProduct(@RequestBody NewProductDto newProduct) {
-        this.productClient.addProduct(newProduct);
+    public ResponseEntity<Void> addProduct(@RequestBody NewProductDto newProduct) {
+        List<CategoryDto> category = this.categoryClient.listCategory(newProduct.getCategory());
+        if (category != null) {
+            this.productClient.addProduct(newProduct);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @RequestMapping(value = "/product", method = RequestMethod.PATCH)
+    public ProductDto edit(@RequestBody ProductDto product) {
+        return productClient.edit(product);
     }
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
-    public void deleteProduct(long id) {
+    public void deleteProduct(@PathVariable  long id) {
         this.productClient.deleteProduct(id);
     }
 }

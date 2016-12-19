@@ -111,9 +111,23 @@ public class ApiDocumentation {
     }
 
     @Test
+    public void listCategory() throws Exception {
+        Category testCategory = createSampleCategory("TestCategory");
+
+        this.mockMvc.perform(get("/category/" + testCategory.getId()).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+                .andExpect(status().isOk())
+                .andDo(this.documentationHandler.document(
+                        responseFields(
+                                fieldWithPath("id").description("The category ID"),
+                                fieldWithPath("name").description("The name of the category")
+                        )
+                ));
+    }
+
+    @Test
     public void addCategory() throws Exception {
         Map<String, String> newCategory = new HashMap<>();
-        newCategory.put("id", "1");
         newCategory.put("name", "TestCategory");
 
         this.mockMvc.perform(post("/category")
@@ -123,6 +137,27 @@ public class ApiDocumentation {
                 .andExpect(status().isCreated())
                 .andDo(this.documentationHandler.document(
                         requestFields(
+                                fieldWithPath("name").description("The name of the category")
+                        )
+                ));
+    }
+
+    @Test
+    public void addAndReadCategory() throws Exception {
+        Map<String, String> newCategory = new HashMap<>();
+        newCategory.put("name", "TestCategory");
+
+        this.mockMvc.perform(post("/category")
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(newCategory)))
+                .andExpect(status().isCreated());
+
+        this.mockMvc.perform(get("/category/1").accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+                .andExpect(status().isOk())
+                .andDo(this.documentationHandler.document(
+                        responseFields(
                                 fieldWithPath("id").description("The category ID"),
                                 fieldWithPath("name").description("The name of the category")
                         )

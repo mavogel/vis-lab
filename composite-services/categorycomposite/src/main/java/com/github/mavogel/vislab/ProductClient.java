@@ -26,12 +26,14 @@ package com.github.mavogel.vislab;/*
 
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -46,8 +48,14 @@ public interface ProductClient {
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
     ProductDto listProduct(@PathVariable("id") long id);
 
+    @RequestMapping(value = "/product/search", method = RequestMethod.GET)
+    List<ProductDto> searchProducts(@RequestBody SearchDto search);
+
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     void addProduct(@RequestBody NewProductDto product);
+
+    @RequestMapping(value = "/product", method = RequestMethod.PATCH)
+    ProductDto edit(@RequestBody ProductDto product);
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
     void deleteProduct(@PathVariable("id") long id);

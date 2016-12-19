@@ -16,3 +16,15 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     metadataMap:
       instanceId: "${spring.application.name}:${random.value}"
+
+# see: https://stackoverflow.com/questions/28904247/zuul-timing-out-in-long-ish-requests
+ribbon:
+  readTimeout: 10000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 10000
