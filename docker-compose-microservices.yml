@@ -27,7 +27,7 @@ services:
      MYSQL_WEBSHOP_DB_USER: ${MYSQL_WEBSHOP_DB_USER}
      MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
    ports:
-     - "8080:8080"
+     - "8081:8080"
 
  productservice:
    depends_on:
@@ -43,7 +43,7 @@ services:
      MYSQL_WEBSHOP_DB_USER: ${MYSQL_WEBSHOP_DB_USER}
      MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
    ports:
-     - "8081:8080"
+     - "8082:8080"
 
  userservice:
    depends_on:
@@ -59,13 +59,13 @@ services:
      MYSQL_WEBSHOP_DB_USER: ${MYSQL_WEBSHOP_DB_USER}
      MYSQL_WEBSHOP_DB_PASSWORD: ${MYSQL_WEBSHOP_DB_PASSWORD}
    ports:
-     - "8082:8080"
+     - "8083:8080"
 
  categorycompositeservice:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-categorycompositeservice
    restart: always
    ports:
-     - "8083:8080"
+     - "8084:8080"
 
  discovery:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-discovery
@@ -79,8 +79,8 @@ services:
    ports:
      - "8088:8081"
 
-# dashboard:
-#   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-dashboard
-#   restart: always
-#   ports:
-#     - "9000:9000"
+ dashboard:
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-dashboard
+   restart: always
+   ports:
+     - "7979:7979"

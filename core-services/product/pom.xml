@@ -22,7 +22,7 @@
         <java.version>1.8</java.version>
         <!-- overwritten port number for the docker machine. Change to your needed
             port. -->
-        <docker.port>9005</docker.port>
+        <docker.port>8080</docker.port>
     </properties>
 
     <dependencies>
