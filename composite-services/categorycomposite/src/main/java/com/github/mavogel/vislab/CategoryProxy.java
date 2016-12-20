@@ -29,6 +29,9 @@ import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
+import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
+import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,9 +52,20 @@ public class CategoryProxy {
     @Autowired
     private ProductClient productClient;
 
+    @Autowired
+    private UserClient userClient;
+
+    /////////////////
+    // CATEGORY
+    /////////////////
     @RequestMapping(value = "/category", method = RequestMethod.GET)
-    public List<CategoryDto> listCategories() {
+    public ResponseEntity<List<CategoryDto>> listCategories() {
         return categoryClient.listCategories();
+    }
+
+    @RequestMapping(value = "/category/{id}", method = RequestMethod.GET)
+    public ResponseEntity<CategoryDto> listCategory(@PathVariable long id) {
+        return categoryClient.listCategory(id);
     }
 
     @RequestMapping(value = "/category", method = RequestMethod.POST)
@@ -61,7 +75,7 @@ public class CategoryProxy {
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
-        CategoryDto categoryToDelete = this.categoryClient.listCategory(id);
+        CategoryDto categoryToDelete = this.categoryClient.listCategory(id).getBody();
         if (categoryToDelete != null) {
             try {
                 this.productClient.allProductsByCategoryId(id)
@@ -76,6 +90,9 @@ public class CategoryProxy {
         }
     }
 
+    /////////////////
+    // PRODUCT
+    /////////////////
     @RequestMapping(value = "/product", method = RequestMethod.GET)
     public List<ProductDto> listProducts() {
         return this.productClient.listProducts();
@@ -93,7 +110,7 @@ public class CategoryProxy {
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     public ResponseEntity<Void> addProduct(@RequestBody NewProductDto newProduct) {
-        CategoryDto category = this.categoryClient.listCategory(newProduct.getCategory());
+        CategoryDto category = this.categoryClient.listCategory(newProduct.getCategory()).getBody();
         if (category != null) {
             this.productClient.addProduct(newProduct);
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -110,5 +127,33 @@ public class CategoryProxy {
     @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
     public void deleteProduct(@PathVariable long id) {
         this.productClient.deleteProduct(id);
+    }
+
+    /////////////////
+    // USER
+    /////////////////
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
+        return userClient.getUserByUsername(username);
+    }
+
+    @RequestMapping(value = "/user/exists/{name}", method = RequestMethod.GET)
+    public boolean doesUserAlreadyExist(@PathVariable String name) {
+        return userClient.doesUserAlreadyExist(name);
+    }
+
+    @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
+    public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
+        return userClient.getRoleByLevel(levelId);
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
+        return userClient.registerUser(userDto);
+    }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
+        return userClient.deleteUser(id);
     }
 }

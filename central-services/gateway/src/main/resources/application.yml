@@ -39,12 +39,12 @@ zuul:
       stripPrefix: false
       sensitiveHeaders:
     categorycomposite_product:
-          path: /product/**
-          serviceId: categorycomposite
-          stripPrefix: false
-          sensitiveHeaders:
-#    userservice:
-#      path: /userservice/**
-#      serviceId: userservice
-#      stripPrefix: false
-#      sensitiveHeaders:
+      path: /product/**
+      serviceId: categorycomposite
+      stripPrefix: false
+      sensitiveHeaders:
+    categorycomposite_user:
+      path: /user/**
+      serviceId: categorycomposite
+      stripPrefix: false
+      sensitiveHeaders:

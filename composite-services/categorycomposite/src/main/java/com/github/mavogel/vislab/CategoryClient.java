@@ -27,6 +27,7 @@ package com.github.mavogel.vislab;/*
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,15 +42,15 @@ import java.util.List;
 public interface CategoryClient {
 
     @RequestMapping(value = "/category", method = RequestMethod.GET)
-    List<CategoryDto> listCategories();
+    ResponseEntity<List<CategoryDto>> listCategories();
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.GET)
-    CategoryDto listCategory(@PathVariable("id") long id);
+    ResponseEntity<CategoryDto> listCategory(@PathVariable("id") long id);
 
     @RequestMapping(value = "/category", method = RequestMethod.POST)
-    void addCategory(@RequestBody NewCategoryDto newCategory);
+    ResponseEntity<Void> addCategory(@RequestBody NewCategoryDto newCategory);
 
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
-    void deleteCategory(@PathVariable("id") long id);
+    ResponseEntity<Void> deleteCategory(@PathVariable("id") long id);
 }

@@ -53,7 +53,7 @@ public class UserController {
     @Autowired
     private ModelMapper mapper;
 
-    @RequestMapping(value = "/{username}", method = RequestMethod.GET)//, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
         User username1 = userRepository.username(username);
@@ -64,13 +64,13 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET)//, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public boolean doesUserAlreadyExist(@PathVariable String name) {
         return HttpStatus.OK.equals(this.getUserByUsername(name).getStatusCode());
     }
 
-    @RequestMapping(value = "/level/{levelId}", method = RequestMethod.GET)//, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/level/{levelId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
         Role role = this.roleRepository.level(levelId);
@@ -81,7 +81,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)//, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
         try {
@@ -99,7 +99,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)//, headers = {"Authorization: Basic"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         if (userRepository.findOne(id) != null) {

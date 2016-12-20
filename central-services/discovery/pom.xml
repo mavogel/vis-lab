@@ -6,8 +6,8 @@
     <artifactId>discovery</artifactId>
     <packaging>jar</packaging>
 
-    <name>eureka</name>
-    <description>eureka server</description>
+    <name>discovery</name>
+    <description>eureka discovery server</description>
 
     <parent>
         <groupId>com.github.mavogel.vislab</groupId>
