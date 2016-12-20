@@ -54,12 +54,6 @@ public class CategoryProxy {
     @Autowired
     private ProductClient productClient;
 
-    @Autowired
-    private UserClient userClient;
-
-    /////////////////
-    // CATEGORY
-    /////////////////
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public ResponseEntity<List<CategoryDto>> listCategories() {
         return categoryClient.listCategories();
@@ -90,72 +84,5 @@ public class CategoryProxy {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }
-
-    /////////////////
-    // PRODUCT
-    /////////////////
-    @RequestMapping(value = "/product", method = RequestMethod.GET)
-    public List<ProductDto> listProducts() {
-        return this.productClient.listProducts();
-    }
-
-    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
-    public ProductDto listProduct(@PathVariable long id) {
-        return this.productClient.listProduct(id);
-    }
-
-    @RequestMapping(value = "/product/search", method = RequestMethod.GET)
-    public List<ProductDto> searchProducts(@RequestBody SearchDto search) {
-        return this.productClient.searchProducts(search);
-    }
-
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public ResponseEntity<Void> addProduct(@RequestBody NewProductDto newProduct) {
-        CategoryDto category = this.categoryClient.listCategory(newProduct.getCategory()).getBody();
-        if (category != null) {
-            this.productClient.addProduct(newProduct);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @RequestMapping(value = "/product", method = RequestMethod.PATCH)
-    public ProductDto edit(@RequestBody ProductDto product) {
-        return productClient.edit(product);
-    }
-
-    @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
-    public void deleteProduct(@PathVariable long id) {
-        this.productClient.deleteProduct(id);
-    }
-
-    /////////////////
-    // USER
-    /////////////////
-    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
-        return userClient.getUserByUsername(username);
-    }
-
-    @RequestMapping(value = "/user/exists/{name}", method = RequestMethod.GET)
-    public boolean doesUserAlreadyExist(@PathVariable String name) {
-        return userClient.doesUserAlreadyExist(name);
-    }
-
-    @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
-    public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
-        return userClient.getRoleByLevel(levelId);
-    }
-
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
-        return userClient.registerUser(userDto);
-    }
-
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-        return userClient.deleteUser(id);
     }
 }
