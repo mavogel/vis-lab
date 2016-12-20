@@ -38,12 +38,4 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         }
         return ret;
     }
-
-    @Override
-    public List<Product> findByCategoryId(final long categoryId) {
-        return ((List<Product>) repo.findAll()).stream()
-                .filter(product -> product.getCategoryId() == categoryId)
-                .collect(Collectors.toList());
-    }
-
 }

@@ -99,7 +99,7 @@ public class ProductsController {
     @ApiOperation(value = "Returns a list of all products of the given categoryId.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = ProductDto.class, responseContainer = "List")})
     public List<ProductDto> allProductsByCategoryId(@PathVariable long categoryId) {
-        return repo.findByCategoryId(categoryId).stream()
+        return repo.categoryId(categoryId).stream()
                 .map(productEntity -> mapper.map(productEntity, ProductDto.class))
                 .collect(Collectors.toList());
     }

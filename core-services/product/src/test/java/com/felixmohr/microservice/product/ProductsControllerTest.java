@@ -167,7 +167,7 @@ public class ProductsControllerTest {
         editedProduct.put("category", "0");
         editedProduct.put("details", "D2new");
 
-        this.mockMvc.perform(put("/product")
+        this.mockMvc.perform(patch("/product")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(editedProduct)))
                 .andExpect(status().isOk())
