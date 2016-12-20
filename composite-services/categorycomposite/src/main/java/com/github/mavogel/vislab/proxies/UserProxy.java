@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab;/*
+package com.github.mavogel.vislab.proxies;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,34 +24,55 @@ package com.github.mavogel.vislab;/*
  *  https://opensource.org/licenses/MIT
  */
 
+import com.github.mavogel.vislab.clients.CategoryClient;
+import com.github.mavogel.vislab.clients.ProductClient;
+import com.github.mavogel.vislab.clients.UserClient;
+import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
+import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
 import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
 import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
- * Created by mavogel on 12/20/16.
+ * Created by mavogel on 11/1/16.
  */
-@FeignClient("userservice")
-public interface UserClient {
+@RestController
+public class UserProxy {
+
+    @Autowired
+    private UserClient userClient;
 
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    ResponseEntity<UserDto> getUserByUsername(@PathVariable("username") String username);
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
+        return userClient.getUserByUsername(username);
+    }
 
     @RequestMapping(value = "/user/exists/{name}", method = RequestMethod.GET)
-    boolean doesUserAlreadyExist(@PathVariable("name") String name);
+    public boolean doesUserAlreadyExist(@PathVariable String name) {
+        return userClient.doesUserAlreadyExist(name);
+    }
 
     @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
-    ResponseEntity<RoleDto> getRoleByLevel(@PathVariable("levelId") int levelId);
+    public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
+        return userClient.getRoleByLevel(levelId);
+    }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
-    ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto);
+    public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
+        return userClient.registerUser(userDto);
+    }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUser(@PathVariable("id") long id);
+    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
+        return userClient.deleteUser(id);
+    }
 }

@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab;/*
+package com.github.mavogel.vislab.clients;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,8 +24,9 @@ package com.github.mavogel.vislab;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
-import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
+import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
+import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,24 +34,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
-
 /**
- * Created by mavogel on 12/19/16.
+ * Created by mavogel on 12/20/16.
  */
-@FeignClient("categoryservice")
-public interface CategoryClient {
+@FeignClient("userservice")
+public interface UserClient {
 
-    @RequestMapping(value = "/category", method = RequestMethod.GET)
-    ResponseEntity<List<CategoryDto>> listCategories();
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    ResponseEntity<UserDto> getUserByUsername(@PathVariable("username") String username);
 
-    @RequestMapping(value = "/category/{id}", method = RequestMethod.GET)
-    ResponseEntity<CategoryDto> listCategory(@PathVariable("id") long id);
+    @RequestMapping(value = "/user/exists/{name}", method = RequestMethod.GET)
+    boolean doesUserAlreadyExist(@PathVariable("name") String name);
 
-    @RequestMapping(value = "/category", method = RequestMethod.POST)
-    ResponseEntity<Void> addCategory(@RequestBody NewCategoryDto newCategory);
+    @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
+    ResponseEntity<RoleDto> getRoleByLevel(@PathVariable("levelId") int levelId);
 
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto);
 
-    @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteCategory(@PathVariable("id") long id);
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteUser(@PathVariable("id") long id);
 }

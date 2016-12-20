@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab;/*
+package com.github.mavogel.vislab.clients;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel

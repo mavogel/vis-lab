@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab;/*
+package com.github.mavogel.vislab.proxies;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2016 Manuel Vogel
@@ -24,6 +24,9 @@ package com.github.mavogel.vislab;/*
  *  https://opensource.org/licenses/MIT
  */
 
+import com.github.mavogel.vislab.clients.CategoryClient;
+import com.github.mavogel.vislab.clients.ProductClient;
+import com.github.mavogel.vislab.clients.UserClient;
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
@@ -43,8 +46,7 @@ import java.util.List;
  * Created by mavogel on 11/1/16.
  */
 @RestController
-@RequestMapping("")//category-proxy")
-public class CategoryProxy {
+public class ProductProxy {
 
     @Autowired
     private CategoryClient categoryClient;
@@ -52,47 +54,6 @@ public class CategoryProxy {
     @Autowired
     private ProductClient productClient;
 
-    @Autowired
-    private UserClient userClient;
-
-    /////////////////
-    // CATEGORY
-    /////////////////
-    @RequestMapping(value = "/category", method = RequestMethod.GET)
-    public ResponseEntity<List<CategoryDto>> listCategories() {
-        return categoryClient.listCategories();
-    }
-
-    @RequestMapping(value = "/category/{id}", method = RequestMethod.GET)
-    public ResponseEntity<CategoryDto> listCategory(@PathVariable long id) {
-        return categoryClient.listCategory(id);
-    }
-
-    @RequestMapping(value = "/category", method = RequestMethod.POST)
-    public void addCategory(@RequestBody NewCategoryDto newCategory) {
-        this.categoryClient.addCategory(newCategory);
-    }
-
-    @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
-        CategoryDto categoryToDelete = this.categoryClient.listCategory(id).getBody();
-        if (categoryToDelete != null) {
-            try {
-                this.productClient.allProductsByCategoryId(id)
-                        .forEach(product -> productClient.deleteProduct(product.getId()));
-                this.categoryClient.deleteCategory(id);
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    /////////////////
-    // PRODUCT
-    /////////////////
     @RequestMapping(value = "/product", method = RequestMethod.GET)
     public List<ProductDto> listProducts() {
         return this.productClient.listProducts();
@@ -127,33 +88,5 @@ public class CategoryProxy {
     @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
     public void deleteProduct(@PathVariable long id) {
         this.productClient.deleteProduct(id);
-    }
-
-    /////////////////
-    // USER
-    /////////////////
-    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
-        return userClient.getUserByUsername(username);
-    }
-
-    @RequestMapping(value = "/user/exists/{name}", method = RequestMethod.GET)
-    public boolean doesUserAlreadyExist(@PathVariable String name) {
-        return userClient.doesUserAlreadyExist(name);
-    }
-
-    @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
-    public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
-        return userClient.getRoleByLevel(levelId);
-    }
-
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
-        return userClient.registerUser(userDto);
-    }
-
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-        return userClient.deleteUser(id);
     }
 }
