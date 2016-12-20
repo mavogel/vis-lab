@@ -34,12 +34,22 @@ $ ./run_microservices.sh
 # for shutting down
 $ ./shutdown_microservices.sh
 ```
+## Useful links
+- Eureka service registry: `http://localhost:8761/`
+- Zuul Gateway routes: `http://localhost:8088/routes`
 
-Documentation
-- CategoryService: `http://localhost:8080/docs/api-guide.html`
+**Note**: run e.g. `curl -D- -X GET localhost:8088/category` first, so hystrix produces stream data
+- Local Monitoring Dashboard for Composite: `http://localhost:8084/hystrix` -> enter url `http://localhost:8080/hystrix.stream` 
+- Monitoring Dashboard Service: `http://localhost:7979/hystrix` -> enter url `http://categorycompositeservice:8080/hystrix.stream`
 
-**TODO**
-- push images to docker hub `mvn package docker:build -DpushImage` and create `mavogel` organisation
+## `curl` statements for testing:
+- `curl -D- -X GET localhost:8088/category`
+- `curl -D- -X GET localhost:8088/product`
+- `curl -D- -X GET localhost:8088/user/admin`
+
+### Documentation
+**TODO**: aggreate in Gateway
+- CategoryService: `http://localhost:8081/docs/api-guide.html`
 
 
 ### Notes

@@ -81,6 +81,8 @@ services:
 
  dashboard:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-dashboard
+   links:
+     - categorycompositeservice
    restart: always
    ports:
      - "7979:7979"
