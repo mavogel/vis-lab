@@ -53,17 +53,18 @@ public class CategoryController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> listCategories() {
-        return ((List<Category>) categoryRepository.findAll()).stream()
+    public ResponseEntity<List<CategoryDto>> listCategories() {
+        List<CategoryDto> categoryDtos = ((List<Category>) categoryRepository.findAll()).stream()
                 .map(categoryEntity -> mapper.map(categoryEntity, CategoryDto.class))
                 .collect(Collectors.toList());
+        return ResponseEntity.ok(categoryDtos);
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CategoryDto> listCategory(@PathVariable long id) {
         Category category = categoryRepository.findOne(id);
-        if(category != null) {
+        if (category != null) {
             return ResponseEntity.ok().body(mapper.map(category, CategoryDto.class));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -72,13 +73,23 @@ public class CategoryController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCategory(@RequestBody NewCategoryDto category) {
-        categoryRepository.save(new Category(category.getName()));
+    public ResponseEntity<Void> addCategory(@RequestBody NewCategoryDto category) {
+        try {
+            categoryRepository.save(new Category(category.getName()));
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategory(@PathVariable long id) {
-        categoryRepository.delete(id);
+    public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
+        try {
+            categoryRepository.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

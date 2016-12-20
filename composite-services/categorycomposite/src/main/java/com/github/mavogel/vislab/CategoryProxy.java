@@ -61,13 +61,18 @@ public class CategoryProxy {
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
-        try {
-            this.productClient.allProductsByCategoryId(id)
-                    .forEach(product -> productClient.deleteProduct(product.getId()));
-            this.categoryClient.deleteCategory(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        CategoryDto categoryToDelete = this.categoryClient.listCategory(id);
+        if (categoryToDelete != null) {
+            try {
+                this.productClient.allProductsByCategoryId(id)
+                        .forEach(product -> productClient.deleteProduct(product.getId()));
+                this.categoryClient.deleteCategory(id);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -88,7 +93,7 @@ public class CategoryProxy {
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     public ResponseEntity<Void> addProduct(@RequestBody NewProductDto newProduct) {
-        List<CategoryDto> category = this.categoryClient.listCategory(newProduct.getCategory());
+        CategoryDto category = this.categoryClient.listCategory(newProduct.getCategory());
         if (category != null) {
             this.productClient.addProduct(newProduct);
             return ResponseEntity.status(HttpStatus.CREATED).build();

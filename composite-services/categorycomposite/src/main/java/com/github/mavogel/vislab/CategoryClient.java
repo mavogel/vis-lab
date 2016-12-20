@@ -44,7 +44,7 @@ public interface CategoryClient {
     List<CategoryDto> listCategories();
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.GET)
-    List<CategoryDto> listCategory(@PathVariable("id") long id);
+    CategoryDto listCategory(@PathVariable("id") long id);
 
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     void addCategory(@RequestBody NewCategoryDto newCategory);
