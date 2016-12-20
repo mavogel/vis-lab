@@ -26,21 +26,20 @@ package com.github.mavogel.vislab.proxies;/*
 
 import com.github.mavogel.vislab.clients.CategoryClient;
 import com.github.mavogel.vislab.clients.ProductClient;
-import com.github.mavogel.vislab.clients.UserClient;
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
-import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
-import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
-import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
-import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
-import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
-import com.gitlab.mavogel.vislab.dtos.user.UserDto;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.sun.java.swing.plaf.windows.WindowsTreeUI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by mavogel on 11/1/16.
@@ -48,21 +47,42 @@ import java.util.List;
 @RestController
 public class CategoryProxy {
 
+    private static Map<Long, CategoryDto> CACHE = new LinkedHashMap<>();
+
     @Autowired
     private CategoryClient categoryClient;
 
     @Autowired
     private ProductClient productClient;
 
+    @HystrixCommand(fallbackMethod = "listCategoriesCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public ResponseEntity<List<CategoryDto>> listCategories() {
-        return categoryClient.listCategories();
+        ResponseEntity<List<CategoryDto>> categoriesToCache = categoryClient.listCategories();
+        categoriesToCache.getBody().forEach(c -> CACHE.put(c.getId(), c));
+        return categoriesToCache;
     }
 
+    private ResponseEntity<List<CategoryDto>> listCategoriesCache() {
+        return ResponseEntity.ok(CACHE.entrySet().stream().map(e -> e.getValue()).collect(Collectors.toList()));
+    }
+
+    @HystrixCommand(fallbackMethod = "listCategoryCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     @RequestMapping(value = "/category/{id}", method = RequestMethod.GET)
     public ResponseEntity<CategoryDto> listCategory(@PathVariable long id) {
-        return categoryClient.listCategory(id);
+        ResponseEntity<CategoryDto> categoryToCache = categoryClient.listCategory(id);
+        CACHE.put(categoryToCache.getBody().getId(), categoryToCache.getBody());
+        return categoryToCache;
     }
+
+    private ResponseEntity<CategoryDto> listCategoryCache(long id) {
+        return ResponseEntity.ok(CACHE.getOrDefault(id, new CategoryDto(1, "dummyCategory")));
+    }
+
 
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     public void addCategory(@RequestBody NewCategoryDto newCategory) {
