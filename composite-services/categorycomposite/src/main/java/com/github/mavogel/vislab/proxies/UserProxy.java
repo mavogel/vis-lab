@@ -24,14 +24,7 @@ package com.github.mavogel.vislab.proxies;/*
  *  https://opensource.org/licenses/MIT
  */
 
-import com.github.mavogel.vislab.clients.CategoryClient;
-import com.github.mavogel.vislab.clients.ProductClient;
 import com.github.mavogel.vislab.clients.UserClient;
-import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
-import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
-import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
-import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
-import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
 import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
 import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
@@ -43,10 +36,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Created by mavogel on 11/1/16.

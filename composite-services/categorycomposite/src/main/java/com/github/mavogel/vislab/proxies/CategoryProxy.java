@@ -30,7 +30,6 @@ import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.sun.java.swing.plaf.windows.WindowsTreeUI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

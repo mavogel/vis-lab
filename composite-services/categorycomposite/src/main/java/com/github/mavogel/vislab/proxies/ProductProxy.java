@@ -26,15 +26,10 @@ package com.github.mavogel.vislab.proxies;/*
 
 import com.github.mavogel.vislab.clients.CategoryClient;
 import com.github.mavogel.vislab.clients.ProductClient;
-import com.github.mavogel.vislab.clients.UserClient;
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
-import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
-import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
-import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
-import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
