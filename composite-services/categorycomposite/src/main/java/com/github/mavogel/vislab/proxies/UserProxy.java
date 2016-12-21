@@ -35,12 +35,18 @@ import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
 import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
 import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by mavogel on 11/1/16.
@@ -48,22 +54,38 @@ import java.util.List;
 @RestController
 public class UserProxy {
 
+    private static Map<Long, UserDto> USER_CACHE = new LinkedHashMap<>();
+    private static Map<Integer, RoleDto> ROLE_CACHE = new LinkedHashMap<>();
+
     @Autowired
     private UserClient userClient;
 
+    @HystrixCommand(fallbackMethod = "getUserByUsernameCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
-        return userClient.getUserByUsername(username);
+        ResponseEntity<UserDto> userByUsername = userClient.getUserByUsername(username);
+        USER_CACHE.put(userByUsername.getBody().getId(), userByUsername.getBody());
+        return userByUsername;
     }
 
+    @HystrixCommand(fallbackMethod = "doesUserAlreadyExistCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     @RequestMapping(value = "/user/exists/{name}", method = RequestMethod.GET)
-    public boolean doesUserAlreadyExist(@PathVariable String name) {
+    public ResponseEntity<Boolean> doesUserAlreadyExist(@PathVariable String name) {
         return userClient.doesUserAlreadyExist(name);
     }
 
+    @HystrixCommand(fallbackMethod = "getRoleByLevelCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
     public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
-        return userClient.getRoleByLevel(levelId);
+        ResponseEntity<RoleDto> roleByLevel = userClient.getRoleByLevel(levelId);
+        ROLE_CACHE.put(roleByLevel.getBody().getLevel(), roleByLevel.getBody());
+        return roleByLevel;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
@@ -74,5 +96,32 @@ public class UserProxy {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         return userClient.deleteUser(id);
+    }
+
+    /////////////////
+    // Fallbacks
+    /////////////////
+    private ResponseEntity<UserDto> getUserByUsernameCache(String username) {
+        Optional<UserDto> user = USER_CACHE.entrySet().stream()
+                .map(e -> e.getValue())
+                .findFirst();
+
+        if(user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+           return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    private ResponseEntity<Boolean> doesUserAlreadyExistCache(String name) {
+        if(getUserByUsername(name).getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.ok(Boolean.TRUE);
+        } else {
+            return ResponseEntity.ok(Boolean.FALSE);
+        }
+    }
+
+    private ResponseEntity<RoleDto> getRoleByLevelCache(int levelId) {
+        return ResponseEntity.ok(ROLE_CACHE.getOrDefault(levelId, new RoleDto(1, "user", levelId)));
     }
 }

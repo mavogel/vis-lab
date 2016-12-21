@@ -11,7 +11,7 @@ info "Check if ENV variables were set"
 
 #######
 info "Building microservices and docker images"
-mvn clean install -DskipTests
+mvn clean install #-DskipTests
 
 #######
 info "Building initialized MySQL Database image"

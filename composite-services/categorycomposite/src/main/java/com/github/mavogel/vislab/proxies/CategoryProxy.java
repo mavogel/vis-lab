@@ -65,10 +65,6 @@ public class CategoryProxy {
         return categoriesToCache;
     }
 
-    private ResponseEntity<List<CategoryDto>> listCategoriesCache() {
-        return ResponseEntity.ok(CACHE.entrySet().stream().map(e -> e.getValue()).collect(Collectors.toList()));
-    }
-
     @HystrixCommand(fallbackMethod = "listCategoryCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
@@ -77,10 +73,6 @@ public class CategoryProxy {
         ResponseEntity<CategoryDto> categoryToCache = categoryClient.listCategory(id);
         CACHE.put(categoryToCache.getBody().getId(), categoryToCache.getBody());
         return categoryToCache;
-    }
-
-    private ResponseEntity<CategoryDto> listCategoryCache(long id) {
-        return ResponseEntity.ok(CACHE.getOrDefault(id, new CategoryDto(1, "dummyCategory")));
     }
 
 
@@ -104,5 +96,18 @@ public class CategoryProxy {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    /////////////////
+    // Fallbacks
+    /////////////////
+    private ResponseEntity<List<CategoryDto>> listCategoriesCache() {
+        return ResponseEntity.ok(CACHE.entrySet().stream()
+                .map(e -> e.getValue())
+                .collect(Collectors.toList()));
+    }
+
+    private ResponseEntity<CategoryDto> listCategoryCache(long id) {
+        return ResponseEntity.ok(CACHE.getOrDefault(id, new CategoryDto(1, "dummyCategory")));
     }
 }

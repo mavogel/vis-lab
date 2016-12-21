@@ -35,12 +35,17 @@ import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
 import com.gitlab.mavogel.vislab.dtos.user.NewUserDto;
 import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by mavogel on 11/1/16.
@@ -48,25 +53,41 @@ import java.util.List;
 @RestController
 public class ProductProxy {
 
+    private static Map<Long, ProductDto> CACHE = new LinkedHashMap<>();
+
     @Autowired
     private CategoryClient categoryClient;
 
     @Autowired
     private ProductClient productClient;
 
+    @HystrixCommand(fallbackMethod = "listProductsCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     @RequestMapping(value = "/product", method = RequestMethod.GET)
     public List<ProductDto> listProducts() {
-        return this.productClient.listProducts();
+        List<ProductDto> productDtos = this.productClient.listProducts();
+        productDtos.forEach(p -> CACHE.put(p.getId(), p));
+        return productDtos;
     }
 
+    @HystrixCommand(fallbackMethod = "listProductCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
     public ProductDto listProduct(@PathVariable long id) {
-        return this.productClient.listProduct(id);
+        ProductDto productDto = this.productClient.listProduct(id);
+        return CACHE.put(productDto.getId(), productDto);
     }
 
+    @HystrixCommand(fallbackMethod = "searchProductsCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     @RequestMapping(value = "/product/search", method = RequestMethod.GET)
     public List<ProductDto> searchProducts(@RequestBody SearchDto search) {
-        return this.productClient.searchProducts(search);
+        List<ProductDto> productDtos = this.productClient.searchProducts(search);
+        productDtos.forEach(p -> CACHE.put(p.getId(), p));
+        return productDtos;
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
@@ -88,5 +109,25 @@ public class ProductProxy {
     @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
     public void deleteProduct(@PathVariable long id) {
         this.productClient.deleteProduct(id);
+    }
+
+    /////////////////
+    // Fallbacks
+    /////////////////
+    private ResponseEntity<List<ProductDto>> listProductsCache() {
+        return ResponseEntity.ok(CACHE.entrySet().stream()
+                .map(e -> e.getValue())
+                .collect(Collectors.toList()));
+    }
+
+    private ResponseEntity<ProductDto> listProductCache(long id) {
+        return ResponseEntity.ok(CACHE.getOrDefault(id, new ProductDto(id, "dummy", 1.00, "dummy details", 1l)));
+    }
+
+    private List<ProductDto> searchProductsCache(SearchDto search) {
+        return CACHE.entrySet().stream()
+                .map(p -> p.getValue())
+                .filter(p -> p.getDetails().contains(search.getText()))
+                .collect(Collectors.toList());
     }
 }
