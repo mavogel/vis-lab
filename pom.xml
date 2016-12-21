@@ -20,7 +20,7 @@
         <docker.image.prefix>${env.DOCKER_USER}</docker.image.prefix>
         <docker.project.image.prefix>${env.DOCKER_PROJECT_IMAGE_PREFIX}</docker.project.image.prefix>
         <docker-maven-plugin.version>0.17.1</docker-maven-plugin.version>
-        <!-- a default port for the docker vm. pls overwritte in your project pom -->
+        <!-- a default port for the docker vm. pls overwrite in your module pom -->
         <docker.port>80</docker.port>
     </properties>
 
