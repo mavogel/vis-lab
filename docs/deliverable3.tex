@@ -2,11 +2,48 @@
 \include{settings}
 
 \begin{document}
-	\createTitlepage{Deliverable 3 : Implementation of Microservices}
+	\createTitlepage{Deliverable 3 : Implementation of micro-services}
+	\tableofcontents
+	\newpage
+	
+	\section{Introduction}	
+	We used the Netflix stack provided by Spring Cloud, containing \texttt{Eureka} as service registry, \texttt{Zuul} as gateway, \texttt{Hystrix} for fallbacks of call failures and as implementation of the circuit-breaker pattern and its provides dashboard for analyzing the call times. Further more there is one composite service using \texttt{Feign} clients to map the call to the core services and \texttt{Ribbon} as load balancer. Additionally the core services, consisting of a product, category and user service, are all \texttt{Feign clients} and wrapped into Spring Boot Application. The all use the same \texttt{MySQL} database with the same schema as the Legacy web-shop did.
+	
+	This would allow a parallel usage of the legacy application and the micro-service infrastructure and a smooth shutting down of the old system.
+	
+	Each core-service is internally tested with integration tests using the provided \texttt{REST} API.
+	
+	Each service is wrapped into a separate \texttt{Docker} container, so the system can be deployed on any platform providing a docker environment. Each push to a branch will trigger an automated build at the ci platform \texttt{travis} running all tests. At the moment it is not configured that all the docker containers will be pushed to \texttt{docker hub} after a successful build, but it can be easily added.
+	
+	For local building and testing, separate build \texttt{bash} scripts are provided for chaining the needed commands and ensuring that all need tools and programs are installed on the machine.
+	
+	All the mentioned services and tools will be explained in more detail in the upcoming sections.
+	
+	\section{Docker}
+	All the services - central, composite and core - and the database are wrapped into Docker\footnote{\url{https://docker.com}} containers to ensure platform independence. Docker is the worlds leading software containerization platform. 
+	
+	\section{Buildscripts in \texttt{bash}}
+	
+	\section{CI with \texttt{travis}}
+	For a continuous building a verifying the built and internal testing of the microservices, the project will be built on every commit by the Continuous integration platform travis-ci\footnote{\url{https://travis-ci.org}}.
+	
+	We use the following configuration file which works if the is a \texttt{pom.xml} in the project root:
+	\begin{lstlisting}
+	sudo: required
+	services:
+	- docker
+	language: java
+	jdk: oraclejdk8
+	after_success:
+	- mvn docker:build
+	\end{lstlisting}
+	
+	As a next step (not added yet), the built docker images will be pushed to docker-hub\footnote{\url{https://docker-hub.io}} where they are available for pull from any remote server.
 	
 	\section{Central Services}
 	\subsection{Service Discovery - \texttt{Eureka}}
 	\subsection{API Gateway - \texttt{Zuul}}
+	\subsection{Dashboard - \texttt{Hystrix}}
 	\subsection{Shared Objects}
 	
 	\section{Composite Services}
@@ -18,25 +55,5 @@
 	\subsection{Product Service}
 	\subsection{User Service}
 	\subsection{\texttt{MySQL} - Database}
-		
-	\section{Docker}
-	All the services (central, composite and core) and the database are wrapped into Docker\footnote{\url{https://docker.com}} containers to ensure platform independency.
-	
-	\section{Buildscripts in \texttt{bash}}
-	
-	\section{CI with \texttt{travis}}
-	For a continuous building a verifying the built and internal testing of the microservices, the project will be built on every commit by the Continuous integration platform travis-ci\footnote{\url{https://travis-ci.org}}.
-	
-	\begin{lstlisting}
-sudo: required
-services:
-- docker
-language: java
-jdk: oraclejdk8
-after_success:
-- mvn docker:build
-	\end{lstlisting}
-	
-	As a next step, the built docker images will be pushed to docker-hub\footnote{\url{https://docker-hub.io}} where they are available for pull from any remote server.
 	
 \end{document}
