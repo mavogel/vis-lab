@@ -18,42 +18,128 @@
 	For local building and testing, separate build \texttt{bash} scripts are provided for chaining the needed commands and ensuring that all need tools and programs are installed on the machine.
 	
 	All the mentioned services and tools will be explained in more detail in the upcoming sections.
-	
+%%%%%
 	\section{Docker}
 	All the services - central, composite and core - and the database are wrapped into Docker\footnote{\url{https://docker.com}} containers to ensure platform independence. Docker is the worlds leading software containerization platform. 
-	
+%%%%%	
 	\section{Buildscripts in \texttt{bash}}
-	
+	To simplify the local build process for testing, we provide a \texttt{bash} script for setting up and shutting down the micro-services.
+	\begin{lstlisting}
+#######
+info "Building microservices and docker images"
+mvn clean install 
+
+#######
+info "Building initialized MySQL Database image"
+docker build -t ${MYSQL_WEBSHOP_DB_ADDR} \ 
+  -f ./LegacyWebShop/DockerfileMySQL \
+  ./LegacyWebShop
+
+#######
+# x: Compose all together
+docker-compose \
+  -f docker-compose-microservices.yml stop
+docker-compose \
+  -f docker-compose-microservices.yml rm
+
+info "Composing microservice containers"
+docker-compose \
+  -f docker-compose-microservices.yml \
+  up -d --remove-orphans	
+\end{lstlisting}
 	\section{CI with \texttt{travis}}
 	For a continuous building a verifying the built and internal testing of the microservices, the project will be built on every commit by the Continuous integration platform travis-ci\footnote{\url{https://travis-ci.org}}.
 	
 	We use the following configuration file which works if the is a \texttt{pom.xml} in the project root:
 	\begin{lstlisting}
-	sudo: required
-	services:
-	- docker
-	language: java
-	jdk: oraclejdk8
-	after_success:
-	- mvn docker:build
+sudo: required
+services:
+  - docker
+language: java
+jdk: oraclejdk8
+after_success:
+  - mvn docker:build
 	\end{lstlisting}
 	
 	As a next step (not added yet), the built docker images will be pushed to docker-hub\footnote{\url{https://docker-hub.io}} where they are available for pull from any remote server.
 	
 	\section{Central Services}
+	The central services are the registry for the services, the API gateway for routing and the dashboard for the health of the system and its internal calls.	
 	\subsection{Service Discovery - \texttt{Eureka}}
+	As discovery service for the services we use \texttt{Eureka} of the Netflix stack. It's a simple Spring Boot application with a \texttt{@EnableEurekaServer} annotation and the set up automatically. The service dashboard is available at \texttt{http://localhost:8761/}.
 	\subsection{API Gateway - \texttt{Zuul}}
+	As API gateway we use \texttt{Zuul} of the Netflix stack.  It's a simple Spring Boot application with a \texttt{@EnableSidecar} annotation, which includes among others the \texttt{@EnableZuulProxy} annotation. The following routes to the composite service are defined:	
+	\begin{lstlisting}
+zuul:
+  ignoredServices: '*'
+  host:
+  connect-timeout-millis: 20000
+  socket-timeout-millis: 20000
+  routes:
+    categorycomposite_category:
+      path: /category/**
+      serviceId: categorycomposite
+      stripPrefix: false
+      sensitiveHeaders:
+    categorycomposite_product:
+      path: /product/**
+      serviceId: categorycomposite
+      stripPrefix: false
+      sensitiveHeaders:
+    categorycomposite_user:
+      path: /user/**
+      serviceId: categorycomposite
+      stripPrefix: false
+      sensitiveHeaders:
+	\end{lstlisting}
+	After the service it up and running all the defined routes can be accesses through	\texttt{http://localhost:8088/routes}.
+
 	\subsection{Dashboard - \texttt{Hystrix}}
+	For monitoring the time for call through the chained micro-services we use the \texttt{Hystrix} dashboard.  It's a simple Spring Boot application with a
+	\texttt{@EnableHystrixDashboard} annotation. 
+
+	After the service it up and running the dashboard is accessible through \texttt{http://localhost:7979/hystrix}.
+
 	\subsection{Shared Objects}
+	The core and composite services shared objects, so called \textit{DTOs} (Data transfer objects) between them. We did not want to expose and propagate the internal entities of each core service along all micro-services. So all shared object are provided by this simple jar artifact. It's built before all other services.
 	
+%%%%%	
 	\section{Composite Services}
+	We only have one composite service at the moment until in the next iteration an authentication mechanism will be installed. Probably another composite service will be needed. 
+
 	\subsection{Category Composite}
-	Ribbon, Hystrix, Fallbacks
+	The category composite accumulates calls to the core services. It uses \texttt{Ribbon} as load balancer, \texttt{Hystrix} for fallbacks of failed calls and \texttt{Feign} for propagating calls to the core services and proxying its REST interfaces.
 	
+	Each proxy for a core service has an internal cache for already performed call. It is used when the underlying service is not available and a fallback is needed.
+	
+	Due to timeouts of the load balancer while performing \texttt{GET} and \texttt{POST} calls, the specific timeout had to be increased to avoid timeout failures. This was accomplished by the following configuration:
+    \begin{lstlisting}
+ribbon:
+  readTimeout: 10000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 10000
+    \end{lstlisting}
+%%%%%
 	\section{Core Services}
-	\subsection{Category Service}
-	\subsection{Product Service}
-	\subsection{User Service}
-	\subsection{\texttt{MySQL} - Database}
-	
+	The core services (one for category, product and user with is associated roles) provide access to the underlying database. At the moment only one database is used. They do no have any addition business logic. Each one is tested with integration tests against its REST interface.
+
+%%%%%
+   \section{Setup}
+   To set up the whole micro-service system the following step have to be performed:
+   \begin{enumerate}
+   	\item Install \texttt{maven}
+   	\item Install \texttt{docker} and \texttt{docker-compose}
+   	\item Run the following commands:
+	\begin{lstlisting}
+	$ source export_vars.sh
+	$ ./run_microservices.sh
+	\end{lstlisting}
+	\end{enumerate}
+ 
 \end{document}
