@@ -46,8 +46,11 @@ $ ./shutdown_microservices.sh
 
 ## `curl` statements for testing:
 - `curl -D- -X GET localhost:8088/category`
+- `curl 'http://localhost:8080/category' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"TestCategory"}'`
 - `curl -D- -X GET localhost:8088/product`
+- `curl 'http://localhost:8080/product' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"NewProduct", "price":"1.00", "category":"1", "details":"fancy details"}'`
 - `curl -D- -X GET localhost:8088/user/admin`
+- `curl 'http://localhost:8080/user' -i -X POST  -H 'Content-Type: application/json' -d '{"username":"jdoe", "firstname":"John", "lastname":"Doe", "password":"s3cr3t"}'`
 
 ### Documentation
 **TODO**: aggreate in Gateway

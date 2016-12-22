@@ -112,16 +112,16 @@ public class ProductProxy {
     /////////////////
     // Fallbacks
     /////////////////
-    private ResponseEntity<List<ProductDto>> listProductsCache() {
+    private List<ProductDto> listProductsCache() {
         LOG.info(">> listProductsCache from CACHE");
-        return ResponseEntity.ok(CACHE.entrySet().stream()
+        return CACHE.entrySet().stream()
                 .map(e -> e.getValue())
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
-    private ResponseEntity<ProductDto> listProductCache(long id) {
+    private ProductDto listProductCache(long id) {
         LOG.info(">> listProductCache id={} from CACHE", new Object[]{id});
-        return ResponseEntity.ok(CACHE.getOrDefault(id, new ProductDto(id, "dummy", 1.00, "dummy details", 1l)));
+        return CACHE.getOrDefault(id, new ProductDto(id, "dummy", 1.00, "dummy details", 1l));
     }
 
     private List<ProductDto> searchProductsCache(SearchDto search) {
