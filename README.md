@@ -31,6 +31,8 @@ and sets the user `tomcat` with password `admin` for the Management Console at [
 $ source export_vars.sh
 # Build all microservices, create docker images and start them
 $ ./run_microservices.sh
+# Check if all service are up
+$ docker-compose -f docker-compose-microservices.yml logs -tf
 # for shutting down
 $ ./shutdown_microservices.sh
 ```
@@ -46,11 +48,11 @@ $ ./shutdown_microservices.sh
 
 ## `curl` statements for testing:
 - `curl -D- -X GET localhost:8088/category`
-- `curl 'http://localhost:8080/category' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"TestCategory"}'`
+- `curl 'http://localhost:8088/category' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"TestCategory"}'`
 - `curl -D- -X GET localhost:8088/product`
-- `curl 'http://localhost:8080/product' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"NewProduct", "price":"1.00", "category":"1", "details":"fancy details"}'`
+- `curl 'http://localhost:8088/product' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"NewProduct", "price":"1.00", "category":"1", "details":"fancy details"}'`
 - `curl -D- -X GET localhost:8088/user/admin`
-- `curl 'http://localhost:8080/user' -i -X POST  -H 'Content-Type: application/json' -d '{"username":"jdoe", "firstname":"John", "lastname":"Doe", "password":"s3cr3t"}'`
+- `curl 'http://localhost:8088/user' -i -X POST  -H 'Content-Type: application/json' -d '{"username":"jdoe", "firstname":"John", "lastname":"Doe", "password":"s3cr3t"}'`
 
 ### Documentation
 **TODO**: aggreate in Gateway
