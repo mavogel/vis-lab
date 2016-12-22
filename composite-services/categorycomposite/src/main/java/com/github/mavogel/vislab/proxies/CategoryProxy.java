@@ -30,6 +30,8 @@ import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import com.gitlab.mavogel.vislab.dtos.category.NewCategoryDto;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +48,7 @@ import java.util.stream.Collectors;
 @RestController
 public class CategoryProxy {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CategoryProxy.class);
     private static Map<Long, CategoryDto> CACHE = new LinkedHashMap<>();
 
     @Autowired
@@ -101,12 +104,14 @@ public class CategoryProxy {
     // Fallbacks
     /////////////////
     private ResponseEntity<List<CategoryDto>> listCategoriesCache() {
+        LOG.info(">> listCategoriesCache from CACHE");
         return ResponseEntity.ok(CACHE.entrySet().stream()
                 .map(e -> e.getValue())
                 .collect(Collectors.toList()));
     }
 
     private ResponseEntity<CategoryDto> listCategoryCache(long id) {
+        LOG.info(">> listCategoryCache id={} from CACHE", new Object[] {id});
         return ResponseEntity.ok(CACHE.getOrDefault(id, new CategoryDto(1, "dummyCategory")));
     }
 }

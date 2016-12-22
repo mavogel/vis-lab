@@ -30,6 +30,8 @@ import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,7 @@ import java.util.Optional;
 @RestController
 public class UserProxy {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserProxy.class);
     private static Map<Long, UserDto> USER_CACHE = new LinkedHashMap<>();
     private static Map<Integer, RoleDto> ROLE_CACHE = new LinkedHashMap<>();
 
@@ -55,7 +58,7 @@ public class UserProxy {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
         ResponseEntity<UserDto> userByUsername = userClient.getUserByUsername(username);
         USER_CACHE.put(userByUsername.getBody().getId(), userByUsername.getBody());
         return userByUsername;
@@ -93,19 +96,21 @@ public class UserProxy {
     // Fallbacks
     /////////////////
     private ResponseEntity<UserDto> getUserByUsernameCache(String username) {
+        LOG.info(">> getUserByUsernameCache {} from CACHE", new Object[]{username});
         Optional<UserDto> user = USER_CACHE.entrySet().stream()
                 .map(e -> e.getValue())
                 .findFirst();
 
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
-           return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     private ResponseEntity<Boolean> doesUserAlreadyExistCache(String name) {
-        if(getUserByUsername(name).getStatusCode().is2xxSuccessful()) {
+        LOG.info(">> doesUserAlreadyExistCache {} from CACHE", new Object[]{name});
+        if (getUserByUsername(name).getStatusCode().is2xxSuccessful()) {
             return ResponseEntity.ok(Boolean.TRUE);
         } else {
             return ResponseEntity.ok(Boolean.FALSE);
@@ -113,6 +118,7 @@ public class UserProxy {
     }
 
     private ResponseEntity<RoleDto> getRoleByLevelCache(int levelId) {
+        LOG.info(">> getRoleByLevelCache {} from CACHE", new Object[]{levelId});
         return ResponseEntity.ok(ROLE_CACHE.getOrDefault(levelId, new RoleDto(1, "user", levelId)));
     }
 }

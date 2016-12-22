@@ -83,6 +83,7 @@ services:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-dashboard
    links:
      - categorycompositeservice
+     - gateway
    restart: always
    ports:
      - "7979:7979"

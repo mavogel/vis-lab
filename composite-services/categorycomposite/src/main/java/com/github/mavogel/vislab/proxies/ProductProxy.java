@@ -32,6 +32,8 @@ import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +50,7 @@ import java.util.stream.Collectors;
 @RestController
 public class ProductProxy {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ProductProxy.class);
     private static Map<Long, ProductDto> CACHE = new LinkedHashMap<>();
 
     @Autowired
@@ -110,16 +113,19 @@ public class ProductProxy {
     // Fallbacks
     /////////////////
     private ResponseEntity<List<ProductDto>> listProductsCache() {
+        LOG.info(">> listProductsCache from CACHE");
         return ResponseEntity.ok(CACHE.entrySet().stream()
                 .map(e -> e.getValue())
                 .collect(Collectors.toList()));
     }
 
     private ResponseEntity<ProductDto> listProductCache(long id) {
+        LOG.info(">> listProductCache id={} from CACHE", new Object[]{id});
         return ResponseEntity.ok(CACHE.getOrDefault(id, new ProductDto(id, "dummy", 1.00, "dummy details", 1l)));
     }
 
     private List<ProductDto> searchProductsCache(SearchDto search) {
+        LOG.info(">> searchProductsCache search={} from CACHE", new Object[]{search});
         return CACHE.entrySet().stream()
                 .map(p -> p.getValue())
                 .filter(p -> p.getDetails().contains(search.getText()))

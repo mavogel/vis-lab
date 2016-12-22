@@ -40,7 +40,9 @@ $ ./shutdown_microservices.sh
 
 **Note**: run e.g. `curl -D- -X GET localhost:8088/category` first, so hystrix produces stream data
 - Local Monitoring Dashboard for Composite: `http://localhost:8084/hystrix` -> enter url `http://localhost:8080/hystrix.stream` 
-- Monitoring Dashboard Service: `http://localhost:7979/hystrix` -> enter url `http://categorycompositeservice:8080/hystrix.stream`
+- Monitoring Dashboard Service: `http://localhost:7979/hystrix` 
+  - cat comp: `http://categorycompositeservice:8080/hystrix.stream`
+  - gateway: `http://gateway:8081/hystrix.stream`
 
 ## `curl` statements for testing:
 - `curl -D- -X GET localhost:8088/category`

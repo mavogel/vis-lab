@@ -28,3 +28,6 @@ hystrix:
           strategy: THREAD
           thread:
             timeoutInMilliseconds: 10000
+
+# Logging
+logging.level.com.github.mavogel.vislab: INFO
