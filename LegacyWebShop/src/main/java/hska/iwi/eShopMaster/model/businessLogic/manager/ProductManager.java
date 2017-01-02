@@ -10,7 +10,7 @@ public interface ProductManager {
 
 	public Product getProductById(int id);
 
-	public Product getProductByName(String name);
+	//public Product getProductByName(String name);
 
 	public int addProduct(String name, double price, int categoryId, String details);
 

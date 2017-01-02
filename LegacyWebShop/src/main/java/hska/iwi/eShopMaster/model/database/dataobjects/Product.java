@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import hska.iwi.eShopMaster.model.database.dataAccessObjects.CategoryDAO;
+
 /**
  * This class contains details about products.
  */
@@ -31,6 +33,8 @@ public class Product implements java.io.Serializable {
 
 	@Column(name = "price")
 	private double price;
+	
+	private CategoryDAO categoryDAO;
 
 	
 	@ManyToOne
@@ -41,15 +45,31 @@ public class Product implements java.io.Serializable {
 	private String details;
 
 	public Product() {
+		this.categoryDAO = new CategoryDAO();
+	}
+	
+	public Product(ProductDTO dto) {
+		this.categoryDAO = new CategoryDAO();
+		this.name = dto.getName();
+		this.price = dto.getPrice();
+		this.details = dto.getDetails();
+		this.id = dto.getId();
+		if (dto.getCategory() > 0) {
+			this.category = categoryDAO.getObjectById((int) dto.getCategory());
+		} else if (dto.getCategoryId() > 0) {
+			this.category = categoryDAO.getObjectById((int) dto.getCategoryId());
+		}
 	}
 
 	public Product(String name, double price, Category category) {
+		this.categoryDAO = new CategoryDAO();
 		this.name = name;
 		this.price = price;
 		this.category = category;
 	}
 
 	public Product(String name, double price, Category category, String details) {
+		this.categoryDAO = new CategoryDAO();
 		this.name = name;
 		this.price = price;
 		this.category = category;

@@ -37,7 +37,7 @@ public class UserManagerImpl implements UserManager {
 	public boolean deleteUserById(int id) {
 		User user = new User();
 		user.setId(id);
-		helper.deleteObject(user);
+		//helper.deleteObject(user);
 		return true;
 	}
 

@@ -21,11 +21,11 @@ public class CategoryManagerImpl implements CategoryManager{
 	public Category getCategory(int id) {
 		return helper.getObjectById(id);
 	}
-
+/*
 	public Category getCategoryByName(String name) {
 		return helper.getObjectByName(name);
 	}
-
+*/
 	public void addCategory(String name) {
 		Category cat = new Category(name);
 		helper.saveObject(cat);

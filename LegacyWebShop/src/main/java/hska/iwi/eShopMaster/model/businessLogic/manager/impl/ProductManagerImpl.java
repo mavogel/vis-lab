@@ -27,11 +27,11 @@ public class ProductManagerImpl implements ProductManager {
 	public Product getProductById(int id) {
 		return helper.getObjectById(id);
 	}
-
+/*
 	public Product getProductByName(String name) {
 		return helper.getObjectByName(name);
 	}
-	
+	*/
 	public int addProduct(String name, double price, int categoryId, String details) {
 		int productId = -1;
 		

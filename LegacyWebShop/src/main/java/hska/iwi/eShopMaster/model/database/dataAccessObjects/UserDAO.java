@@ -2,40 +2,49 @@ package hska.iwi.eShopMaster.model.database.dataAccessObjects;
 
 import java.util.List;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
-import hska.iwi.eShopMaster.model.database.GenericHibernateDAO;
+import hska.iwi.eShopMaster.model.database.dataobjects.Role;
 import hska.iwi.eShopMaster.model.database.dataobjects.User;
 import hska.iwi.eShopMaster.model.sessionFactory.util.HibernateUtil;
 
-public class UserDAO extends GenericHibernateDAO<User, Integer> {
+public class UserDAO { 
+	
+	private String baseUrl = "http://localhost:8088/user/";
+	private Client client;
+	
+	public UserDAO() {
+		client = ClientBuilder.newClient();
+	}
 
+	public void saveObject(User user) {
+		WebTarget webTarget = client.target(baseUrl).path("");
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(user, MediaType.APPLICATION_JSON));
+		System.out.println("Registering user status " + response.getStatus());
+	}
+	
 	public User getUserByUsername(String name) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.getCurrentSession();
-		try
-		{
-			User user = null;
-			session.beginTransaction();
-            Criteria crit = session.createCriteria(User.class);
-            crit.add(Restrictions.eq("username",name));
-            List<User> resultList = crit.list();
-            if (resultList.size() > 0) {
-            	user = (User) crit.list().get(0);
-            }
-            session.getTransaction().commit();
-            return user;
-		}
-		catch (HibernateException e)
-		{
-			System.out.println("Hibernate Exception" + e.getMessage());
-			session.getTransaction().rollback();
-			throw new RuntimeException(e);
-		}
+		WebTarget webTarget = client.target(baseUrl).path(name);
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+		User u = response.readEntity(User.class);
+		System.out.println("Getting user by name " + response.getStatus());
+		return u;
 	}
 
 

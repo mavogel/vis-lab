@@ -25,7 +25,7 @@ public class Role implements java.io.Serializable {
 	private int id;
 
 	@Column(name = "type")
-	private String typ;
+	private String type;
 	
 	
 	@Column(name = "level1")
@@ -34,8 +34,8 @@ public class Role implements java.io.Serializable {
 	public Role() {
 	}
 
-	public Role(String typ, int level) {
-		this.typ = typ;
+	public Role(String type, int level) {
+		this.type = type;
 		this.level = level;
 	}
 
@@ -47,12 +47,12 @@ public class Role implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public String getTyp() {
-		return this.typ;
+	public String getType() {
+		return this.type;
 	}
 
-	public void setTyp(String typ) {
-		this.typ = typ;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public int getLevel() {
