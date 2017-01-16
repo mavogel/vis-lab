@@ -1,11 +1,12 @@
-server:
-  port: 8080
 spring:
   application:
-    name: categorycomposite
-    jackson:
-        serialization:
-          indent_output: true
+    name: dummy-service
+
+# Define the port where the Widget Foundry server would be running
+server:
+  port: 8870
+
+# Define the Eureka server that handles service registration
 eureka:
   client:
     serviceUrl:
@@ -17,21 +18,7 @@ eureka:
     metadataMap:
       instanceId: "${spring.application.name}:${random.value}"
 
-# see: https://stackoverflow.com/questions/28904247/zuul-timing-out-in-long-ish-requests
-ribbon:
-  readTimeout: 10000
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          strategy: THREAD
-          thread:
-            timeoutInMilliseconds: 10000
-
-# Logging
-logging.level.com.github.mavogel.vislab: INFO
-
+# Disable spring basic authentication security
 security:
   basic:
     enabled: false

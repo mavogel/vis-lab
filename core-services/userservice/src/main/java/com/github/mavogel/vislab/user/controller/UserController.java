@@ -81,7 +81,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
         try {

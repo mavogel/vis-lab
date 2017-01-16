@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: uaa-service
+
+# Define the port where the UAA server would be running
+server:
+  port: 8769
+  # Use different context-path to avoid session cookie overlapping
+  context-path: /uaa
+  use-forward-headers: false
+
+# Define the Eureka server that handles service registration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/
+    fetch-registry: true
+  instance:
+    preferIpAddress: true
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+    leaseRenewalIntervalInSeconds: 5
+    metadataMap:
+      instanceId: "${spring.application.name}:${random.value}"
+
+# Define security
+security:
+  basic:
+    enabled: false
+  ignored: /css/**,/js/**,/favicon.ico,/webjars/**
+
+logging:
+  level.org.springframework.security: DEBUG

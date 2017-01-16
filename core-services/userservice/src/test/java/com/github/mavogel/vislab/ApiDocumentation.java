@@ -158,7 +158,7 @@ public class ApiDocumentation {
         newRole.put("level", "1");
         newUser.put("role", newRole);
 
-        this.mockMvc.perform(post("/user")
+        this.mockMvc.perform(post("/user/register")
                 .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(newUser)))

@@ -99,7 +99,7 @@ public class UserControllerTest {
         newUser.put("lastname", "doe");
         newUser.put("password", "acbd");
 
-        this.mockMvc.perform(post("/user")
+        this.mockMvc.perform(post("/user/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().isCreated())

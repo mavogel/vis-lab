@@ -21,10 +21,13 @@ function info () {
 ###################
 ## Go woop woop
 ###################
-# 1: Check for required deps in the $PATH
 info "Check for needed binaries in PATH";
 BINS_TO_CHECK=( mvn docker docker-compose )
 for BIN in ${BINS_TO_CHECK[@]}; do
   command -v $BIN >/dev/null 2>&1 || { echo >&2 "I require '$BIN' but it's not installed.  Aborting."; exit 1; };
 done
+echo "-> Fine √"
+
+info "Checking if docker is running";
+docker ps
 echo "-> Fine √"

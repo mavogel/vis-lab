@@ -73,17 +73,29 @@ services:
    ports:
      - "8761:8761"
 
- gateway:
-   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-gateway
+ api-gateway:
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-api-gateway
    restart: always
    ports:
-     - "8088:8081"
+     - "8765:8765"
 
  dashboard:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-dashboard
    links:
      - categorycompositeservice
-     - gateway
+     - api-gateway:gateway
    restart: always
    ports:
      - "7979:7979"
+
+ uaa-service:
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-uaa-service
+   restart: always
+   ports:
+     - "8769:8769"
+
+ dummy-service:
+   image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-dummy-service
+   restart: always
+   ports:
+     - "8870:8870"

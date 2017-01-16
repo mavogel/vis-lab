@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.2.RELEASE</version>
+        <version>1.4.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -30,9 +30,11 @@
         <module>core-services/product</module>
         <module>core-services/userservice</module>
         <module>composite-services/categorycomposite</module>
+        <module>composite-services/dummy-service</module>
         <module>central-services/discovery</module>
-        <module>central-services/gateway</module>
         <module>central-services/dashboard</module>
+        <module>central-services/uaa-service</module>
+        <module>central-services/api-gateway</module>
     </modules>
 
     <dependencies>
@@ -50,11 +52,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--ATM-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-config</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>

@@ -49,7 +49,7 @@ public interface UserClient {
     @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
     ResponseEntity<RoleDto> getRoleByLevel(@PathVariable("levelId") int levelId);
 
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto);
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)

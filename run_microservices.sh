@@ -18,9 +18,9 @@ info "Building initialized MySQL Database image"
 docker build -t ${MYSQL_WEBSHOP_DB_ADDR} -f ./LegacyWebShop/DockerfileMySQL ./LegacyWebShop
 
 #######
-# x: Compose all together
-docker-compose -f docker-compose-microservices.yml stop
-docker-compose -f docker-compose-microservices.yml rm
+info "Stopping and removing old containers"
+docker-compose -f docker-compose-microservices.yml stop && docker-compose -f docker-compose-microservices.yml rm -f
 
+#######
 info "Composing microservice containers"
-docker-compose -f docker-compose-microservices.yml up -d --remove-orphans
+docker-compose -f docker-compose-microservices.yml up -d --remove-orphans && docker-compose -f docker-compose-microservices.yml logs -tf
