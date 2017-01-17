@@ -45,16 +45,30 @@ $ ./shutdown_microservices.sh
 - Local Monitoring Dashboard for Composite: `http://localhost:8084/hystrix` -> enter url `http://localhost:8765/hystrix.stream` 
 - Monitoring Dashboard Service: `http://localhost:7979/hystrix` 
   - cat comp: `http://categorycompositeservice:8080/hystrix.stream`
-  - gateway: `http://gateway:8081/hystrix.stream`
+  - gateway: `http://api-gateway:8081/hystrix.stream`
 
 ## `curl` statements for testing:
-**TODO**: login first
-- `curl -D- -X GET localhost:8765/category`
+1. Obtain the access token and refresh token via one of the 3 equal methods
+  - `curl -v --insecure -H "Authorization: Basic $(echo -n 'acme:acmesecret' | base64)" http://localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
+  - `curl -v --insecure -u acme:acmesecret http://localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
+  - `curl -v --insecure http://acme:acmesecret@localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
+  
+2. Save the obtained access token in the `ACCESS_TOKEN` env var:
+`export ACCESS_TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0ODQ0ODExM...`
+
+3. Perform requests
+- `curl -v -H 'Content-type: application/json' -H "Authorization: Bearer $ACCESS_TOKEN" http://localhost:8765/category`
 - `curl 'http://localhost:8765/category' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"TestCategory"}'`
 - `curl -D- -X GET localhost:8765/product`
 - `curl 'http://localhost:8765/product' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"NewProduct", "price":"1.00", "category":"1", "details":"fancy details"}'`
 - `curl -D- -X GET localhost:8765/user/admin`
 - `curl 'http://localhost:8765/user' -i -X POST  -H 'Content-Type: application/json' -d '{"username":"jdoe", "firstname":"John", "lastname":"Doe", "password":"s3cr3t"}'`
+
+## Debugging:
+### Check MySQL contents
+- Connect to container: `docker exec -it <#containerId> bash`
+- Connect to db: `mysql -h localhost -D webshop -u webshopuser -p` -> password: `240b2c6d58ff2ce2f508b49f`
+
 
 ### API Documentation
 **TODO**: aggregate docs in Gateway

@@ -103,8 +103,7 @@ public class ApiDocumentation {
         Role role = roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()));
         User user = userRepository.save(new User("jdoe", "john", "doe", "acbd", role));
 
-        this.mockMvc.perform(get("/user/" + user.getUsername()).accept(MediaType.APPLICATION_JSON)
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+        this.mockMvc.perform(get("/user/" + user.getUsername()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(
@@ -120,8 +119,7 @@ public class ApiDocumentation {
 
     @Test
     public void doesUserAlreadyExist() throws Exception {
-        this.mockMvc.perform(get("/user/exists/jdoe").accept(MediaType.APPLICATION_JSON)
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+        this.mockMvc.perform(get("/user/exists/jdoe").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -129,8 +127,7 @@ public class ApiDocumentation {
     public void getRoleByLevel() throws Exception {
         Role role = roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()));
 
-        this.mockMvc.perform(get("/user/level/" + role.getLevel()).accept(MediaType.APPLICATION_JSON)
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+        this.mockMvc.perform(get("/user/level/" + role.getLevel()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(
@@ -147,35 +144,23 @@ public class ApiDocumentation {
         roleRepository.save(initRole);
 
         Map<String, Object> newUser = new HashMap<>();
-        newUser.put("id", "1");
         newUser.put("username", "jdoe");
         newUser.put("firstname", "John");
         newUser.put("lastname", "Doe");
         newUser.put("password", "sdkfjld%3§");
-        Map<String, String> newRole = new HashMap<>();
-        newRole.put("id", "1");
-        newRole.put("type", "roletype");
-        newRole.put("level", "1");
-        newUser.put("role", newRole);
 
         this.mockMvc.perform(post("/user/register")
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().isCreated())
                 .andDo(this.documentationHandler.document(
                         requestFields(
-                                fieldWithPath("id").description("The user ID"),
                                 fieldWithPath("username").description("The name of the user"),
                                 fieldWithPath("firstname").description("The firstname of the user"),
                                 fieldWithPath("lastname").description("The lastname of the user"),
-                                fieldWithPath("password").description("The password of the user"),
-                                fieldWithPath("role").description("The role of the user")
+                                fieldWithPath("password").description("The password of the user")
                         )
                 ));
-
-        userRepository.delete(1L);
-        roleRepository.delete(1L);
     }
 
     @Test
@@ -183,7 +168,6 @@ public class ApiDocumentation {
         User originalUser = createSampleUser("jdoe", "John", "Doe");
 
         this.mockMvc.perform(delete("/user/" + originalUser.getId())
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }

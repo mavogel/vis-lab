@@ -11,11 +11,11 @@ info "Check if ENV variables were set"
 
 #######
 info "Building microservices and docker images"
-mvn clean install #-DskipTests
+#mvn clean install #-DskipTests
 
 #######
 info "Building new version of legacy webshop"
-cd LegacyWebShop_Micro && mvn clean package && cd ..
+#cd LegacyWebShop_Micro && mvn clean package && cd ..
 
 #######
 info "Building initialized MySQL Database image"
