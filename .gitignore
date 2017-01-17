@@ -14,13 +14,24 @@ hs_err_pid*
 
 .idea
 *.iml
+**/.DS_Store
 
 # Project specific
 LegacyWebShop/diagrams
 LegacyWebShop/.idea
+LegacyWebShop/.settings
+LegacyWebShop/.project
+LegacyWebShop/.classpath
 LegacyWebShop/*.iml
 LegacyWebShop/target
 .data
+LegacyWebShop_Micro/diagrams
+LegacyWebShop_Micro/.idea
+LegacyWebShop_Micro/.settings
+LegacyWebShop_Micro/.project
+LegacyWebShop_Micro/.classpath
+LegacyWebShop_Micro/*.iml
+LegacyWebShop_Micro/target
 
 core-services/**/target
 core-services/**/.idea

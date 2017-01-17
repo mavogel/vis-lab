@@ -23,7 +23,6 @@ and sets the user `tomcat` with password `admin` for the Management Console at [
 - Sets up both containers and make the web app available under [http://localhost:8888/EShop-1.0.0/](http://localhost:8888/EShop-1.0.0/)
 
 ### Microservice Architecture
-**DRAFT:**
 - Start Docker daemon
 - Check out the project and simply run the script:
 ```bash
@@ -31,32 +30,35 @@ and sets the user `tomcat` with password `admin` for the Management Console at [
 $ source export_vars.sh
 # Build all microservices, create docker images and start them
 $ ./run_microservices.sh
-# Check if all service are up
-$ docker-compose -f docker-compose-microservices.yml logs -tf
+```
+- Access the new webshop via `http://localhost:8899/EShop-Micro-2.0.0/`
+
+```bash
 # for shutting down
 $ ./shutdown_microservices.sh
 ```
 ## Useful links
 - Eureka service registry: `http://localhost:8761/`
-- Zuul Gateway routes: `http://localhost:8088/routes`
+- Zuul Gateway routes: `http://localhost:8765/routes`
 
-**Note**: run e.g. `curl -D- -X GET localhost:8088/category` first, so hystrix produces stream data
-- Local Monitoring Dashboard for Composite: `http://localhost:8084/hystrix` -> enter url `http://localhost:8080/hystrix.stream` 
+**Note**: run e.g. `curl -D- -X GET localhost:8765/category` first, so hystrix produces stream data
+- Local Monitoring Dashboard for Composite: `http://localhost:8084/hystrix` -> enter url `http://localhost:8765/hystrix.stream` 
 - Monitoring Dashboard Service: `http://localhost:7979/hystrix` 
   - cat comp: `http://categorycompositeservice:8080/hystrix.stream`
   - gateway: `http://gateway:8081/hystrix.stream`
 
 ## `curl` statements for testing:
-- `curl -D- -X GET localhost:8088/category`
-- `curl 'http://localhost:8088/category' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"TestCategory"}'`
-- `curl -D- -X GET localhost:8088/product`
-- `curl 'http://localhost:8088/product' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"NewProduct", "price":"1.00", "category":"1", "details":"fancy details"}'`
-- `curl -D- -X GET localhost:8088/user/admin`
-- `curl 'http://localhost:8088/user' -i -X POST  -H 'Content-Type: application/json' -d '{"username":"jdoe", "firstname":"John", "lastname":"Doe", "password":"s3cr3t"}'`
+**TODO**: login first
+- `curl -D- -X GET localhost:8765/category`
+- `curl 'http://localhost:8765/category' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"TestCategory"}'`
+- `curl -D- -X GET localhost:8765/product`
+- `curl 'http://localhost:8765/product' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"NewProduct", "price":"1.00", "category":"1", "details":"fancy details"}'`
+- `curl -D- -X GET localhost:8765/user/admin`
+- `curl 'http://localhost:8765/user' -i -X POST  -H 'Content-Type: application/json' -d '{"username":"jdoe", "firstname":"John", "lastname":"Doe", "password":"s3cr3t"}'`
 
-### Documentation
-**TODO**: aggreate in Gateway
-- CategoryService: `http://localhost:8081/docs/api-guide.html`
+### API Documentation
+**TODO**: aggregate docs in Gateway
+- CategoryService: `http://localhost:8765/docs/api-guide.html`
 
 
 ### Notes
