@@ -19,7 +19,7 @@ eureka:
 
 # see: https://stackoverflow.com/questions/28904247/zuul-timing-out-in-long-ish-requests
 ribbon:
-  readTimeout: 10000
+  readTimeout: 25000
 hystrix:
   command:
     default:
@@ -27,7 +27,7 @@ hystrix:
         isolation:
           strategy: THREAD
           thread:
-            timeoutInMilliseconds: 10000
+            timeoutInMilliseconds: 25000
 
 # Logging
 logging.level.com.github.mavogel.vislab: INFO

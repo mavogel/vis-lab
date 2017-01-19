@@ -23,7 +23,7 @@ eureka:
       instanceId: "${spring.application.name}:${random.value}"
 
 ribbon:
-  readTimeout: 10000
+  readTimeout: 25000
   eureka:
     enabled: true
 # see: https://stackoverflow.com/questions/28904247/zuul-timing-out-in-long-ish-requests
@@ -34,7 +34,7 @@ hystrix:
         isolation:
           strategy: THREAD
           thread:
-            timeoutInMilliseconds: 10000
+            timeoutInMilliseconds: 25000
 
 zuul:
   routes:

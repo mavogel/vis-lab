@@ -4,7 +4,6 @@ services:
    image: web-shop-db-image
    volumes:
      - "./.data/db:/var/lib/mysql"
-   restart: always
    environment:
      MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
      MYSQL_DATABASE: ${MYSQL_WEBSHOP_DB_DATABASE}
@@ -19,7 +18,6 @@ services:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-categoryservice
    links:
      - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
-   restart: always
    environment:
      MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
      MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
@@ -35,7 +33,6 @@ services:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-productservice
    links:
      - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
-   restart: always
    environment:
      MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
      MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
@@ -51,7 +48,6 @@ services:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-userservice
    links:
      - webshop-db:${MYSQL_WEBSHOP_DB_ADDR}
-   restart: always
    environment:
      MYSQL_WEBSHOP_DB_ADDR: ${MYSQL_WEBSHOP_DB_ADDR}
      MYSQL_WEBSHOP_DB_PORT: ${MYSQL_WEBSHOP_DB_PORT}
@@ -63,19 +59,16 @@ services:
 
  categorycompositeservice:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-categorycompositeservice
-   restart: always
    ports:
      - "8084:8080"
 
  discovery:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-discovery
-   restart: always
    ports:
      - "8761:8761"
 
  api-gateway:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-api-gateway
-   restart: always
    ports:
      - "8765:8765"
 
@@ -84,25 +77,21 @@ services:
    links:
      - categorycompositeservice
      - api-gateway
-   restart: always
    ports:
      - "7979:7979"
 
  uaa-service:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-uaa-service
-   restart: always
    ports:
      - "8769:8769"
 
  dummy-service:
    image: ${DOCKER_USER}/${DOCKER_PROJECT_IMAGE_PREFIX}-dummy-service
-   restart: always
    ports:
      - "8870:8870"
 
  legacywebshop-micro:
    image: tomcat:8.0
-   restart: always
    volumes:
      - ./LegacyWebShop_Micro/target/EShop-Micro-2.0.0.war:/usr/local/tomcat/webapps/EShop-Micro-2.0.0.war
      - ./LegacyWebShop_Micro/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
@@ -110,3 +99,14 @@ services:
      - api-gateway
    ports:
      - "8899:8080"
+
+ legacywebshop:
+   image: tomcat:8.0
+   links:
+     - webshop-db:web-shop-db-image
+   volumes:
+     - ./LegacyWebShop/target/EShop-1.0.0.war:/usr/local/tomcat/webapps/EShop-1.0.0.war
+     - ./LegacyWebShop/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+   ports:
+     - "8888:8080"
+   restart: always

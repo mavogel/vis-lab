@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * This class contains the users of the webshop.
  */
 @Entity
-@Table(name = "Customer")
+@Table(name = "customer")
 public class User implements java.io.Serializable {
 
 	/**

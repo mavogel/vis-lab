@@ -62,7 +62,7 @@ $ ./shutdown_microservices.sh
 - `curl -D- -X GET localhost:8765/product`
 - `curl 'http://localhost:8765/product' -i -X POST  -H 'Content-Type: application/json' -d '{"name":"NewProduct", "price":"1.00", "category":"1", "details":"fancy details"}'`
 - `curl -D- -X GET localhost:8765/user/admin`
-- `curl 'http://localhost:8765/user' -i -X POST  -H 'Content-Type: application/json' -d '{"username":"jdoe", "firstname":"John", "lastname":"Doe", "password":"s3cr3t"}'`
+- `curl 'http://localhost:8765/user/register' -i -X POST  -H 'Content-Type: application/json' -d '{"username":"jdoe", "firstname":"John", "lastname":"Doe", "password":"s3cr3t"}'`
 
 ## Debugging:
 ### Check MySQL contents
