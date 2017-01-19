@@ -26,11 +26,20 @@ package hska.iwi.eShopMaster.config;/*
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.AccessTokenRequest;
+import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mavogel on 1/17/17.
@@ -38,23 +47,69 @@ import java.net.URISyntaxException;
 public final class TemplateFactory {
 
     public static final String API_GATEWAY = "http://api-gateway:8765";
+    public static final String TOKEN_URI = API_GATEWAY +"/uaa/oauth/token";
+    public static final String CLIENT_ID= "acme";
+    public static final String CLIENT_SECRET = "acmesecret";
 
     private TemplateFactory() {
         throw new AssertionError("do not instantiate");
     }
+
+    /**
+     * Creates a rest template.
+     *
+     * @return the {@link RestTemplate}
+     */
     public static RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
-    public static RestTemplate getRestTemplate(final String path, final HttpMethod httpMethod) {
-        final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        try {
-            requestFactory.createRequest(new URI(API_GATEWAY + path), httpMethod);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return new RestTemplate(requestFactory);
+//    /**
+//     * Creates a rest template for the specified path and call type.
+//     *
+//     * @param path the path
+//     * @param httpMethod the call type
+//     * @return the configured {@link RestTemplate}
+//     */
+//    public static RestTemplate getRestTemplate(final String path, final HttpMethod httpMethod) {
+//        final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+//        try {
+//            requestFactory.createRequest(new URI(API_GATEWAY + path), httpMethod);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        return new RestTemplate(requestFactory);
+//    }
+
+    /**
+     * Creates an OAuth2 rest template with grand type 'password' for the given credentials.
+     *
+     * @param username the username credential
+     * @param password the password credential
+     * @return the configured OAuth2 rest template
+     */
+    public OAuth2RestTemplate getOAuth2RestTemplate(String username, String password) {
+        AccessTokenRequest atr = new DefaultAccessTokenRequest();
+        return new OAuth2RestTemplate(createResource(username, password), new DefaultOAuth2ClientContext(atr));
+    }
+
+    private OAuth2ProtectedResourceDetails createResource(String username, String password) {
+
+        ResourceOwnerPasswordResourceDetails resource = new ResourceOwnerPasswordResourceDetails();
+
+        List<String> scopes = new ArrayList<String>(2);
+        scopes.add("openid");
+        resource.setAccessTokenUri(TOKEN_URI);
+        resource.setClientId(CLIENT_ID);
+        resource.setClientSecret(CLIENT_SECRET);
+        resource.setGrantType("password");
+        resource.setScope(scopes);
+
+        resource.setUsername(username);
+        resource.setPassword(password);
+
+        return resource;
     }
 }
