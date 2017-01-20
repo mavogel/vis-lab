@@ -39,7 +39,7 @@ $ ./shutdown_microservices.sh
 ```
 ## Useful links
 - Eureka service registry: `http://localhost:8761/`
-- Zuul Gateway routes: `http://localhost:8765/routes`
+- Zuul Gateway routes: `http://localhost:8765/routes` TODO CSRF
 
 **Note**: run e.g. `curl -D- -X GET localhost:8765/category` first, so hystrix produces stream data
 - Local Monitoring Dashboard for Composite: `http://localhost:8084/hystrix` -> enter url `http://localhost:8765/hystrix.stream` 

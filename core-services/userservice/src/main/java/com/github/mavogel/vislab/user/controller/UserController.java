@@ -64,6 +64,7 @@ public class UserController {
         }
     }
 
+    // TODO delete
     @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public boolean doesUserAlreadyExist(@PathVariable String name) {

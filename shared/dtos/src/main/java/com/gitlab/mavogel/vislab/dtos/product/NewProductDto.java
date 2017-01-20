@@ -14,7 +14,7 @@ public class NewProductDto {
     public NewProductDto() {
     }
 
-    public NewProductDto(String name, Long price, long category, String details) {
+    public NewProductDto(String name, double price, long category, String details) {
         this.name = name;
         this.price = price;
         this.category = category;

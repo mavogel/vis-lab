@@ -30,6 +30,7 @@ public class ProductsController {
 
     static final Logger logger = LogManager.getLogger(ProductsController.class.getName());
 
+    // TODO search and entitites -> composite as well
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ApiOperation(value = "Returns a list of all products.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = ProductDto.class, responseContainer = "List")})
