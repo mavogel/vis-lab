@@ -1,5 +1,6 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
@@ -20,7 +21,7 @@ public class AddCategoryAction extends ActionSupport {
 	
 	private String newCatName = null;
 	
-	private List<Category> categories;
+	private List<CategoryDto> categories;
 	
 	User user;
 
@@ -55,11 +56,11 @@ public class AddCategoryAction extends ActionSupport {
 		this.setCategories(categoryManager.getCategories());
 	}
 
-	public List<Category> getCategories() {
+	public List<CategoryDto> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<Category> categories) {
+	public void setCategories(List<CategoryDto> categories) {
 		this.categories = categories;
 	}
 	

@@ -4,7 +4,6 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.UserManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.Role;
 
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public class RegisterAction extends ActionSupport {
     private String firstname;
     private String lastname;
 
-    private Role role = null;
+//    private RoleDto role = null;
 
     @Override
     public String execute() throws Exception {
@@ -30,9 +29,9 @@ public class RegisterAction extends ActionSupport {
 
         UserManager userManager = new UserManagerImpl();
 
-        this.role = userManager.getRoleByLevel(1); // 1 -> regular User, 2-> Admin
+//        this.role = userManager.getRoleByLevel(1); // 1 -> regular User, 2-> Admin
 
-        if (userManager.registerUser(this.username, this.firstname, this.lastname, this.password1, this.role)) {
+        if (userManager.registerUser(this.username, this.firstname, this.lastname, this.password1)) {
             addActionMessage("user registered, please login");
             addActionError("user registered, please login");
             Map<String, Object> session = ActionContext.getContext().getSession();
@@ -108,12 +107,12 @@ public class RegisterAction extends ActionSupport {
         this.password2 = password;
     }
 
-    public Role getRole() {
-        return (this.role);
-    }
+//    public Role getRole() {
+//        return (this.role);
+//    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+//    public void setRole(Role role) {
+//        this.role = role;
+//    }
 
 }

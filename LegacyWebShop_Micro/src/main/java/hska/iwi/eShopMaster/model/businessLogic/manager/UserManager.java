@@ -1,12 +1,17 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager;
 
-import hska.iwi.eShopMaster.model.database.dataobjects.Role;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
+import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 
 
 public interface UserManager {
-    boolean registerUser(String username, String firstname, String lastname, String password, Role role);
-    User getUserByUsername(String username);
+    boolean registerUser(String username, String firstname, String lastname, String password);
+
+    UserDto loginAndGetUser(String username, String password);
+
+    UserDto getUserByUsername(String username);
+
     boolean deleteUserById(int id);
-    Role getRoleByLevel(int level);
+
+    RoleDto getRoleByLevel(int level);
 }

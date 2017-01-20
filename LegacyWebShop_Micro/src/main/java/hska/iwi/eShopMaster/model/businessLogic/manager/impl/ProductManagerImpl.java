@@ -1,57 +1,106 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
+import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
+import hska.iwi.eShopMaster.config.TemplateFactory;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
 import hska.iwi.eShopMaster.model.database.dataobjects.Product;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ProductManagerImpl implements ProductManager {
-//	private ProductDAO helper;
+
+    private static final Logger LOG = LogManager.getLogger(ProductManager.class);
 
     public ProductManagerImpl() {
-//		helper = new ProductDAO();
     }
 
-    public List<Product> getProducts() {
-        return null;
-//        return helper.getObjectList();
+    public List<ProductDto> getProducts() {
+        ResponseEntity<List<ProductDto>> products;
+        try {
+            // see: https://stackoverflow.com/a/31947188
+            products = TemplateFactory.getOAuth2RestTemplate()
+                    .exchange(TemplateFactory.API_GATEWAY + "/product",
+                            HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDto>>() {
+                            });
+        } catch (Exception e) {
+            LOG.error("Failed to get products!", e.getMessage());
+            return Collections.emptyList();
+        }
+        return products.getBody();
     }
 
-    public List<Product> getProductsForSearchValues(String searchDescription,
+    public List<ProductDto> getProductsForSearchValues(String searchDescription,
                                                     Double searchMinPrice, Double searchMaxPrice) {
-        return null;
+        ResponseEntity<List<ProductDto>> products;
+        try {
+            // see: https://stackoverflow.com/a/31947188
+            final SearchDto searchDto = new SearchDto(searchDescription, searchMinPrice, searchMaxPrice);
+            final HttpEntity<SearchDto> httpSearchEntity = new HttpEntity<SearchDto>(searchDto);
+            products = TemplateFactory.getOAuth2RestTemplate()
+                    .exchange(TemplateFactory.API_GATEWAY + "/product/search",
+                            HttpMethod.POST, httpSearchEntity, new ParameterizedTypeReference<List<ProductDto>>() {
+                            });
+        } catch (Exception e) {
+            LOG.error("Failed to get products!", e.getMessage());
+            return Collections.emptyList();
+        }
+        return products.getBody();
 //        return new ProductDAO().getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice);
     }
 
-    public Product getProductById(int id) {
-        return null;
-//        return helper.getObjectById(id);
+    public ProductDto getProductById(int id) {
+        ResponseEntity<ProductDto> product = null;
+        try {
+            product = TemplateFactory.getOAuth2RestTemplate()
+                    .getForEntity(TemplateFactory.API_GATEWAY + "/product/" + id, ProductDto.class);
+        } catch (Exception e) {
+            LOG.error("Failed to get product with id '" + id + "'", e.getMessage());
+            return null;
+        }
+        return product.getBody();
     }
 
-    public Product getProductByName(String name) {
-        return null;
-//        return helper.getObjectByName(name);
-    }
+//    public ProductDto getProductByName(String name) {
+//        return null;
+////        return helper.getObjectByName(name);
+//    }
 
     public int addProduct(String name, double price, int categoryId, String details) {
         int productId = -1;
 
         CategoryManager categoryManager = new CategoryManagerImpl();
-        Category category = categoryManager.getCategory(categoryId);
+        CategoryDto category = categoryManager.getCategory(categoryId);
 
         if (category != null) {
-            Product product;
+            NewProductDto product;
             if (details == null) {
-                product = new Product(name, price, category);
+                product = new NewProductDto(name, price, category.getId(), "");
             } else {
-                product = new Product(name, price, category, details);
+                product = new NewProductDto(name, price, category.getId(), details);
             }
 
-//            helper.saveObject(product);
-            productId = product.getId();
+            ResponseEntity<ProductDto> createdProduct = null;
+            try {
+                createdProduct = TemplateFactory.getRestTemplate()
+                        .postForEntity(TemplateFactory.API_GATEWAY + "/product", product, ProductDto.class);
+            } catch (Exception e) {
+                LOG.error("Failed to add product with name ' " + name+ "'" + createdProduct.getStatusCode());
+                return productId;
+            }
+            productId = (int) createdProduct.getBody().getId();
         }
 
         return productId;
@@ -59,13 +108,17 @@ public class ProductManagerImpl implements ProductManager {
 
 
     public void deleteProductById(int id) {
-
-//        helper.deleteById(id);
+        try {
+            TemplateFactory.getOAuth2RestTemplate()
+                    .delete(TemplateFactory.API_GATEWAY + "/product/" + id);
+        } catch (Exception e) {
+            LOG.error("Failed to delete product with id '" + id + "' with error message:", e.getMessage());
+        }
     }
 
-    public boolean deleteProductsByCategoryId(int categoryId) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+//    public boolean deleteProductsByCategoryId(int categoryId) {
+//        // TODO GET /product/categoryId/{categoryId} -> then DELETE
+//        return false;
+//    }
 
 }

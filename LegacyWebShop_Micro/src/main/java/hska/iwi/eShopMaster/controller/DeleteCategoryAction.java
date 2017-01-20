@@ -1,5 +1,6 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
@@ -19,7 +20,7 @@ public class DeleteCategoryAction extends ActionSupport {
 	private static final long serialVersionUID = 1254575994729199914L;
 	
 	private int catId;
-	private List<Category> categories;
+	private List<CategoryDto> categories;
 
 	public String execute() throws Exception {
 		
@@ -53,11 +54,11 @@ public class DeleteCategoryAction extends ActionSupport {
 		this.catId = catId;
 	}
 
-	public List<Category> getCategories() {
+	public List<CategoryDto> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<Category> categories) {
+	public void setCategories(List<CategoryDto> categories) {
 		this.categories = categories;
 	}
 }

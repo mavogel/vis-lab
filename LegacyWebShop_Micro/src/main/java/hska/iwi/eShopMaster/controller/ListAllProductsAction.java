@@ -1,5 +1,6 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
 import hska.iwi.eShopMaster.model.database.dataobjects.Product;
@@ -19,7 +20,7 @@ public class ListAllProductsAction extends ActionSupport {
 	private static final long serialVersionUID = -94109228677381902L;
 	
 	User user;
-	private List<Product> products;
+	private List<ProductDto> products;
 	
 	public String execute() throws Exception{
 		String result = "input";
@@ -45,11 +46,11 @@ public class ListAllProductsAction extends ActionSupport {
 		this.user = user;
 	}
 	
-	public List<Product> getProducts() {
+	public List<ProductDto> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(List<ProductDto> products) {
 		this.products = products;
 	}
 

@@ -50,6 +50,7 @@ public final class TemplateFactory {
     public static final String TOKEN_URI = API_GATEWAY +"/uaa/oauth/token";
     public static final String CLIENT_ID= "acme";
     public static final String CLIENT_SECRET = "acmesecret";
+    private static OAuth2RestTemplate CONFIGURED_OAUTH2_REST_TEMPLATE;
 
     private TemplateFactory() {
         throw new AssertionError("do not instantiate");
@@ -84,18 +85,36 @@ public final class TemplateFactory {
 //    }
 
     /**
+     * The configured OAuth2 rest template.
+     *
+     * @return the {@link OAuth2RestTemplate}
+     */
+    public static OAuth2RestTemplate getOAuth2RestTemplate() {
+        // TODO null check
+        return CONFIGURED_OAUTH2_REST_TEMPLATE;
+    }
+
+    /**
+     * Performs the logout
+     */
+    public static void nullTheOAuth2RestTemplate() {
+        CONFIGURED_OAUTH2_REST_TEMPLATE = null;
+    }
+
+    /**
      * Creates an OAuth2 rest template with grand type 'password' for the given credentials.
      *
      * @param username the username credential
      * @param password the password credential
      * @return the configured OAuth2 rest template
      */
-    public OAuth2RestTemplate getOAuth2RestTemplate(String username, String password) {
+    public static OAuth2RestTemplate createAndGetOAuth2RestTemplate(String username, String password) {
         AccessTokenRequest atr = new DefaultAccessTokenRequest();
-        return new OAuth2RestTemplate(createResource(username, password), new DefaultOAuth2ClientContext(atr));
+        CONFIGURED_OAUTH2_REST_TEMPLATE = new OAuth2RestTemplate(createResource(username, password), new DefaultOAuth2ClientContext(atr));
+        return CONFIGURED_OAUTH2_REST_TEMPLATE;
     }
 
-    private OAuth2ProtectedResourceDetails createResource(String username, String password) {
+    private static OAuth2ProtectedResourceDetails createResource(String username, String password) {
 
         ResourceOwnerPasswordResourceDetails resource = new ResourceOwnerPasswordResourceDetails();
 
