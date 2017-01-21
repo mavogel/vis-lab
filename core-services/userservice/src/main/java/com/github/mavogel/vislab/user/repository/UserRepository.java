@@ -38,5 +38,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
      * @param username the username
      * @return the user or <code>null</code>
      */
-    User username(final String username);
+    User findByUsername(final String username);
 }

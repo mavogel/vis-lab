@@ -88,7 +88,7 @@ public class CategoryProxy {
         CategoryDto categoryToDelete = this.categoryClient.listCategory(id).getBody();
         if (categoryToDelete != null) {
             try {
-                this.productClient.allProductsByCategoryId(id)
+                this.productClient.allProductsByCategoryId(id).getBody()
                         .forEach(product -> productClient.deleteProduct(product.getId()));
                 this.categoryClient.deleteCategory(id);
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

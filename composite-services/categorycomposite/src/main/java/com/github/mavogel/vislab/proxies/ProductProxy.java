@@ -63,29 +63,33 @@ public class ProductProxy {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
     @RequestMapping(value = "/product", method = RequestMethod.GET)
-    public List<ProductDto> listProducts() {
-        List<ProductDto> productDtos = this.productClient.listProducts();
+    public ResponseEntity<List<ProductDto>> listProducts() {
+        ResponseEntity<List<ProductDto>> productDtoEntities = this.productClient.listProducts();
+        List<ProductDto> productDtos = productDtoEntities.getBody();
         productDtos.forEach(p -> CACHE.put(p.getId(), p));
-        return productDtos;
+        return productDtoEntities;
     }
 
     @HystrixCommand(fallbackMethod = "listProductCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
-    public ProductDto listProduct(@PathVariable long id) {
-        ProductDto productDto = this.productClient.listProduct(id);
-        return CACHE.put(productDto.getId(), productDto);
+    public ResponseEntity<ProductDto> listProduct(@PathVariable long id) {
+        ResponseEntity<ProductDto> productDtoEntity = this.productClient.listProduct(id);
+        ProductDto productDto = productDtoEntity.getBody();
+        CACHE.put(productDto.getId(), productDto);
+        return productDtoEntity;
     }
 
     @HystrixCommand(fallbackMethod = "searchProductsCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
     @RequestMapping(value = "/product/search", method = RequestMethod.GET)
-    public List<ProductDto> searchProducts(@RequestBody SearchDto search) {
-        List<ProductDto> productDtos = this.productClient.searchProducts(search);
+    public ResponseEntity<List<ProductDto>> searchProducts(@RequestBody SearchDto search) {
+        ResponseEntity<List<ProductDto>> productDtoEntities = this.productClient.searchProducts(search);
+        List<ProductDto> productDtos = productDtoEntities.getBody();
         productDtos.forEach(p -> CACHE.put(p.getId(), p));
-        return productDtos;
+        return productDtoEntities;
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
@@ -100,13 +104,13 @@ public class ProductProxy {
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.PATCH)
-    public ProductDto edit(@RequestBody ProductDto product) {
+    public ResponseEntity<ProductDto> edit(@RequestBody ProductDto product) {
         return productClient.edit(product);
     }
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
-    public void deleteProduct(@PathVariable long id) {
-        this.productClient.deleteProduct(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
+        return this.productClient.deleteProduct(id);
     }
 
     /////////////////

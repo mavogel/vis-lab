@@ -56,7 +56,7 @@ public class UserController {
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
-        User username1 = userRepository.username(username);
+        User username1 = userRepository.findByUsername(username);
         if (username1 != null) {
             return ResponseEntity.ok(mapper.map(username1, UserDto.class));
         } else {
@@ -74,7 +74,7 @@ public class UserController {
     @RequestMapping(value = "/level/{levelId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
-        Role role = this.roleRepository.level(levelId);
+        Role role = this.roleRepository.findByLevel(levelId);
         if (role != null) {
             return ResponseEntity.ok(mapper.map(role, RoleDto.class));
         } else {
@@ -91,7 +91,7 @@ public class UserController {
                     userDto.getFirstname(),
                     userDto.getLastname(),
                     userDto.getPassword(),
-                    this.roleRepository.level(UserLevel.REGULAR.getLevelId())));
+                    this.roleRepository.findByLevel(UserLevel.REGULAR.getLevelId())));
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     mapper.map(createdUser,
                             UserDto.class));

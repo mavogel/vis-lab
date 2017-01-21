@@ -38,5 +38,5 @@ public interface RoleRepository extends CrudRepository<Role, Long> {
      * @param level the level
      * @return  the role or <code>null</code>
      */
-    Role level(final int level);
+    Role findByLevel(final int level);
 }
