@@ -3,7 +3,7 @@ package hska.iwi.eShopMaster.controller;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
+import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public class DeleteProductAction extends ActionSupport {
 		
 		if(user != null && (user.getRole().getType().equals("admin"))) {
 
-			new ProductDAO().deleteById(id);
+			new ProductManagerImpl().deleteProductById(id);
 			{
 				res = "success";
 			}

@@ -54,7 +54,7 @@ public class ProductManagerImpl implements ProductManager {
                             HttpMethod.POST, httpSearchEntity, new ParameterizedTypeReference<List<ProductDto>>() {
                             });
         } catch (Exception e) {
-            LOG.error("Failed to get products!", e.getMessage());
+            LOG.error("Failed to get products: " + e.getMessage());
             return Collections.emptyList();
         }
         return products.getBody();

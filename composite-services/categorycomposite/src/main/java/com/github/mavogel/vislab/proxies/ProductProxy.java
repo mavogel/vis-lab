@@ -84,7 +84,7 @@ public class ProductProxy {
     @HystrixCommand(fallbackMethod = "searchProductsCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
-    @RequestMapping(value = "/product/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/product/search", method = RequestMethod.POST)
     public ResponseEntity<List<ProductDto>> searchProducts(@RequestBody SearchDto search) {
         ResponseEntity<List<ProductDto>> productDtoEntities = this.productClient.searchProducts(search);
         List<ProductDto> productDtos = productDtoEntities.getBody();

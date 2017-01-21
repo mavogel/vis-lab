@@ -52,7 +52,7 @@ public interface ProductClient {
     @RequestMapping(value = "/product/byCategory/{categoryId}", method = RequestMethod.GET)
     ResponseEntity<List<ProductDto>> allProductsByCategoryId(@PathVariable("categoryId") long categoryId);
 
-    @RequestMapping(value = "/product/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/product/search", method = RequestMethod.POST)
     ResponseEntity<List<ProductDto>> searchProducts(@RequestBody SearchDto search);
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
