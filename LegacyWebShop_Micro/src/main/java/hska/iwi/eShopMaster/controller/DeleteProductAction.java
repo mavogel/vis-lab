@@ -1,12 +1,11 @@
 package hska.iwi.eShopMaster.controller;
 
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
-
-import java.util.Map;
-
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
+
+import java.util.Map;
 
 public class DeleteProductAction extends ActionSupport {
 
@@ -22,9 +21,9 @@ public class DeleteProductAction extends ActionSupport {
 		String res = "input";
 		
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		User user = (User) session.get("webshop_user");
+		UserDto user = (UserDto) session.get("webshop_user");
 		
-		if(user != null && (user.getRole().getTyp().equals("admin"))) {
+		if(user != null && (user.getRole().getType().equals("admin"))) {
 
 			new ProductDAO().deleteById(id);
 			{

@@ -41,15 +41,15 @@ public class CategoryManagerImpl implements CategoryManager {
     }
 
     public CategoryDto getCategory(int id) {
-        ResponseEntity<CategoryDto> catgory = null;
+        ResponseEntity<CategoryDto> category = null;
         try {
-            catgory = TemplateFactory.getOAuth2RestTemplate()
+            category = TemplateFactory.getOAuth2RestTemplate()
                     .getForEntity(TemplateFactory.API_GATEWAY + "/category/" + id, CategoryDto.class);
         } catch (Exception e) {
             LOG.error("Failed to get category with id '" + id + "'", e.getMessage());
             return null;
         }
-        return catgory.getBody();
+        return category.getBody();
     }
 
     public void addCategory(String name) {

@@ -1,19 +1,17 @@
 package hska.iwi.eShopMaster.controller;
 
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.Product;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
 import java.util.Map;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-
 public class ProductDetailsAction extends ActionSupport {
 	
-	private User user;
+	private UserDto user;
 	private int id;
 	private String searchValue;
 	private Integer searchMinPrice;
@@ -30,7 +28,7 @@ public class ProductDetailsAction extends ActionSupport {
 		String res = "input";
 		
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		user = (User) session.get("webshop_user");
+		user = (UserDto) session.get("webshop_user");
 		
 		if(user != null) {
 			ProductManager productManager = new ProductManagerImpl();
@@ -42,11 +40,11 @@ public class ProductDetailsAction extends ActionSupport {
 		return res;		
 	}
 	
-	public User getUser() {
+	public UserDto getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserDto user) {
 		this.user = user;
 	}
 

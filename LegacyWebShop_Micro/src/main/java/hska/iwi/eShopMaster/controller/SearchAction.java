@@ -2,13 +2,13 @@ package hska.iwi.eShopMaster.controller;
 
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,7 +29,7 @@ public class SearchAction extends ActionSupport{
 	private Double sMinPrice = null;
 	private Double sMaxPrice = null;
 	
-	private User user;
+	private UserDto user;
 	private List<ProductDto> products;
 	private List<CategoryDto> categories;
 	
@@ -40,7 +40,7 @@ public class SearchAction extends ActionSupport{
 		
 		// Get user:
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		user = (User) session.get("webshop_user");
+		user = (UserDto) session.get("webshop_user");
 		ActionContext.getContext().setLocale(Locale.US);  
 		
 		if(user != null){
@@ -65,11 +65,11 @@ public class SearchAction extends ActionSupport{
 	}
 			
 		
-		public User getUser() {
+		public UserDto getUser() {
 			return user;
 		}
 
-		public void setUser(User user) {
+		public void setUser(UserDto user) {
 			this.user = user;
 		}
 		

@@ -91,8 +91,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private RequestMatcher csrfRequestMatcher() {
         return new RequestMatcher() {
-            // Always allow the HTTP GET method
-            private final Pattern allowedMethods = Pattern.compile("^(GET|HEAD|OPTIONS|TRACE)$");
+            // Always allow all the HTTP methods
+            private final Pattern allowedMethods = Pattern.compile("^(GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS|TRACE)$");
 
             // Disable CSFR protection on the following urls:
             private final AntPathRequestMatcher[] requestMatchers = {

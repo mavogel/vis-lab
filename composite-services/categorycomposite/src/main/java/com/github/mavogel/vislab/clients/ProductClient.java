@@ -56,7 +56,7 @@ public interface ProductClient {
     ResponseEntity<List<ProductDto>> searchProducts(@RequestBody SearchDto search);
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
-    ResponseEntity<Void> addProduct(@RequestBody NewProductDto product);
+    ResponseEntity<ProductDto> addProduct(@RequestBody NewProductDto product);
 
     @RequestMapping(value = "/product", method = RequestMethod.PATCH)
     ResponseEntity<ProductDto> edit(@RequestBody ProductDto product);

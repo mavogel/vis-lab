@@ -93,11 +93,10 @@ public class ProductProxy {
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public ResponseEntity<Void> addProduct(@RequestBody NewProductDto newProduct) {
+    public ResponseEntity<ProductDto> addProduct(@RequestBody NewProductDto newProduct) {
         CategoryDto category = this.categoryClient.listCategory(newProduct.getCategory()).getBody();
         if (category != null) {
-            this.productClient.addProduct(newProduct);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            return this.productClient.addProduct(newProduct);
         } else {
             return ResponseEntity.badRequest().build();
         }
@@ -116,23 +115,23 @@ public class ProductProxy {
     /////////////////
     // Fallbacks
     /////////////////
-    private List<ProductDto> listProductsCache() {
+    private ResponseEntity<List<ProductDto>> listProductsCache() {
         LOG.info(">> listProductsCache from CACHE");
-        return CACHE.entrySet().stream()
+        return ResponseEntity.ok(CACHE.entrySet().stream()
                 .map(e -> e.getValue())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
-    private ProductDto listProductCache(long id) {
+    private ResponseEntity<ProductDto> listProductCache(long id) {
         LOG.info(">> listProductCache id={} from CACHE", new Object[]{id});
-        return CACHE.getOrDefault(id, new ProductDto(id, "dummy", 1.00, "dummy details", 1l));
+        return ResponseEntity.ok(CACHE.getOrDefault(id, new ProductDto(id, "dummy", 1.00, "dummy details", 1l)));
     }
 
-    private List<ProductDto> searchProductsCache(SearchDto search) {
+    private ResponseEntity<List<ProductDto>> searchProductsCache(SearchDto search) {
         LOG.info(">> searchProductsCache search={} from CACHE", new Object[]{search});
-        return CACHE.entrySet().stream()
+        return ResponseEntity.ok(CACHE.entrySet().stream()
                 .map(p -> p.getValue())
                 .filter(p -> p.getDetails().contains(search.getText()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 }

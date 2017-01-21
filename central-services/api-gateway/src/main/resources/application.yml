@@ -48,6 +48,11 @@ zuul:
       serviceId: categorycomposite
       stripPrefix: false
       sensitiveHeaders:
+    categorycomposite_user:
+      path: /user/**
+      serviceId: categorycomposite
+      stripPrefix: false
+      sensitiveHeaders:
     userservice:
       sensitiveHeaders:
       path: /user/register/**

@@ -85,19 +85,19 @@ public class ProductManagerImpl implements ProductManager {
         CategoryDto category = categoryManager.getCategory(categoryId);
 
         if (category != null) {
-            NewProductDto product;
+            NewProductDto newProduct;
             if (details == null) {
-                product = new NewProductDto(name, price, category.getId(), "");
+                newProduct = new NewProductDto(name, price, category.getId(), "");
             } else {
-                product = new NewProductDto(name, price, category.getId(), details);
+                newProduct = new NewProductDto(name, price, category.getId(), details);
             }
 
             ResponseEntity<ProductDto> createdProduct = null;
             try {
-                createdProduct = TemplateFactory.getRestTemplate()
-                        .postForEntity(TemplateFactory.API_GATEWAY + "/product", product, ProductDto.class);
+                createdProduct = TemplateFactory.getOAuth2RestTemplate()
+                        .postForEntity(TemplateFactory.API_GATEWAY + "/product", newProduct, ProductDto.class);
             } catch (Exception e) {
-                LOG.error("Failed to add product with name ' " + name+ "'" + createdProduct.getStatusCode());
+                LOG.error("Failed to add product with name ' " + name+ "' with message: " + e.getMessage());
                 return productId;
             }
             productId = (int) createdProduct.getBody().getId();

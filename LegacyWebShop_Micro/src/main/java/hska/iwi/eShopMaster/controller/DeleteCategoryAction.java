@@ -1,16 +1,14 @@
 package hska.iwi.eShopMaster.controller;
 
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import com.gitlab.mavogel.vislab.dtos.user.UserDto;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
 import java.util.List;
 import java.util.Map;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
 public class DeleteCategoryAction extends ActionSupport {
 
@@ -27,9 +25,9 @@ public class DeleteCategoryAction extends ActionSupport {
 		String res = "input";
 		
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		User user = (User) session.get("webshop_user");
+		UserDto user = (UserDto) session.get("webshop_user");
 		
-		if(user != null && (user.getRole().getTyp().equals("admin"))) {
+		if(user != null && (user.getRole().getType().equals("admin"))) {
 
 			// Helper inserts new Category in DB:
 			CategoryManager categoryManager = new CategoryManagerImpl();
