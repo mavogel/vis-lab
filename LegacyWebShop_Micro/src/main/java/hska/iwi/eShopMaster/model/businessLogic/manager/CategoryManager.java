@@ -1,7 +1,6 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager;
 
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
 
 import java.util.List;
 

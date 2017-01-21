@@ -30,7 +30,7 @@ public class RegisterAction extends ActionSupport {
         UserManager userManager = new UserManagerImpl();
 
 //        this.role = userManager.getRoleByLevel(1); // 1 -> regular User, 2-> Admin
-
+        // only regular user can be added
         if (userManager.registerUser(this.username, this.firstname, this.lastname, this.password1)) {
             addActionMessage("user registered, please login");
             addActionError("user registered, please login");

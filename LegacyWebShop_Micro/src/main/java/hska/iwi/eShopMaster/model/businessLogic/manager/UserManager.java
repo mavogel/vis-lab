@@ -9,8 +9,6 @@ public interface UserManager {
 
     UserDto loginAndGetUser(String username, String password);
 
-    UserDto getUserByUsername(String username);
-
     boolean deleteUserById(int id);
 
     RoleDto getRoleByLevel(int level);

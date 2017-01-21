@@ -4,12 +4,9 @@ import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
-import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import hska.iwi.eShopMaster.config.TemplateFactory;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
-import hska.iwi.eShopMaster.model.database.dataobjects.Product;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.core.ParameterizedTypeReference;
@@ -58,7 +55,6 @@ public class ProductManagerImpl implements ProductManager {
             return Collections.emptyList();
         }
         return products.getBody();
-//        return new ProductDAO().getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice);
     }
 
     public ProductDto getProductById(int id) {
@@ -72,11 +68,6 @@ public class ProductManagerImpl implements ProductManager {
         }
         return product.getBody();
     }
-
-//    public ProductDto getProductByName(String name) {
-//        return null;
-////        return helper.getObjectByName(name);
-//    }
 
     public int addProduct(String name, double price, int categoryId, String details) {
         int productId = -1;
@@ -106,7 +97,6 @@ public class ProductManagerImpl implements ProductManager {
         return productId;
     }
 
-
     public void deleteProductById(int id) {
         try {
             TemplateFactory.getOAuth2RestTemplate()
@@ -115,10 +105,4 @@ public class ProductManagerImpl implements ProductManager {
             LOG.error("Failed to delete product with id '" + id + "' with error message:", e.getMessage());
         }
     }
-
-//    public boolean deleteProductsByCategoryId(int categoryId) {
-//        // TODO GET /product/categoryId/{categoryId} -> then DELETE
-//        return false;
-//    }
-
 }

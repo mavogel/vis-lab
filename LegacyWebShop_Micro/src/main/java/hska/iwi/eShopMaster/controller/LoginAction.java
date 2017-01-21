@@ -31,13 +31,10 @@ public class LoginAction extends ActionSupport {
         UserManager myCManager = new UserManagerImpl();
 
         // Get user from DB:
-//		User user = myCManager.getUserByUsername(getUsername());
         UserDto user = myCManager.loginAndGetUser(getUsername(), getPassword());
 
-        // Does user exist?
-		if (user != null) {
-        // Is the password correct?
-//        if (user.getPassword().equals(getPassword())) {
+        // Does user exist and is the password correct?
+        if (user != null) {
             // Get session to save user role and login:
             Map<String, Object> session = ActionContext.getContext().getSession();
 
@@ -49,16 +46,11 @@ public class LoginAction extends ActionSupport {
             role = user.getRole().getType();
             result = "success";
         } else {
-//            addActionError(getText("error.password.wrong"));
             addActionError(getText("error.credentials.wrong"));
         }
-//    }
-//		else {
-//			addActionError(getText("error.username.wrong"));
-//		}
 
-		return result;
-}
+        return result;
+    }
 
     @Override
     public void validate() {

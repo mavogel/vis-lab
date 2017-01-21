@@ -34,23 +34,6 @@ public class UserManagerImpl implements UserManager {
         return createdUser == null ? false : HttpStatus.CREATED.equals(createdUser.getStatusCode());
     }
 
-    // TODO delete
-    public UserDto getUserByUsername(String username) {
-        if (username == null || username.equals("")) {
-            return null;
-        }
-
-        ResponseEntity<UserDto> userDto = null;
-        try {
-            userDto = TemplateFactory.getOAuth2RestTemplate()
-                    .getForEntity(TemplateFactory.API_GATEWAY + "/user/" + username, UserDto.class);
-        } catch (Exception e) {
-            LOG.error("Failed to get user by username: '" + username + "'");
-            return null;
-        }
-        return userDto.getBody();
-    }
-
     public UserDto loginAndGetUser(String username, String password) {
         ResponseEntity<UserDto> userDto = null;
         try {
