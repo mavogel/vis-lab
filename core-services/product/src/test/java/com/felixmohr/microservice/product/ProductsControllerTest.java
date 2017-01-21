@@ -114,12 +114,14 @@ public class ProductsControllerTest {
     @Test
     public void shouldSearchAndFind2Of4Products() throws Exception {
         Product p1 = repo.save(new Product("P1", 2.55, 0, "D1 bla"));
-        Product p2 = repo.save(new Product("P2", 6.55, 0, "D2 bla"));
+        Product p2 = repo.save(new Product("P2", 6.55, 0, "D2 bla lorem ipsum"));
         repo.save(new Product("P3", 7.55, 0, "D3"));
         repo.save(new Product("P4", 33.55, 0, "D4"));
 
         Map<String, String> searchText = new HashMap<>();
         searchText.put("text", "bla");
+        searchText.put("searchMinPrice", "0.0");
+        searchText.put("searchMaxPrice", "7.0");
 
         this.mockMvc.perform(post("/product/search")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -136,6 +138,37 @@ public class ProductsControllerTest {
                 .andExpect(jsonPath("$[1].categoryId").value(p2.getCategoryId()))
                 .andExpect(jsonPath("$[1].details").value(p2.getDetails()));
     }
+
+    @Test
+    public void shouldSearchAndFind2Of6Products() throws Exception {
+        Product p1 = repo.save(new Product("P1", 2.55, 0, "D1 barbar bla"));
+        repo.save(new Product("P3", 7.55, 0, "D3 lorem ipsum"));
+        repo.save(new Product("P4", 7.67, 0, "bla D4 foo"));
+        repo.save(new Product("P4", 1.55, 0, "D5 bla"));
+        repo.save(new Product("P4", 5.55, 0, "D6 muh"));
+        Product p2 = repo.save(new Product("P2", 6.55, 0, "D2 bar bla lorem ipsum"));
+
+        Map<String, String> searchText = new HashMap<>();
+        searchText.put("text", "bla");
+        searchText.put("searchMinPrice", "2.39");
+        searchText.put("searchMaxPrice", "6.66");
+
+        this.mockMvc.perform(post("/product/search")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(searchText)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(p1.getId()))
+                .andExpect(jsonPath("$[0].name").value(p1.getName()))
+                .andExpect(jsonPath("$[0].price").value(p1.getPrice()))
+                .andExpect(jsonPath("$[0].categoryId").value(p1.getCategoryId()))
+                .andExpect(jsonPath("$[0].details").value(p1.getDetails()))
+                .andExpect(jsonPath("$[1].id").value(p2.getId()))
+                .andExpect(jsonPath("$[1].name").value(p2.getName()))
+                .andExpect(jsonPath("$[1].price").value(p2.getPrice()))
+                .andExpect(jsonPath("$[1].categoryId").value(p2.getCategoryId()))
+                .andExpect(jsonPath("$[1].details").value(p2.getDetails()));
+    }
+
 
     @Test
     public void shouldCreateANewProduct() throws Exception {
@@ -196,6 +229,6 @@ public class ProductsControllerTest {
         Product p1 = repo.save(new Product("P1", 2.55, 0, "D1"));
 
         this.mockMvc.perform(delete("/product/" + p1.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }

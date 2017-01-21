@@ -49,6 +49,22 @@ public class Product {
         return categoryId;
     }
 
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public void setPrice(final double price) {
+        this.price = price;
+    }
+
+    public void setDetails(final String details) {
+        this.details = details;
+    }
+
+    public void setCategoryId(final long categoryId) {
+        this.categoryId = categoryId;
+    }
+
     @Override
     public String toString() {
         return "[" + id + "] - " + name + ": " + price + ": " + categoryId + ": ";
