@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -92,6 +93,7 @@ public class ProductProxy {
         return productDtoEntities;
     }
 
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     public ResponseEntity<ProductDto> addProduct(@RequestBody NewProductDto newProduct) {
         CategoryDto category = this.categoryClient.listCategory(newProduct.getCategory()).getBody();
@@ -102,11 +104,13 @@ public class ProductProxy {
         }
     }
 
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/product", method = RequestMethod.PATCH)
     public ResponseEntity<ProductDto> edit(@RequestBody ProductDto product) {
         return productClient.edit(product);
     }
 
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
         return this.productClient.deleteProduct(id);

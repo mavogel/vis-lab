@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -77,12 +78,13 @@ public class CategoryProxy {
         return categoryToCache;
     }
 
-
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     public void addCategory(@RequestBody NewCategoryDto newCategory) {
         this.categoryClient.addCategory(newCategory);
     }
 
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
         CategoryDto categoryToDelete = this.categoryClient.listCategory(id).getBody();

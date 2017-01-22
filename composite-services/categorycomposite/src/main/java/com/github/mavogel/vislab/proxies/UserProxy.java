@@ -35,6 +35,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -64,6 +66,7 @@ public class UserProxy {
         return userByUsername;
     }
 
+    // TODO delete maybe
     @HystrixCommand(fallbackMethod = "doesUserAlreadyExistCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
@@ -82,11 +85,13 @@ public class UserProxy {
         return roleByLevel;
     }
 
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
         return userClient.registerUser(userDto);
     }
 
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         return userClient.deleteUser(id);

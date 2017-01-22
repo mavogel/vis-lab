@@ -34,6 +34,7 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 @SpringBootApplication
@@ -44,6 +45,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @RibbonClient(name = "category-proxy")
 @EnableFeignClients
 @EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class CategoryCompositeServiceApplication {
 
     public static void main(String[] args) {
