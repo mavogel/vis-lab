@@ -85,7 +85,7 @@ public class UserProxy {
         return roleByLevel;
     }
 
-    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
+    // delete -> goes directly
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
         return userClient.registerUser(userDto);

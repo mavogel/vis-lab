@@ -38,6 +38,10 @@ hystrix:
 
 zuul:
   routes:
+    userservice:
+      sensitiveHeaders:
+      path: /user/register/**
+      stripPrefix: false
     categorycomposite_category:
       path: /category/**
       serviceId: categorycomposite
@@ -53,10 +57,6 @@ zuul:
       serviceId: categorycomposite
       stripPrefix: false
       sensitiveHeaders:
-    userservice:
-      sensitiveHeaders:
-      path: /user/register/**
-      stripPrefix: false
     dummy-service:
       sensitiveHeaders:
       path: /dummy/**
