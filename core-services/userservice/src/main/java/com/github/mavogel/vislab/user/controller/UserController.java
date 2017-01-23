@@ -64,13 +64,6 @@ public class UserController {
         }
     }
 
-    // TODO delete
-    @RequestMapping(value = "/exists/{name}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public boolean doesUserAlreadyExist(@PathVariable String name) {
-        return HttpStatus.OK.equals(this.getUserByUsername(name).getStatusCode());
-    }
-
     @RequestMapping(value = "/level/{levelId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {

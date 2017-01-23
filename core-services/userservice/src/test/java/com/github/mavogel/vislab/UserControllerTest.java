@@ -131,15 +131,6 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldSayThatUserExists() throws Exception {
-        Role role = roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()));
-        User user = userRepository.save(new User("jdoe", "john", "doe", "acbd", role));
-
-        this.mockMvc.perform(get("/user/exists/" + user.getUsername()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void shouldNotFindUserByUsername() throws Exception {
         userRepository.save(new User("jdoe", "john", "doe", "acbd", roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()))));
 

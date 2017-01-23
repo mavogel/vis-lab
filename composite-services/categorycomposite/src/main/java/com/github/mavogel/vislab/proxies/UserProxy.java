@@ -66,15 +66,6 @@ public class UserProxy {
         return userByUsername;
     }
 
-    // TODO delete maybe
-    @HystrixCommand(fallbackMethod = "doesUserAlreadyExistCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
-    })
-    @RequestMapping(value = "/user/exists/{name}", method = RequestMethod.GET)
-    public ResponseEntity<Boolean> doesUserAlreadyExist(@PathVariable String name) {
-        return userClient.doesUserAlreadyExist(name);
-    }
-
     @HystrixCommand(fallbackMethod = "getRoleByLevelCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
@@ -110,15 +101,6 @@ public class UserProxy {
             return ResponseEntity.ok(user.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    private ResponseEntity<Boolean> doesUserAlreadyExistCache(String name) {
-        LOG.info(">> doesUserAlreadyExistCache {} from CACHE", new Object[]{name});
-        if (getUserByUsername(name).getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.ok(Boolean.TRUE);
-        } else {
-            return ResponseEntity.ok(Boolean.FALSE);
         }
     }
 

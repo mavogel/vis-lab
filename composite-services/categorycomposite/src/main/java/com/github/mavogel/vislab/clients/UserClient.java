@@ -43,9 +43,6 @@ public interface UserClient {
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     ResponseEntity<UserDto> getUserByUsername(@PathVariable("username") String username);
 
-    @RequestMapping(value = "/user/exists/{name}", method = RequestMethod.GET)
-    ResponseEntity<Boolean> doesUserAlreadyExist(@PathVariable("name") String name);
-
     @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
     ResponseEntity<RoleDto> getRoleByLevel(@PathVariable("levelId") int levelId);
 

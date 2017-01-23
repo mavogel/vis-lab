@@ -120,13 +120,6 @@ public class ApiDocumentation {
     }
 
     @Test
-    public void doesUserAlreadyExist() throws Exception {
-        this.mockMvc.perform(get("/user/exists/jdoe").accept(MediaType.APPLICATION_JSON)
-                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void getRoleByLevel() throws Exception {
         Role role = roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()));
 
