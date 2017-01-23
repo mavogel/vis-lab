@@ -21,7 +21,7 @@ $ ./run_legacy.sh
 - Builds the web app `war`, packs it into a docker tomcat8 container,
 and sets the user `tomcat` with password `admin` for the Management Console at [http://localhost:8888/](http://localhost:8888/)
 - Inits the MySQL Database docker container with the db user defined in `hibernate.cfg.xml`
-- Sets up both containers and make the web app available under [http://localhost:8888/EShop-1.0.0/](http://localhost:8888/EShop-1.0.0/)
+- Sets up both containers and make the legacy webshop available under [http://localhost:8888/EShop-1.0.0/](http://localhost:8888/EShop-1.0.0/)
 
 ### Microservice Architecture
 - Start Docker daemon
@@ -32,7 +32,7 @@ $ source export_vars.sh
 # Build all microservices, create docker images and start them
 $ ./run_microservices.sh
 ```
-- Access the new webshop via `http://localhost:8899/EShop-Micro-2.0.0/`
+- Access the new webshop 2.0 via [http://localhost:8899/EShop-Micro-2.0.0/](http://localhost:8899/EShop-Micro-2.0.0/)
 
 ```bash
 # for shutting down
@@ -40,7 +40,7 @@ $ ./shutdown_microservices.sh
 ```
 ## Useful links
 - Eureka service registry: `http://localhost:8761/`
-- Zuul Gateway routes: `http://localhost:8765/routes` TODO CSRF
+- Zuul Gateway routes: `http://localhost:8765/routes`
 
 **Note**: run e.g. `curl -D- -X GET localhost:8765/category` first, so hystrix produces stream data
 - Local Monitoring Dashboard for Composite: `http://localhost:8084/hystrix` -> enter url `http://localhost:8765/hystrix.stream` 
