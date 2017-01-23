@@ -2,8 +2,60 @@
 \include{settings}
 
 \begin{document}
-	\createTitlepage{Deliverable 4 : Implementation of the Webshop}
+	\createTitlepage{Deliverable 4 : Re-Implementation of the Webshop and OAuth2 integration}
+	\tableofcontents
+	\newpage
 	
-	\section{TODO}
+	\section{Research}
+	Before adding \texttt{OAuth2} to the project a research period war necessary to understand the concept and
+	different modes of the authorization process. Beside the official documentation, open source project were
+	considered to achieve a good foundation of knowledge to integrate the concept into the existing project.
+	\subsection{Official documentation}	
+	The official \texttt{Spring} documentation (which can be found \href{http://projects.spring.io/spring-security-oauth/docs/oauth2.html}{here}) handles base cases of the different 
+	\texttt{grant\_types} but not the special case with a \texttt{Zuul} edge server in front of all the services. So a deeper understanding of the Spring Cloud documentation (which can be found \href{http://cloud.spring.io/spring-cloud-security/spring-cloud-security.html}{here}) was necessary to understand the \textit{magic} happening behind the scenes. 
+	
+	\subsection{Open source projects}
+	For deepening the knowledge after the research, the following open source projects were considered
+	\begin{enumerate}
+		\item \href{https://github.com/zirpins/vsmlab/tree/master/oauth2-demo}{OAuth2-Demo} from Prof. Zirpins
+		\item \href{https://github.com/kakawait/uaa-behind-zuul-sample}{uaa-behind-zuul} from \texttt{kakawait}
+		\item \href{https://github.com/sqshq/PiggyMetrics/}{PiggyMetrics} from \texttt{sqshq}
+		\item \href{https://github.com/rwinch/spring-security-0-to-4.0}{spring-security-0-to-4.0} from \texttt{rwinch}
+	\end{enumerate}	
+	
+	\newpage
+	\subsection{Adaption and proof of concept (PoC)}
+	The project \texttt{uaa-behind-zuul} with adaptions from \texttt{PiggyMetrics} was considered as a base. But it needed to be enhanced to meet to required use-case of the lab. After the enhancement the control flow looked like the diagram of figure \ref{fig:flow-of-control}.
+	\cgraphic{\textwidth}{flow-of-control}{The control flow of the login}
+	
+	\texttt{Zuul} redirects to itself and then to the \texttt{uaa-service} which is responsible for the token generation and validation. If the use is not authenticated, it is redirected to the \texttt{login} page from the \texttt{uaa-service}. This page on the other hand is displayed via the gateway. So the user only talks to the proxy/edge-server. After entering the credentials, the \texttt{uaa-service} verifies the user against the \texttt{user-service}, which is responsible for \texttt{CRUD} operations on users. This authorization uses the OAuth2 \texttt{grant\_type=authorization code}.
+	
+	Additionally for the connection to the legacy web-shop the OAuth2 \texttt{grant\_type= password} was necessary to be implemented in the PoC. It was achieved by combining a patch from the \texttt{resource-server} branch of the base project and logic used in the PiggyMetrics project. Furthermore the authorization based on roles like \texttt{ADMIN} oder \texttt{USER} was implemented to show \texttt{401} errors if the rights were not sufficient.
+	
+	\section{System Design}
+	\cgraphic{\textwidth}{ms_arch_oauth2}{The redesigned system with OAuth2}
+	After the redesign the structure of the system looks like figure \ref{fig:ms_arch_oauth2}. Everything is hidden begin the \texttt{Zuul}-proxy. The chosen OAuth2 grant\_type is \texttt{grant\_type= password}.
+	
+	The \texttt{Zuul}-proxy works as a \texttt{SSO} and \texttt{Resource-Server} at the same time. Calls without a \texttt{BEARER} token will be redirected to the \texttt{uaa-service} and call which have a token will be validate and then directed to the composite service.
+	
+	The \texttt{Category-Composite} which is internally \textit{load-balanced} handles all the calls to the core-services and performs the authorization of a call (if a user has sufficient rights). After this stage no further authorization is performed. 
+	
+    Because the old database scheme was kept, the old legacy shop still usable beside the new one.
+	
+	\section{Realization}
+	\subsection{Legacy Webshop 2.0}
+	In the legacy webshop the \texttt{Hibernate} dependencies and calls via the DAO were removed and replaced by call to the \texttt{Zuul} proxy. 
+	\cgraphic{\textwidth}{webshop-oauth2}{OAuth2 Template generation in the webshop}
+	The OAuth2 token is obtained with the \texttt{grant\_type= password} and then stored in 
+	an \texttt{OAuth2RestTemplate} sending the required token on each call. This is show in figure \ref{fig:webshop-oauth2}.
+	
+	\subsection{Command line client}
+	Within the PoC the command line client was used to obtain the token. This is also possible for the redesigned backend. 
+	\cgraphic{\textwidth}{curls-oauth2}{\texttt{curl} statements}
+	
+	The commands are shown in figure \ref{fig:curls-oauth2}.
+	
+	\subsection{Sources}
+	All the sources can be found here \url{https://github.com/mavogel/vis-lab}
 	
 \end{document}

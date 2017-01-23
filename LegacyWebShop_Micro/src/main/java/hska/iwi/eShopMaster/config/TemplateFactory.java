@@ -110,7 +110,8 @@ public final class TemplateFactory {
      */
     public static OAuth2RestTemplate createAndGetOAuth2RestTemplate(String username, String password) {
         AccessTokenRequest atr = new DefaultAccessTokenRequest();
-        CONFIGURED_OAUTH2_REST_TEMPLATE = new OAuth2RestTemplate(createResource(username, password), new DefaultOAuth2ClientContext(atr));
+        CONFIGURED_OAUTH2_REST_TEMPLATE = new OAuth2RestTemplate(createResource(username, password),
+                new DefaultOAuth2ClientContext(atr));
         return CONFIGURED_OAUTH2_REST_TEMPLATE;
     }
 
