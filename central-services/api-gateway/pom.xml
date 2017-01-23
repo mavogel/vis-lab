@@ -20,6 +20,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <docker.port>8765</docker.port>
+        <!-- For the documentation -->
+        <categoryServiceSnippetsDirectory>${project.basedir}/../../core-services/categoryservice/target/generated-snippets</categoryServiceSnippetsDirectory>
+        <productServiceSnippetsDirectory>${project.basedir}/../../core-services/product/target/generated-snippets</productServiceSnippetsDirectory>
+        <userServiceSnippetsDirectory>${project.basedir}/../../core-services/userservice/target/generated-snippets</userServiceSnippetsDirectory>
     </properties>
 
     <dependencies>
@@ -47,5 +51,61 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Documentation.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>1.5.2</version>
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html</backend>
+                            <doctype>book</doctype>
+                            <attributes>
+                                <category-service-snippets>${categoryServiceSnippetsDirectory}</category-service-snippets>
+                                <product-service-snippets>${productServiceSnippetsDirectory}</product-service-snippets>
+                                <user-service-snippets>${userServiceSnippetsDirectory}</user-service-snippets>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-docs</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

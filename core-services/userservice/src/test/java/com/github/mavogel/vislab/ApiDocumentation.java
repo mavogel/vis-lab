@@ -93,7 +93,8 @@ public class ApiDocumentation {
         this.documentationHandler = document("{method-name}",
                 preprocessResponse(prettyPrint()));
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration(this.restDocumentation))
+                .apply(documentationConfiguration(this.restDocumentation)
+                        .uris().withPort(8765))
                 .alwaysDo(this.documentationHandler)
                 .build();
     }
@@ -103,7 +104,8 @@ public class ApiDocumentation {
         Role role = roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()));
         User user = userRepository.save(new User("jdoe", "john", "doe", "acbd", role));
 
-        this.mockMvc.perform(get("/user/" + user.getUsername()).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/user/" + user.getUsername()).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(
@@ -119,7 +121,8 @@ public class ApiDocumentation {
 
     @Test
     public void doesUserAlreadyExist() throws Exception {
-        this.mockMvc.perform(get("/user/exists/jdoe").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/user/exists/jdoe").accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk());
     }
 
@@ -127,7 +130,8 @@ public class ApiDocumentation {
     public void getRoleByLevel() throws Exception {
         Role role = roleRepository.save(new Role("type", UserLevel.ADMIN.getLevelId()));
 
-        this.mockMvc.perform(get("/user/level/" + role.getLevel()).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/user/level/" + role.getLevel()).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(
@@ -168,11 +172,15 @@ public class ApiDocumentation {
         User originalUser = createSampleUser("jdoe", "John", "Doe");
 
         this.mockMvc.perform(delete("/user/" + originalUser.getId())
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isNoContent());
     }
 
 
+    /**
+     * Helpers
+     */
     private User createSampleUser(final String username, final String firstname, final String lastname) {
         final Role initRole = new Role("roletype", 1);
         roleRepository.save(initRole);

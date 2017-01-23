@@ -1,0 +1,55 @@
+[[resources-user]]
+== user
+The `user` resource is used to register, delete and retrieve users by name or role.
+
+=== Getting users by id
+A `GET` request to list the user by its name.
+
+include::{user-service-snippets}/get-user-by-name/response-fields.adoc[]
+
+==== Example request
+
+include::{user-service-snippets}/get-user-by-name/curl-request.adoc[]
+include::{user-service-snippets}/get-user-by-name/http-response.adoc[]
+
+==== Example response
+
+include::{user-service-snippets}/get-user-by-name/http-response.adoc[]
+
+=== Get Role by Level
+A `GET` request to get thr `role`by a given `level
+
+include::{user-service-snippets}/get-role-by-level/response-fields.adoc[]
+
+==== Example request
+
+include::{user-service-snippets}/get-role-by-level/curl-request.adoc[]
+include::{user-service-snippets}/get-role-by-level/http-response.adoc[]
+
+==== Example response
+
+include::{user-service-snippets}/get-role-by-level/http-response.adoc[]
+
+=== Register user
+A `POST` request create/register a new user.
+
+==== Example request
+
+include::{user-service-snippets}/register-user/curl-request.adoc[]
+include::{user-service-snippets}/register-user/http-response.adoc[]
+
+==== Example response
+
+include::{user-service-snippets}/register-user/http-response.adoc[]
+
+=== Delete user
+A `POST` request delete a user.
+
+==== Example request
+
+include::{user-service-snippets}/delete-user/curl-request.adoc[]
+include::{user-service-snippets}/delete-user/http-response.adoc[]
+
+==== Example response
+
+include::{user-service-snippets}/delete-user/http-response.adoc[]

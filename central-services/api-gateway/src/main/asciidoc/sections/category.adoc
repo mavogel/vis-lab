@@ -1,0 +1,41 @@
+[[resources-categories]]
+== Category
+The Category resource is used to create, list and delete categories.
+
+=== Listing categories
+A `GET` request lists all of the service's categories.
+
+include::{category-service-snippets}/list-categories/response-fields.adoc[]
+
+==== Example request
+
+include::{category-service-snippets}/list-categories/curl-request.adoc[]
+include::{category-service-snippets}/list-categories/http-request.adoc[]
+
+==== Example response
+
+include::{category-service-snippets}/list-categories/http-response.adoc[]
+
+=== Adding categories
+A `POST` request to add a category
+
+==== Example request
+
+include::{category-service-snippets}/add-category/curl-request.adoc[]
+include::{category-service-snippets}/add-category/http-request.adoc[]
+
+==== Example response
+
+include::{category-service-snippets}/add-category/http-response.adoc[]
+
+=== Deleting categories
+A `DELETE` request to delete a category
+
+==== Example request
+
+include::{category-service-snippets}/delete-category/curl-request.adoc[]
+include::{category-service-snippets}/delete-category/http-request.adoc[]
+
+==== Example response
+
+include::{category-service-snippets}/delete-category/http-response.adoc[]

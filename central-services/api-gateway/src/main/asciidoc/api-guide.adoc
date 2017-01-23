@@ -1,0 +1,23 @@
+= HSKA Webshop Backend
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:homepage: www.hs-karlsruhe.de
+
+[introduction]
+= Introduction
+This document provides the API documentation of the Backend of the
+HSKA webshop developed in the master course **Distributed Information Systems**.
+
+== Service
+- Category Service: handles all the CRUD operations on categories
+- Product Service: handles all the CRUD operations on products
+- User Service: handles all the CRUD operations on users
+
+include::sections/introduction.adoc[]
+include::sections/category.adoc[]
+include::sections/product.adoc[]
+include::sections/user.adoc[]

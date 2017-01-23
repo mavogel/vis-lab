@@ -1,0 +1,63 @@
+= Getting Started Guide
+Manuel Vogel;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[[resources]]
+= Resources
+
+[[resources-product]]
+== Product
+The Product resource is used to create, list and delete products.
+
+=== Listing products
+A `GET` request lists all of the service's categories.
+
+include::{snippets}/list-products/response-fields.adoc[]
+
+==== Example request
+include::{snippets}/list-products/curl-request.adoc[]
+include::{snippets}/list-products/http-request.adoc[]
+
+==== Example response
+include::{snippets}/list-products/http-response.adoc[]
+
+=== Adding products
+A `POST` request to add a product to an exiting category
+
+==== Example request
+
+include::{snippets}/add-product/curl-request.adoc[]
+include::{snippets}/add-product/http-request.adoc[]
+
+==== Example response
+
+include::{snippets}/add-product/http-response.adoc[]
+
+=== Edit a product
+A `POST` request to edit a product
+
+==== Example request
+
+include::{snippets}/edit-product/curl-request.adoc[]
+include::{snippets}/edit-product/http-request.adoc[]
+
+==== Example response
+
+include::{snippets}/edit-product/http-response.adoc[]
+
+=== Deleting categories
+A `DELETE` request to delete a product
+
+==== Example request
+
+include::{snippets}/delete-product/curl-request.adoc[]
+include::{snippets}/delete-product/http-request.adoc[]
+
+==== Example response
+
+include::{snippets}/delete-product/http-response.adoc[]

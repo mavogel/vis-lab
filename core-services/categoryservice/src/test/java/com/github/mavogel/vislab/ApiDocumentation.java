@@ -90,7 +90,8 @@ public class ApiDocumentation {
         this.documentationHandler = document("{method-name}",
                 preprocessResponse(prettyPrint()));
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration(this.restDocumentation))
+                .apply(documentationConfiguration(this.restDocumentation)
+                    .uris().withPort(8765))
                 .alwaysDo(this.documentationHandler)
                 .build();
     }
@@ -100,7 +101,7 @@ public class ApiDocumentation {
         createSampleCategory("TestCategory");
 
         this.mockMvc.perform(get("/category").accept(MediaType.APPLICATION_JSON)
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(
@@ -115,7 +116,7 @@ public class ApiDocumentation {
         Category testCategory = createSampleCategory("TestCategory");
 
         this.mockMvc.perform(get("/category/" + testCategory.getId()).accept(MediaType.APPLICATION_JSON)
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(
@@ -131,7 +132,7 @@ public class ApiDocumentation {
         newCategory.put("name", "TestCategory");
 
         this.mockMvc.perform(post("/category")
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(newCategory)))
                 .andExpect(status().isCreated())
@@ -148,13 +149,13 @@ public class ApiDocumentation {
         newCategory.put("name", "TestCategory");
 
         this.mockMvc.perform(post("/category")
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(newCategory)))
                 .andExpect(status().isCreated());
 
         this.mockMvc.perform(get("/category/1").accept(MediaType.APPLICATION_JSON)
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42"))
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andDo(this.documentationHandler.document(
                         responseFields(
@@ -169,7 +170,7 @@ public class ApiDocumentation {
         Category originalCategory = createSampleCategory("TestCategory");
 
         this.mockMvc.perform(delete("/category/" + originalCategory.getId())
-                .header("Authorization: Basic", "0b79bab50daca910b000d4f1a2b675d604257e42")
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }

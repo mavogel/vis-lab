@@ -28,11 +28,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.felixmohr.microservice.product.model.Product;
 import com.felixmohr.microservice.product.model.ProductRepository;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -42,19 +45,30 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by mavogel on 12/11/16.
+ * Created by mavogel on 01/23/17.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // clear the db before each test
-public class ProductsControllerTest {
+public class ApiDocumentation {
+    @Rule
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
 
     private MockMvc mockMvc;
+
+    private RestDocumentationResultHandler documentationHandler;
 
     @Autowired
     private WebApplicationContext context;
@@ -67,15 +81,22 @@ public class ProductsControllerTest {
 
     @Before
     public void setUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+        this.documentationHandler = document("{method-name}",
+                preprocessResponse(prettyPrint()));
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
+                .apply(documentationConfiguration(this.restDocumentation)
+                        .uris().withPort(8765))
+                .alwaysDo(this.documentationHandler)
+                .build();
     }
 
     @Test
-    public void shouldList2Products() throws Exception {
+    public void listProducts() throws Exception {
         Product p1 = repo.save(new Product("P1", 2.55, 0, "D1"));
         Product p2 = repo.save(new Product("P2", 6.55, 0, "D2"));
 
-        this.mockMvc.perform(get("/product").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/product").accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(p1.getId()))
                 .andExpect(jsonPath("$[0].name").value(p1.getName()))
@@ -86,7 +107,16 @@ public class ProductsControllerTest {
                 .andExpect(jsonPath("$[1].name").value(p2.getName()))
                 .andExpect(jsonPath("$[1].price").value(p2.getPrice()))
                 .andExpect(jsonPath("$[1].categoryId").value(p2.getCategoryId()))
-                .andExpect(jsonPath("$[1].details").value(p2.getDetails()));
+                .andExpect(jsonPath("$[1].details").value(p2.getDetails()))
+                .andDo(this.documentationHandler.document(
+                        responseFields(
+                                fieldWithPath("[].id").description("The product ID"),
+                                fieldWithPath("[].name").description("The name of the product"),
+                                fieldWithPath("[].price").description("The price of the product"),
+                                fieldWithPath("[].categoryId").description("The id of the category the product belongs to"),
+                                fieldWithPath("[].details").description("The details of the product")
+                        )
+                ));
     }
 
     @Test
@@ -97,7 +127,8 @@ public class ProductsControllerTest {
         repo.save(new Product("P4", 7.55, 2, "D4"));
         repo.save(new Product("P5", 8.55, 1, "D5"));
 
-        this.mockMvc.perform(get("/product/byCategory/0").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/product/byCategory/0").accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(p1.getId()))
                 .andExpect(jsonPath("$[0].name").value(p1.getName()))
@@ -125,6 +156,7 @@ public class ProductsControllerTest {
 
         this.mockMvc.perform(post("/product/search")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .content(this.objectMapper.writeValueAsString(searchText)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(p1.getId()))
@@ -140,7 +172,7 @@ public class ProductsControllerTest {
     }
 
     @Test
-    public void shouldSearchAndFind2Of6Products() throws Exception {
+    public void searchAndFindProducts() throws Exception {
         Product p1 = repo.save(new Product("P1", 2.55, 0, "D1 barbar bla"));
         repo.save(new Product("P3", 7.55, 0, "D3 lorem ipsum"));
         repo.save(new Product("P4", 7.67, 0, "bla D4 foo"));
@@ -155,6 +187,7 @@ public class ProductsControllerTest {
 
         this.mockMvc.perform(post("/product/search")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .content(this.objectMapper.writeValueAsString(searchText)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(p1.getId()))
@@ -166,12 +199,21 @@ public class ProductsControllerTest {
                 .andExpect(jsonPath("$[1].name").value(p2.getName()))
                 .andExpect(jsonPath("$[1].price").value(p2.getPrice()))
                 .andExpect(jsonPath("$[1].categoryId").value(p2.getCategoryId()))
-                .andExpect(jsonPath("$[1].details").value(p2.getDetails()));
+                .andExpect(jsonPath("$[1].details").value(p2.getDetails()))
+                .andDo(this.documentationHandler.document(
+                        responseFields(
+                                fieldWithPath("[].id").description("The product ID"),
+                                fieldWithPath("[].name").description("The name of the product"),
+                                fieldWithPath("[].price").description("The price of the product"),
+                                fieldWithPath("[].categoryId").description("The id of the category the product belongs to"),
+                                fieldWithPath("[].details").description("The details of the product")
+                        )
+                ));
     }
 
 
     @Test
-    public void shouldCreateANewProduct() throws Exception {
+    public void addProduct() throws Exception {
         Map<String, String> newProduct = new HashMap<>();
         newProduct.put("name", "P1");
         newProduct.put("price", "2.55");
@@ -180,17 +222,33 @@ public class ProductsControllerTest {
 
         this.mockMvc.perform(post("/product")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .content(this.objectMapper.writeValueAsString(newProduct)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("P1"))
                 .andExpect(jsonPath("$.price").value(2.55))
                 .andExpect(jsonPath("$.categoryId").value(0))
-                .andExpect(jsonPath("$.details").value("D1"));
+                .andExpect(jsonPath("$.details").value("D1"))
+                .andDo(this.documentationHandler.document(
+                        requestFields(
+                                fieldWithPath("name").description("The name of the product"),
+                                fieldWithPath("price").description("The price of the product"),
+                                fieldWithPath("category").description("The id of the category the product belongs to"),
+                                fieldWithPath("details").description("The details of the product")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("The id of the created product"),
+                                fieldWithPath("name").description("The name of the created product"),
+                                fieldWithPath("price").description("The price of the created product"),
+                                fieldWithPath("categoryId").description("The id of the category the created product belongs to"),
+                                fieldWithPath("details").description("The details of the created product")
+                        )
+                ));
     }
 
     @Test
-    public void shouldEditAProduct() throws Exception {
+    public void editProduct() throws Exception {
         Product p1 = repo.save(new Product("P1", 2.55, 0, "D1"));
 
         Map<String, String> editedProduct = new HashMap<>();
@@ -202,33 +260,61 @@ public class ProductsControllerTest {
 
         this.mockMvc.perform(patch("/product")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42")
                 .content(this.objectMapper.writeValueAsString(editedProduct)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(p1.getId()))
                 .andExpect(jsonPath("$.name").value("P1fancy"))
                 .andExpect(jsonPath("$.price").value(4.55))
                 .andExpect(jsonPath("$.categoryId").value(0))
-                .andExpect(jsonPath("$.details").value("D2new"));
+                .andExpect(jsonPath("$.details").value("D2new"))
+                .andDo(this.documentationHandler.document(
+                        requestFields(
+                                fieldWithPath("id").description("The id of the product"),
+                                fieldWithPath("name").description("The name of the product"),
+                                fieldWithPath("price").description("The price of the product"),
+                                fieldWithPath("category").description("The id of the category the product belongs to"),
+                                fieldWithPath("details").description("The details of the product")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("The id of the edited product"),
+                                fieldWithPath("name").description("The name of the edited product"),
+                                fieldWithPath("price").description("The price of the edited product"),
+                                fieldWithPath("categoryId").description("The id of the edited the created product belongs to"),
+                                fieldWithPath("details").description("The details of the edited product")
+                        )
+                ));
     }
 
     @Test
-    public void shouldGetASingleProduct() throws Exception {
+    public void listASingleProduct() throws Exception {
         Product p1 = repo.save(new Product("P1", 2.55, 0, "D1"));
 
-        this.mockMvc.perform(get("/product/" + p1.getId()).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/product/" + p1.getId()).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("P1"))
                 .andExpect(jsonPath("$.price").value(2.55))
                 .andExpect(jsonPath("$.categoryId").value(0))
-                .andExpect(jsonPath("$.details").value("D1"));
+                .andExpect(jsonPath("$.details").value("D1"))
+                .andDo(this.documentationHandler.document(
+                        responseFields(
+                                fieldWithPath("id").description("The id of the product"),
+                                fieldWithPath("name").description("The name of the product"),
+                                fieldWithPath("price").description("The price of the product"),
+                                fieldWithPath("categoryId").description("The id of the the created product belongs to"),
+                                fieldWithPath("details").description("The details of the product")
+                        )
+                ));
     }
 
     @Test
-    public void shouldDeleteASingleProduct() throws Exception {
+    public void deleteProduct() throws Exception {
         Product p1 = repo.save(new Product("P1", 2.55, 0, "D1"));
 
-        this.mockMvc.perform(delete("/product/" + p1.getId()).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(delete("/product/" + p1.getId()).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization: Bearer", "0b79bab50daca910b000d4f1a2b675d604257e42"))
                 .andExpect(status().isNoContent());
     }
 }
