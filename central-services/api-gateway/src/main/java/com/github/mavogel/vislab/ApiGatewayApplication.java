@@ -32,8 +32,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
  */
 
 /**
- * @author
- * @author Thibaud Leprêtre
+ * The API-Gateway which handles SSO as well as incoming tokens.
  */
 @SpringBootApplication
 @EnableZuulProxy

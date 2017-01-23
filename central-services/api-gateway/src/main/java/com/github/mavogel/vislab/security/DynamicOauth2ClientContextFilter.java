@@ -39,6 +39,12 @@ import java.util.Map;
  */
 
 /**
+ * Defines a custom redirect strategy for using <pre>grand_type=authorizaton code</pre>
+ * and the login page, if no token is given at the request.
+ * <br>
+ * The redirect strategy or logic is that the service calls itself to redirect
+ * to the uaa-service. See README for more details.
+ *
  * @author Thibaud Leprêtre
  */
 class DynamicOauth2ClientContextFilter extends OAuth2ClientContextFilter {

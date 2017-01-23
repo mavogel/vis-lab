@@ -36,6 +36,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
+ * The custom user details service mapping the database objects into
+ * {@link UserDetailsService} compatible {@link UserDetails} object.
+ *
  * Created by mavogel on 1/14/17.
  */
 @Service

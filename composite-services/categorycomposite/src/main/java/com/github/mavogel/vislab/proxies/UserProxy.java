@@ -44,6 +44,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
+ * Handles the calls and fallbacks for calls to the User-Service,
+ * as well as the authentication for each call.
+ *
  * Created by mavogel on 11/1/16.
  */
 @RestController

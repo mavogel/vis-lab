@@ -59,6 +59,11 @@ import java.util.regex.Pattern;
  *  https://opensource.org/licenses/MIT
  */
 
+/**
+ * Rewrites the security configuration to allow the redirect of the API-Gateway
+ * to itself and then the uaa-service. Defines also the paths which are directly
+ * accessible without being authorized.
+ */
 @Configuration
 @EnableOAuth2Sso
 @EnableResourceServer

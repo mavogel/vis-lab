@@ -48,6 +48,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * Handles the calls and fallbacks for calls to the Product-Service,
+ * as well as the authentication for each call.
+ *
  * Created by mavogel on 11/1/16.
  */
 @RestController

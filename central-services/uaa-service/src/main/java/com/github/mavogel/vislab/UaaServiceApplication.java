@@ -59,6 +59,9 @@ import java.security.KeyPair;
  *  https://opensource.org/licenses/MIT
  */
 
+/**
+ * The service to handle the authorization and token generation/validation.
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableWebSecurity
@@ -84,6 +87,9 @@ public class UaaServiceApplication extends WebMvcConfigurerAdapter {
     }
 
 
+    /**
+     * Defines the login configuration and wiring of the {@link CustomUserDetailsService}.
+     */
     @Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
     @Configuration
     protected static class LoginConfiguration extends WebSecurityConfigurerAdapter {
@@ -115,6 +121,9 @@ public class UaaServiceApplication extends WebMvcConfigurerAdapter {
         }
     }
 
+    /**
+     * Rewrites the OAuth2 configuration.
+     */
     @Configuration
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {

@@ -37,6 +37,9 @@ import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
+/**
+ * The client-side loadbalanced composite service wiring product, category and user calls.
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableCircuitBreaker
