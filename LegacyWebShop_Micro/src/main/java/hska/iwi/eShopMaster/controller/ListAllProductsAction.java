@@ -1,6 +1,6 @@
 package hska.iwi.eShopMaster.controller;
 
-import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.FullProductDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -18,7 +18,7 @@ public class ListAllProductsAction extends ActionSupport {
 	private static final long serialVersionUID = -94109228677381902L;
 	
 	UserDto user;
-	private List<ProductDto> products;
+	private List<FullProductDto> products;
 	
 	public String execute() throws Exception{
 		String result = "input";
@@ -44,11 +44,11 @@ public class ListAllProductsAction extends ActionSupport {
 		this.user = user;
 	}
 	
-	public List<ProductDto> getProducts() {
+	public List<FullProductDto> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<ProductDto> products) {
+	public void setProducts(List<FullProductDto> products) {
 		this.products = products;
 	}
 

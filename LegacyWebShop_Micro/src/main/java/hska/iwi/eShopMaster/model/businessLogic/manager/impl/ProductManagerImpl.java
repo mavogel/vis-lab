@@ -1,6 +1,7 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import com.gitlab.mavogel.vislab.dtos.product.FullProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
@@ -24,13 +25,13 @@ public class ProductManagerImpl implements ProductManager {
     public ProductManagerImpl() {
     }
 
-    public List<ProductDto> getProducts() {
-        ResponseEntity<List<ProductDto>> products;
+    public List<FullProductDto> getProducts() {
+        ResponseEntity<List<FullProductDto>> products;
         try {
             // see: https://stackoverflow.com/a/31947188
             products = TemplateFactory.getOAuth2RestTemplate()
                     .exchange(TemplateFactory.API_GATEWAY + "/product",
-                            HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDto>>() {
+                            HttpMethod.GET, null, new ParameterizedTypeReference<List<FullProductDto>>() {
                             });
         } catch (Exception e) {
             LOG.error("Failed to get products!", e.getMessage());
@@ -39,16 +40,16 @@ public class ProductManagerImpl implements ProductManager {
         return products.getBody();
     }
 
-    public List<ProductDto> getProductsForSearchValues(String searchDescription,
+    public List<FullProductDto> getProductsForSearchValues(String searchDescription,
                                                     Double searchMinPrice, Double searchMaxPrice) {
-        ResponseEntity<List<ProductDto>> products;
+        ResponseEntity<List<FullProductDto>> products;
         try {
             // see: https://stackoverflow.com/a/31947188
             final SearchDto searchDto = new SearchDto(searchDescription, searchMinPrice, searchMaxPrice);
             final HttpEntity<SearchDto> httpSearchEntity = new HttpEntity<SearchDto>(searchDto);
             products = TemplateFactory.getOAuth2RestTemplate()
                     .exchange(TemplateFactory.API_GATEWAY + "/product/search",
-                            HttpMethod.POST, httpSearchEntity, new ParameterizedTypeReference<List<ProductDto>>() {
+                            HttpMethod.POST, httpSearchEntity, new ParameterizedTypeReference<List<FullProductDto>>() {
                             });
         } catch (Exception e) {
             LOG.error("Failed to get products: " + e.getMessage(), e);
@@ -57,11 +58,11 @@ public class ProductManagerImpl implements ProductManager {
         return products.getBody();
     }
 
-    public ProductDto getProductById(int id) {
-        ResponseEntity<ProductDto> product = null;
+    public FullProductDto getProductById(int id) {
+        ResponseEntity<FullProductDto> product = null;
         try {
             product = TemplateFactory.getOAuth2RestTemplate()
-                    .getForEntity(TemplateFactory.API_GATEWAY + "/product/" + id, ProductDto.class);
+                    .getForEntity(TemplateFactory.API_GATEWAY + "/product/" + id, FullProductDto.class);
         } catch (Exception e) {
             LOG.error("Failed to get product with id '" + id + "'", e.getMessage());
             return null;

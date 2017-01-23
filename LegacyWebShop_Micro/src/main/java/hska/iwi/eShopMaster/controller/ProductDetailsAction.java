@@ -1,6 +1,6 @@
 package hska.iwi.eShopMaster.controller;
 
-import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.FullProductDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -16,7 +16,7 @@ public class ProductDetailsAction extends ActionSupport {
 	private String searchValue;
 	private Integer searchMinPrice;
 	private Integer searchMaxPrice;
-	private ProductDto product;
+	private FullProductDto product;
 
 	/**
 	 * 
@@ -80,11 +80,11 @@ public class ProductDetailsAction extends ActionSupport {
 		this.searchMaxPrice = searchMaxPrice;
 	}
 
-	public ProductDto getProduct() {
+	public FullProductDto getProduct() {
 		return product;
 	}
 
-	public void setProduct(ProductDto product) {
+	public void setProduct(FullProductDto product) {
 		this.product = product;
 	}
 }

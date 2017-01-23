@@ -27,6 +27,7 @@ package com.github.mavogel.vislab.proxies;/*
 import com.github.mavogel.vislab.clients.CategoryClient;
 import com.github.mavogel.vislab.clients.ProductClient;
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
+import com.gitlab.mavogel.vislab.dtos.product.FullProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.NewProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
 import com.gitlab.mavogel.vislab.dtos.product.SearchDto;
@@ -40,6 +41,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +54,8 @@ import java.util.stream.Collectors;
 public class ProductProxy {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductProxy.class);
-    private static Map<Long, ProductDto> CACHE = new LinkedHashMap<>();
+    private static Map<Long, FullProductDto> CACHE = new LinkedHashMap<>();
+    private static Map<Long, CategoryDto> CATEGORY_CACHE = new LinkedHashMap<>();
 
     @Autowired
     private CategoryClient categoryClient;
@@ -64,33 +67,57 @@ public class ProductProxy {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
     @RequestMapping(value = "/product", method = RequestMethod.GET)
-    public ResponseEntity<List<ProductDto>> listProducts() {
+    public ResponseEntity<List<FullProductDto>> listProducts() {
         ResponseEntity<List<ProductDto>> productDtoEntities = this.productClient.listProducts();
-        List<ProductDto> productDtos = productDtoEntities.getBody();
+        List<FullProductDto> productDtos = enhanceProductsWithFullCategory(productDtoEntities.getBody());
         productDtos.forEach(p -> CACHE.put(p.getId(), p));
-        return productDtoEntities;
+        return ResponseEntity.ok(productDtos);
     }
 
     @HystrixCommand(fallbackMethod = "listProductCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ProductDto> listProduct(@PathVariable long id) {
+    public ResponseEntity<FullProductDto> listProduct(@PathVariable long id) {
         ResponseEntity<ProductDto> productDtoEntity = this.productClient.listProduct(id);
-        ProductDto productDto = productDtoEntity.getBody();
-        CACHE.put(productDto.getId(), productDto);
-        return productDtoEntity;
+        if (HttpStatus.OK.equals(productDtoEntity.getStatusCode())) {
+            FullProductDto productDto = enhanceProductsWithFullCategory(Arrays.asList(productDtoEntity.getBody())).get(0);
+            CACHE.put(productDto.getId(), productDto);
+            return ResponseEntity.ok(productDto);
+        } else {
+            return ResponseEntity.status(productDtoEntity.getStatusCode()).body(null);
+        }
     }
 
     @HystrixCommand(fallbackMethod = "searchProductsCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
     @RequestMapping(value = "/product/search", method = RequestMethod.POST)
-    public ResponseEntity<List<ProductDto>> searchProducts(@RequestBody SearchDto search) {
+    public ResponseEntity<List<FullProductDto>> searchProducts(@RequestBody SearchDto search) {
         ResponseEntity<List<ProductDto>> productDtoEntities = this.productClient.searchProducts(search);
-        List<ProductDto> productDtos = productDtoEntities.getBody();
+        List<FullProductDto> productDtos = enhanceProductsWithFullCategory(productDtoEntities.getBody());
         productDtos.forEach(p -> CACHE.put(p.getId(), p));
-        return productDtoEntities;
+        return ResponseEntity.ok(productDtos);
+    }
+
+    /**
+     * Enhances the product dto with the full category dto. Stores already found categories.
+     * Does not update them because in the FE the category can never be edited.
+     *
+     * @param productDtos the products to enhance
+     * @return the enhanced {@link FullProductDto}s
+     */
+    private List<FullProductDto> enhanceProductsWithFullCategory(List<ProductDto> productDtos) {
+        productDtos.stream()
+                .map(p -> p.getCategoryId())
+                .distinct()
+                .filter(cId -> !CATEGORY_CACHE.containsKey(cId))
+                .map(cId -> this.categoryClient.listCategory(cId).getBody())
+                .forEach(categoryDto -> CATEGORY_CACHE.put(categoryDto.getId(), categoryDto));
+
+        return productDtos.stream()
+                .map(p -> new FullProductDto(p.getId(), p.getName(), p.getPrice(), p.getDetails(), CATEGORY_CACHE.get(p.getCategoryId())))
+                .collect(Collectors.toList());
     }
 
     @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
@@ -119,23 +146,26 @@ public class ProductProxy {
     /////////////////
     // Fallbacks
     /////////////////
-    private ResponseEntity<List<ProductDto>> listProductsCache() {
+    private ResponseEntity<List<FullProductDto>> listProductsCache() {
         LOG.info(">> listProductsCache from CACHE");
         return ResponseEntity.ok(CACHE.entrySet().stream()
                 .map(e -> e.getValue())
                 .collect(Collectors.toList()));
     }
 
-    private ResponseEntity<ProductDto> listProductCache(long id) {
+    private ResponseEntity<FullProductDto> listProductCache(long id) {
         LOG.info(">> listProductCache id={} from CACHE", new Object[]{id});
-        return ResponseEntity.ok(CACHE.getOrDefault(id, new ProductDto(id, "dummy", 1.00, "dummy details", 1l)));
+        return ResponseEntity.ok(CACHE.getOrDefault(id,
+                new FullProductDto(id, "dummy", 1.00, "dummy details",
+                        new CategoryDto(1l, "TestCat"))));
     }
 
-    private ResponseEntity<List<ProductDto>> searchProductsCache(SearchDto search) {
+    private ResponseEntity<List<FullProductDto>> searchProductsCache(SearchDto search) {
         LOG.info(">> searchProductsCache search={} from CACHE", new Object[]{search});
         return ResponseEntity.ok(CACHE.entrySet().stream()
                 .map(p -> p.getValue())
                 .filter(p -> p.getDetails().contains(search.getText()))
+                .filter(p -> p.getPrice() >= search.getSearchMinPrice() && p.getPrice() <= search.getSearchMaxPrice())
                 .collect(Collectors.toList()));
     }
 }

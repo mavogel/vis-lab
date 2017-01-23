@@ -1,7 +1,7 @@
 package hska.iwi.eShopMaster.controller;
 
 import com.gitlab.mavogel.vislab.dtos.category.CategoryDto;
-import com.gitlab.mavogel.vislab.dtos.product.ProductDto;
+import com.gitlab.mavogel.vislab.dtos.product.FullProductDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -30,7 +30,7 @@ public class SearchAction extends ActionSupport {
     private Double sMaxPrice = null;
 
     private UserDto user;
-    private List<ProductDto> products;
+    private List<FullProductDto> products;
     private List<CategoryDto> categories;
 
 
@@ -77,11 +77,11 @@ public class SearchAction extends ActionSupport {
         this.user = user;
     }
 
-    public List<ProductDto> getProducts() {
+    public List<FullProductDto> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductDto> products) {
+    public void setProducts(List<FullProductDto> products) {
         this.products = products;
     }
 
