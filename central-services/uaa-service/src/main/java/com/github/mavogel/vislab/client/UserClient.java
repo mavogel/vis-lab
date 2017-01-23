@@ -1,4 +1,4 @@
-package com.kakawait.client;/*
+package com.github.mavogel.vislab.client;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2017 Manuel Vogel

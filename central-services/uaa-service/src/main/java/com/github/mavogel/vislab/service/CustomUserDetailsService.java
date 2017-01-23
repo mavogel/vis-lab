@@ -1,4 +1,4 @@
-package com.kakawait.service;/*
+package com.github.mavogel.vislab.service;/*
  *  The MIT License (MIT)
  *
  *  Copyright (c) 2017 Manuel Vogel
@@ -24,9 +24,9 @@ package com.kakawait.service;/*
  *  https://opensource.org/licenses/MIT
  */
 
+import com.github.mavogel.vislab.client.UserClient;
+import com.github.mavogel.vislab.client.UserModelDetails;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
-import com.kakawait.client.UserClient;
-import com.kakawait.client.UserModelDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

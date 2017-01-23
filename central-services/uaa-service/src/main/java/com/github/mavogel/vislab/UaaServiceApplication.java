@@ -1,6 +1,6 @@
-package com.kakawait;
+package com.github.mavogel.vislab;
 
-import com.kakawait.service.CustomUserDetailsService;
+import com.github.mavogel.vislab.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;

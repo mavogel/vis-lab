@@ -1,4 +1,4 @@
-package com.kakawait.security;
+package com.github.mavogel.vislab.security;
 
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.resource.UserRedirectRequiredException;
