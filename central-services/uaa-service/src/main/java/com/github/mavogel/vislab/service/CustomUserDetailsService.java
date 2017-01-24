@@ -57,7 +57,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 userDto.getId(),
                 userDto.getUsername(),
                 userDto.getPassword(),
-                userDto.getRole().getType().toUpperCase());
+                userDto.getRole().getType());
 
         if (userModelDetails == null) {
             throw new UsernameNotFoundException(username);

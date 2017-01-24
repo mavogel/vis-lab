@@ -88,7 +88,8 @@ public class UserModelDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + this.role));
+        // because in the DB it's 'admin' and 'user' lowercase
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + this.role.toUpperCase()));
     }
 
     @Override
