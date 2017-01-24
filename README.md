@@ -50,9 +50,9 @@ $ ./shutdown_microservices.sh
 
 ## `curl` statements for testing:
 1. Obtain the access token and refresh token for the `grand_type=password` via one of the three methods:
-  - `curl -v --insecure -H "Authorization: Basic $(echo -n 'acme:acmesecret' | base64)" http://localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
-  - `curl -v --insecure -u acme:acmesecret http://localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
-  - `curl -v --insecure http://acme:acmesecret@localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
+  - `curl -v -H "Authorization: Basic $(echo -n 'acme:acmesecret' | base64)" http://localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
+  - `curl -v -u acme:acmesecret http://localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
+  - `curl -v http://acme:acmesecret@localhost:8765/uaa/oauth/token -d grant_type=password -d username=admin -d password=admin`
   
 2. Save the obtained access token in the `ACCESS_TOKEN` env var:
 `export ACCESS_TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0ODQ0ODExM...`
@@ -68,7 +68,7 @@ $ ./shutdown_microservices.sh
 ## Debugging:
 ### Check MySQL contents
 - Connect to container: `docker exec -it <#containerId> bash`
-- Connect to db: `mysql -h localhost -D webshop -u webshopuser -p` -> password: `240b2c6d58ff2ce2f508b49f`
+- Connect to db: `mysql -h localhost -D webshop -u webshopuser -p240b2c6d58ff2ce2f508b49f`
 
 
 ### API Documentation
