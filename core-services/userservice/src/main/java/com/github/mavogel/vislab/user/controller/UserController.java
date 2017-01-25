@@ -55,11 +55,6 @@ public class UserController {
     @Autowired
     private ModelMapper mapper;
 
-    @RequestMapping(value = "/me", method = RequestMethod.GET)
-    public ResponseEntity<Principal> me(Principal principal) {
-        return ResponseEntity.ok(principal);
-    }
-
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {

@@ -38,9 +38,6 @@ import java.security.Principal;
  */
 @FeignClient("userservice")
 public interface UserClient {
-// delete
-    @RequestMapping(value = "/user/me", method = RequestMethod.GET)
-    ResponseEntity<Principal> me(Principal principal);
 
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     ResponseEntity<UserDto> getUserByUsername(@PathVariable("username") String username);
