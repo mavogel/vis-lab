@@ -37,6 +37,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 /**
  * Created by mavogel on 11/1/16.
  */
@@ -52,6 +54,11 @@ public class UserController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
+    public ResponseEntity<Principal> me(Principal principal) {
+        return ResponseEntity.ok(principal);
+    }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

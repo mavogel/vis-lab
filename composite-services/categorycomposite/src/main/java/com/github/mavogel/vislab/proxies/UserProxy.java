@@ -39,6 +39,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -59,9 +60,15 @@ public class UserProxy {
     @Autowired
     private UserClient userClient;
 
+    @RequestMapping(value = "/user/me", method = RequestMethod.GET)
+    ResponseEntity<Principal> me(Principal principal) {
+        return ResponseEntity.ok(principal);
+    }
+
     @HystrixCommand(fallbackMethod = "getUserByUsernameCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
         ResponseEntity<UserDto> userByUsername = userClient.getUserByUsername(username);
@@ -72,6 +79,7 @@ public class UserProxy {
     @HystrixCommand(fallbackMethod = "getRoleByLevelCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
+    @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/user/level/{levelId}", method = RequestMethod.GET)
     public ResponseEntity<RoleDto> getRoleByLevel(@PathVariable int levelId) {
         ResponseEntity<RoleDto> roleByLevel = userClient.getRoleByLevel(levelId);
@@ -80,10 +88,10 @@ public class UserProxy {
     }
 
     // delete -> goes directly
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
-        return userClient.registerUser(userDto);
-    }
+//    @RequestMapping(value = "/user", method = RequestMethod.POST)
+//    public ResponseEntity<UserDto> registerUser(@RequestBody NewUserDto userDto) {
+//        return userClient.registerUser(userDto);
+//    }
 
     @PreAuthorize("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)

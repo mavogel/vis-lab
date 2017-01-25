@@ -1,0 +1,71 @@
+package hska.iwi.eShopMaster.model.businessLogic.manager.customjson;/*
+ *  The MIT License (MIT)
+ *
+ *  Copyright (c) 2017 Manuel Vogel
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
+ *
+ *  https://opensource.org/licenses/MIT
+ */
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import java.util.List;
+
+/**
+ * This class wraps the JSON answer from a {@link org.springframework.security.oauth2.provider.OAuth2Authentication}
+ * because it has no suiteable constructor for serialization. See 'user.me.json' in the resources folder for
+ * the complete structure.
+ *
+ * Created by mavogel on 1/25/17.
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CustomOAuth2Authentication {
+
+    private String name;
+    private List<CustomAuthority> authorities;
+    private CustomOauth2Request oauth2Request;
+
+    public CustomOAuth2Authentication() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public List<CustomAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(final List<CustomAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public CustomOauth2Request getOauth2Request() {
+        return oauth2Request;
+    }
+
+    public void setOauth2Request(final CustomOauth2Request oauth2Request) {
+        this.oauth2Request = oauth2Request;
+    }
+}

@@ -27,6 +27,8 @@ package com.github.mavogel.vislab.service;/*
 import com.github.mavogel.vislab.client.UserClient;
 import com.github.mavogel.vislab.client.UserModelDetails;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserClient userClient;
 
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5")
+    })
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 

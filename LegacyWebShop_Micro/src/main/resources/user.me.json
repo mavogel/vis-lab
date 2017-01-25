@@ -1,0 +1,49 @@
+{
+  "details": {
+    "remoteAddress": "172.18.0.3",
+    "sessionId": null,
+    "tokenValue": "eysklds",
+    "tokenType": "Bearer",
+    "decodedDetails": null
+  },
+  "authorities": [
+    {
+      "authority": "ROLE_ADMIN"
+    }
+  ],
+  "authenticated": true,
+  "userAuthentication": {
+    "details": null,
+    "authorities": [
+      {
+        "authority": "ROLE_ADMIN"
+      }
+    ],
+    "authenticated": true,
+    "principal": "admin",
+    "credentials": "N/A",
+    "name": "admin"
+  },
+  "clientOnly": false,
+  "oauth2Request": {
+    "clientId": "acme",
+    "scope": [
+      "openid"
+    ],
+    "requestParameters": {
+      "client_id": "acme"
+    },
+    "resourceIds": [],
+    "authorities": [],
+    "approved": true,
+    "refresh": false,
+    "redirectUri": null,
+    "responseTypes": [],
+    "extensions": {},
+    "grantType": null,
+    "refreshTokenRequest": null
+  },
+  "principal": "admin",
+  "credentials": "",
+  "name": "admin"
+}

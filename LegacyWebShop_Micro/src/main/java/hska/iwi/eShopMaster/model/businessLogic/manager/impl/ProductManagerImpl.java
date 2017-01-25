@@ -18,6 +18,11 @@ import org.springframework.http.ResponseEntity;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Handles requests for products.
+ *
+ * @author mavogel
+ */
 public class ProductManagerImpl implements ProductManager {
 
     private static final Logger LOG = LogManager.getLogger(ProductManager.class);

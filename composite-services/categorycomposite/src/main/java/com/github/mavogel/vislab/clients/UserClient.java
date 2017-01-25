@@ -29,16 +29,18 @@ import com.gitlab.mavogel.vislab.dtos.user.RoleDto;
 import com.gitlab.mavogel.vislab.dtos.user.UserDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 /**
  * Created by mavogel on 12/20/16.
  */
 @FeignClient("userservice")
 public interface UserClient {
+// delete
+    @RequestMapping(value = "/user/me", method = RequestMethod.GET)
+    ResponseEntity<Principal> me(Principal principal);
 
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     ResponseEntity<UserDto> getUserByUsername(@PathVariable("username") String username);

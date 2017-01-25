@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Handles requests for categories.
+ *
  * @author mavogel
  */
 public class CategoryManagerImpl implements CategoryManager {
