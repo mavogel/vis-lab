@@ -65,25 +65,6 @@ public final class TemplateFactory {
         return new RestTemplate();
     }
 
-//    /**
-//     * Creates a rest template for the specified path and call type.
-//     *
-//     * @param path the path
-//     * @param httpMethod the call type
-//     * @return the configured {@link RestTemplate}
-//     */
-//    public static RestTemplate getRestTemplate(final String path, final HttpMethod httpMethod) {
-//        final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-//        try {
-//            requestFactory.createRequest(new URI(API_GATEWAY + path), httpMethod);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//        return new RestTemplate(requestFactory);
-//    }
-
     /**
      * The configured OAuth2 rest template.
      *
