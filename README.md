@@ -14,7 +14,6 @@ Splitting a monolithic web shop application, running on a Tomcat into small doma
 - Start Docker daemon
 - Check out the project, export variables and simply run the script:
 ```bash
-$ source export_vars.sh
 $ chmod +x run_legacy.sh
 $ ./run_legacy.sh
 ```
@@ -27,8 +26,6 @@ and sets the user `tomcat` with password `admin` for the Management Console at [
 - Start Docker daemon
 - Check out the project and simply run the script:
 ```bash
-# Read env variables for DB location and credentials
-$ source export_vars.sh
 # Build all microservices, create docker images and start them
 $ ./run_microservices.sh
 ```

@@ -13,25 +13,26 @@ env:
     - COMMIT=${TRAVIS_COMMIT::7}
 
 script:
-#  - mvn clean install
+  # Builds the docker images already
+  - mvn clean install
+  # These artifacts are not part of the root pom
   - cd LegacyWebShop && mvn clean package && cd ..
   - cd LegacyWebShop_Micro && mvn clean package && cd ..
 
 after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  # Additional 'clean package' step is necessary due to api doc generation with asciidoctor!
-#  - mvn clean package docker:build
+  - mvn docker:build
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#  - mvn docker:push
+  - mvn docker:push
 
   # LEGACY WEBSHOP
-  - export LEGACY_WEBSHOP=$DOCKER_USER/$DOCKER_PROJECT_IMAGE_PREFIX-legacywebshop
+  - export LEGACY_WEBSHOP=mavogel/vis-legacywebshop
   - docker build -t $LEGACY_WEBSHOP:$COMMIT ./LegacyWebShop
   - docker tag $LEGACY_WEBSHOP:$COMMIT $LEGACY_WEBSHOP:$TAG
   - docker push $LEGACY_WEBSHOP
 
   # LEGACY WEBSHOP MICRO with call to the Api gateway
-  - export LEGACY_WEBSHOP_MICRO=$DOCKER_USER/$DOCKER_PROJECT_IMAGE_PREFIX-legacywebshop-micro
+  - export LEGACY_WEBSHOP_MICRO=mavogel/vis-legacywebshop-micro
   - docker build -t $LEGACY_WEBSHOP_MICRO:$COMMIT ./LegacyWebShop_Micro
   - docker tag $LEGACY_WEBSHOP_MICRO:$COMMIT $LEGACY_WEBSHOP:$TAG
   - docker push $LEGACY_WEBSHOP_MICRO

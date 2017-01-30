@@ -5,7 +5,7 @@ source run_base_script.sh
 # 2: Build legacy webshop
 info "Bulding legacy web shop"
 cd LegacyWebShop && mvn clean package && cd ..
-docker build -t mavogel/vis-web-shop-db-image ./LegacyWebShop
+docker build -t mavogel/vis-legacywebshop ./LegacyWebShop
 
 # 3: Build initialized MySQL Database image
 info "Building initialized MySQL Database image"
