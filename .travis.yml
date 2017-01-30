@@ -8,12 +8,17 @@ services:
 language: java
 jdk: oraclejdk8
 
+script:
+  - echo "Do nothing atm..."
+
 after_success:
 #  # Keep the TAG different, because adding new services should be tested first
 #  # on a separate branch before going to master. If not all teams will pull
-#  # the images immediately by watchtower
-#  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 # and additional 'clean package' step is necessary due to api doc generation with asciidoctor!
-  - mvn clean package docker:build
-#  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USER" -p="$DOCKER_PASS"
+#  - mvn clean package docker:build
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USER" -p="$DOCKER_PASS"
 #  - mvn docker:push
+# push webshops as well
+  - cd LegacyWebShop && mvn clean package docker:build && mvn docker:push && cd ..
+#  - cd LegacyWebShop_Micro && mvn clean package docker:build && mvn docker:push && cd ..
