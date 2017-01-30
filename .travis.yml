@@ -13,16 +13,16 @@ env:
     - COMMIT=${TRAVIS_COMMIT::7}
 
 script:
-  # Builds the docker images already
-  - mvn clean test
+  - mvn test
   # These artifacts are not part of the root pom
   - cd LegacyWebShop && mvn clean package && cd ..
   - cd LegacyWebShop_Micro && mvn clean package && cd ..
 
 after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - mvn clean install docker:build
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-  - mvn clean install docker:push
+  - mvn docker:push
 
   # LEGACY WEBSHOP
   - export LEGACY_WEBSHOP=mavogel/vis-legacywebshop
