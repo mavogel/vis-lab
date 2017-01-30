@@ -20,7 +20,7 @@ script:
 
 after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - mvn clean install docker:build
+  - mvn clean package docker:build
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
   - mvn docker:push
 
