@@ -8,17 +8,30 @@ services:
 language: java
 jdk: oraclejdk8
 
+env:
+  global:
+    - COMMIT=${TRAVIS_COMMIT::7}
+
 script:
-  - echo "Do nothing atm..."
+#  - mvn clean install
+  - cd LegacyWebShop && mvn clean package && cd ..
+  - cd LegacyWebShop_Micro && mvn clean package && cd ..
 
 after_success:
-#  # Keep the TAG different, because adding new services should be tested first
-#  # on a separate branch before going to master. If not all teams will pull
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-# and additional 'clean package' step is necessary due to api doc generation with asciidoctor!
+  # Additional 'clean package' step is necessary due to api doc generation with asciidoctor!
 #  - mvn clean package docker:build
-  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USER" -p="$DOCKER_PASS"
+  - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
 #  - mvn docker:push
-# push webshops as well
-  - cd LegacyWebShop && mvn clean package docker:build && mvn docker:push && cd ..
-#  - cd LegacyWebShop_Micro && mvn clean package docker:build && mvn docker:push && cd ..
+
+  # LEGACY WEBSHOP
+  - export LEGACY_WEBSHOP=$DOCKER_USER/$DOCKER_PROJECT_IMAGE_PREFIX-legacywebshop
+  - docker build -t $LEGACY_WEBSHOP:$COMMIT ./LegacyWebShop
+  - docker tag $LEGACY_WEBSHOP:$COMMIT $LEGACY_WEBSHOP:$TAG
+  - docker push $LEGACY_WEBSHOP
+
+  # LEGACY WEBSHOP MICRO with call to the Api gateway
+  - export LEGACY_WEBSHOP_MICRO=$DOCKER_USER/$DOCKER_PROJECT_IMAGE_PREFIX-legacywebshop-micro
+  - docker build -t $LEGACY_WEBSHOP_MICRO:$COMMIT ./LegacyWebShop_Micro
+  - docker tag $LEGACY_WEBSHOP_MICRO:$COMMIT $LEGACY_WEBSHOP:$TAG
+  - docker push $LEGACY_WEBSHOP_MICRO
