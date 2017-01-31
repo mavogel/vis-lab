@@ -12,12 +12,6 @@ env:
   global:
     - COMMIT=${TRAVIS_COMMIT::7}
 
-script:
-  - mvn test
-  # These artifacts are not part of the root pom
-  - cd LegacyWebShop && mvn clean package && cd ..
-  - cd LegacyWebShop_Micro && mvn clean package && cd ..
-
 after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - mvn clean package docker:build
@@ -25,12 +19,14 @@ after_success:
   - mvn docker:push
 
   # LEGACY WEBSHOP
+  - cd LegacyWebShop && mvn clean package && cd ..
   - export LEGACY_WEBSHOP=mavogel/vis-legacywebshop
   - docker build -t $LEGACY_WEBSHOP:$COMMIT ./LegacyWebShop
   - docker tag $LEGACY_WEBSHOP:$COMMIT $LEGACY_WEBSHOP:$TAG
   - docker push $LEGACY_WEBSHOP
 
   # LEGACY WEBSHOP MICRO with call to the Api gateway
+  - cd LegacyWebShop_Micro && mvn clean package && cd ..
   - export LEGACY_WEBSHOP_MICRO=mavogel/vis-legacywebshop-micro
   - docker build -t $LEGACY_WEBSHOP_MICRO:$COMMIT ./LegacyWebShop_Micro
   - docker tag $LEGACY_WEBSHOP_MICRO:$COMMIT $LEGACY_WEBSHOP:$TAG
