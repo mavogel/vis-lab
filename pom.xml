@@ -23,7 +23,7 @@
     </properties>
 
     <modules>
-        <module>shared/dtos</module>
+        <!--<module>shared/dtos</module>-->
         <module>core-services/categoryservice</module>
         <module>core-services/product</module>
         <module>core-services/userservice</module>

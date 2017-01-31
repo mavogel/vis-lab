@@ -3,7 +3,8 @@ sudo: required
 services:
   - docker
 
-# travis runs implicitly 'mvn test' and 'mvn install' if it finds a 'pom.xml' in the root.
+# travis runs implicitly 'mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V'
+# and 'mvn test -B' if it finds a 'pom.xml' in the root.
 # see https://docs.travis-ci.com/user/languages/java/
 language: java
 jdk: oraclejdk8
@@ -12,9 +13,14 @@ env:
   global:
     - COMMIT=${TRAVIS_COMMIT::7}
 
+script:
+  # They are not part of the root pom
+  - cd shared/dtos && mvn clean install && cd ../..
+
 after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - mvn clean package docker:build
+  # no clean cuz we used the snippetes generated from 'mvn test -B'
+  - mvn package docker:build
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
   - mvn docker:push
 

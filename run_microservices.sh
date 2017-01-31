@@ -4,7 +4,11 @@ source run_base_script.sh
 
 #######
 info "Building microservices and docker images"
-mvn clean install #-DskipTests
+cd shared/dtos && mvn clean install && cd ../..
+
+#######
+info "Building microservices and docker images"
+mvn clean package docker:build #-DskipTests
 
 #######
 info "Building new version of legacy webshop"
