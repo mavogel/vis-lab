@@ -13,8 +13,7 @@ env:
   global:
     - COMMIT=${TRAVIS_COMMIT::7}
 
-script:
-  # They are not part of the root pom
+before_install:
   - cd shared/dtos && mvn clean install && cd ../..
 
 after_success:
