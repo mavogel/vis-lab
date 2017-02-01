@@ -23,6 +23,12 @@ after_success:
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
   - mvn docker:push
 
+  # CONFIGURED DB IMAGE
+  - export WEBSHOP_DB_IMAGE=mavogel/vis-web-shop-db-image
+  - docker build -t $WEBSHOP_DB_IMAGE -f ./LegacyWebShop/DockerfileMySQL ./LegacyWebShop
+  - docker tag $WEBSHOP_DB_IMAGE:$COMMIT $WEBSHOP_DB_IMAGE:$TAG
+  - docker push $WEBSHOP_DB_IMAGE
+
   # LEGACY WEBSHOP
   - cd LegacyWebShop && mvn clean package && cd ..
   - export LEGACY_WEBSHOP=mavogel/vis-legacywebshop
@@ -34,5 +40,5 @@ after_success:
   - cd LegacyWebShop_Micro && mvn clean package && cd ..
   - export LEGACY_WEBSHOP_MICRO=mavogel/vis-legacywebshop-micro
   - docker build -t $LEGACY_WEBSHOP_MICRO:$COMMIT ./LegacyWebShop_Micro
-  - docker tag $LEGACY_WEBSHOP_MICRO:$COMMIT $LEGACY_WEBSHOP:$TAG
+  - docker tag $LEGACY_WEBSHOP_MICRO:$COMMIT $LEGACY_WEBSHOP_MICRO:$TAG
   - docker push $LEGACY_WEBSHOP_MICRO
