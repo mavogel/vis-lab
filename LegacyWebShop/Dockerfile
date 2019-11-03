@@ -1,4 +1,4 @@
-FROM tomcat:8.0
+FROM tomcat:8
 MAINTAINER Manuel Vogel
 
 ADD ./target/EShop-1.0.0.war /usr/local/tomcat/webapps/
