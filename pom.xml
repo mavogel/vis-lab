@@ -100,7 +100,7 @@
                                     <alias>${project.name}</alias>
                                     <name>mavogel/vis-${project.artifactId}</name>
                                     <build>
-                                        <from>frolvlad/alpine-oraclejdk8:slim</from>
+                                        <from>frolvlad/alpine-java:jdk8-slim</from>
                                         <tags>
                                             <tag>latest</tag>
                                         </tags>
